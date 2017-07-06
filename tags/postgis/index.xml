@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Postgis on Marc Weber</title>
+    <link>/tags/postgis/</link>
+    <description>Recent content in Postgis on Marc Weber</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
+    <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
+    <lastBuildDate>Fri, 02 Dec 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/postgis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Read PostGIS in R</title>
+      <link>/2016/12/02/read-postgis-in-r/</link>
+      <pubDate>Fri, 02 Dec 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/12/02/read-postgis-in-r/</guid>
+      <description> Working with Postgres / PostGIS more now and playing with reading and writing from R and Python. Here&amp;rsquo;s snippet showing read in of PostGIS in R:  </description>
+    </item>
+    
+  </channel>
+</rss>
