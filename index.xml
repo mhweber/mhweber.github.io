@@ -7,19 +7,10 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
-    <lastBuildDate>Wed, 20 Sep 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jul 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Download StreamCat data</title>
-      <link>/2017/09/20/download-streamcat-data/</link>
-      <pubDate>Wed, 20 Sep 2017 00:00:00 +0000</pubDate>
-      <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2017/09/20/download-streamcat-data/</guid>
-      <description> Here&amp;rsquo;s an example code snippet using ftplib in python to download StreamCat data  </description>
-    </item>
     
     <item>
       <title>Testing New Site</title>
@@ -64,6 +55,15 @@
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/2016/12/02/read-postgis-in-r/</guid>
       <description> Working with Postgres / PostGIS more now and playing with reading and writing from R and Python. Here&amp;rsquo;s snippet showing read in of PostGIS in R:  </description>
+    </item>
+    
+    <item>
+      <title>Download StreamCat data</title>
+      <link>/2016/09/20/download-streamcat-data/</link>
+      <pubDate>Tue, 20 Sep 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/09/20/download-streamcat-data/</guid>
+      <description> Here&amp;rsquo;s an example code snippet using ftplib in python to download StreamCat data  </description>
     </item>
     
     <item>
