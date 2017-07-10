@@ -18,7 +18,7 @@
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/2017/07/06/jekyll-to-hugo-with-blogdown/</guid>
-      <description>I set up my personal website using GitHub Pates a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listending to Yihui&amp;rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.</description>
+      <description>I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listending to Yihui&amp;rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.</description>
     </item>
     
     <item>
