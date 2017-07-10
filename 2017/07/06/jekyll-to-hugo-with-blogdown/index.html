@@ -8,9 +8,9 @@
   <title>Switching website from Jekyll to Hugo using Blogdown</title>
   <meta property="og:title" content="Switching website from Jekyll to Hugo using Blogdown" />
   <meta name="twitter:title" content="Switching website from Jekyll to Hugo using Blogdown" />
-  <meta name="description" content="I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listending to Yihui&rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.">
-  <meta property="og:description" content="I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listending to Yihui&rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.">
-  <meta name="twitter:description" content="I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listending to Yihui&rsquo;s RStudio webinar on using …">
+  <meta name="description" content="I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listening to Yihui&rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.">
+  <meta property="og:description" content="I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listening to Yihui&rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.">
+  <meta name="twitter:description" content="I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listening to Yihui&rsquo;s RStudio webinar on using …">
   <meta name="author" content="Marc Weber"/>
   <link href='/img/favicon.ico' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="/img/MeBiking.png" />
@@ -201,7 +201,7 @@ ga('send', 'pageview');
       <article role="main" class="blog-post">
         
 
-<p>I set up my personal website using <a href="https://pages.github.com/">GitHub Pages</a> a little while back using Jekyll and a Hyde template that I thought was pretty nice.  However, after listending to <a href="https://www.rstudio.com/resources/webinars/introducing-blogdown/">Yihui&rsquo;s RStudio webinar on using blogdown</a>, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo.  I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch. This post recounts the basic process I used to switch.</p>
+<p>I set up my personal website using <a href="https://pages.github.com/">GitHub Pages</a> a little while back using Jekyll and a Hyde template that I thought was pretty nice.  However, after listening to <a href="https://www.rstudio.com/resources/webinars/introducing-blogdown/">Yihui&rsquo;s RStudio webinar on using blogdown</a>, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo.  I spend a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch. This post recounts the basic process I used to switch.</p>
 
 <h3 id="setting-up-tools-for-the-hugo-blogdown-approach">Setting Up Tools for the Hugo / Blogdown Approach</h3>
 
@@ -212,7 +212,7 @@ devtools::install_github(&quot;rstudio/blogdown&quot;)
 blogdown::install_hugo()
 </code></pre>
 
-<p>OK, assuming you have git installed, you&rsquo;ve got the tools you need.  At this point, I created, played with, and deleted numerous Hugo themed local webpages just to get a feel for how Hugo worked, what the different themes looked like and how they were structured, and how to manipulate them.  First, peruse the <a href="https://themes.gohugo.io/">Hugo themes</a>.  Next, either simply create new empty directories to create themes or generate new R projects and directories to create themes.  Once you have empty directory / R Project, and in R have your working directory set to that directory, simply create themes like:</p>
+<p>OK, assuming you have git installed, you&rsquo;ve got the tools you need.  At this point, I created, played with, and deleted numerous Hugo themed local webpages just to get a feel for how Hugo worked, what the different themes looked like and how they were structured, and how to manipulate them.  First, peruse the <a href="https://themes.gohugo.io/">Hugo themes</a>.  Next, either simply create new empty directories to create themes or generate new R projects and directories to create themes.  Once you have an empty directory / R Project, and in R have your working directory set to that directory, simply create themes like:</p>
 
 <pre><code class="language-r">blogdown::new_site(theme = &quot;gcushen/hugo-academic&quot;)
 blogdown::new_site(theme = &quot;kakawait/hugo-tranquilpeak-theme&quot;)
@@ -238,7 +238,7 @@ cit commit -m 'delete README.md'
 git push -u origin master
 </code></pre>
 
-<p>Now either open the Hugo RStudio project you&rsquo;ve created and are ready to use Hugo directory if you didn&rsquo;t set up as an RStudio project.</p>
+<p>Now either open the Hugo RStudio project you&rsquo;ve created and are ready to use, or go to the Hugo directory if you didn&rsquo;t set up as an RStudio project.</p>
 
 <p>THIS PART IS THE KEY!
 The way it all hangs together (as I did it) with Hugo is using git submodules - essentially, the repo you use is making use of a folder from another repo - so mhweber.github.io is going to use the <code>public</code> folder in my Hugo project/directory (where all the web page content gets generated). From your Hugo project / directory, you use:</p>
