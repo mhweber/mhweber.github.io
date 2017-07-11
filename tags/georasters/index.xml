@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Georasters on Marc Weber</title>
+    <link>/tags/georasters/</link>
+    <description>Recent content in Georasters on Marc Weber</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
+    <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
+    <lastBuildDate>Fri, 05 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/georasters/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Test georasters</title>
+      <link>/2017/05/05/test-georasters/</link>
+      <pubDate>Fri, 05 May 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2017/05/05/test-georasters/</guid>
+      <description> Tried out the georasters python package for changing data types of rasters, recoding, merging, and writing out - very nice, handy python package!  </description>
+    </item>
+    
+  </channel>
+</rss>

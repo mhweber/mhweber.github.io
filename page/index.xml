@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on Marc Weber</title>
+    <link>/page/</link>
+    <description>Recent content in Pages on Marc Weber</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
+    <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
+    
+	<atom:link href="/page/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About me</title>
+      <link>/page/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/page/about/</guid>
+      <description>I’m a geographer working at the US EPA’s Western Ecology Division in Corvallis, OR. My work focuses on using spatial analysis in the realm of aquatic ecology, and particularly using spatial analysis in support of the EPA’s National Aquatic Resource Surveys. A particular focus of my work is geospatial analysis in R and Python, and partiularly the use of open source approaches in these two programming languages.</description>
+    </item>
+    
+    <item>
+      <title>Curriculum Vitae</title>
+      <link>/page/cv/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/page/cv/</guid>
+      <description>PDF version available here.
+Education  1998 &amp;ndash; 2001, M.S., Geography, Department of Geography, Portland State University, Portland, OR.
+Area of Emphasis: Biogeography, Geospatial Sciences, Landscape Eclolgy, GIS, Forest Ecology 1988 &amp;ndash; 1992, B.A., University of Oregon, Eugene, OR.
+Major: English Literature Minor: Environmental Studies  Research and Work Experience 2008 &amp;ndash; Present: Spatial Analyst, US Environmental Protection Agency, Western Ecology Division, Corvallis, OR
+ I work as a geographer / spatial analyst, providing geospatial support for the EPA National Aquatic Resource Surveys (NARS) and helping build national predictive models and maps of watershed integrity and aquatic condition.</description>
+    </item>
+    
+  </channel>
+</rss>
