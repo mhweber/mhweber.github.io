@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Marc Weber</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Marc Weber</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
+    <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
+    <lastBuildDate>Thu, 06 Jul 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Switching website from Jekyll to Hugo using Blogdown</title>
+      <link>/2017/07/06/jekyll-to-hugo-with-blogdown/</link>
+      <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2017/07/06/jekyll-to-hugo-with-blogdown/</guid>
+      <description>I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listening to Yihui&amp;rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spent a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.</description>
+    </item>
+    
+    <item>
+      <title>Test georasters</title>
+      <link>/2017/05/05/test-georasters/</link>
+      <pubDate>Fri, 05 May 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2017/05/05/test-georasters/</guid>
+      <description> Tried out the georasters python package for changing data types of rasters, recoding, merging, and writing out - very nice, handy python package!  </description>
+    </item>
+    
+    <item>
+      <title>Testing the simple features R package</title>
+      <link>/2017/02/24/testing-the-simple-features-r-package/</link>
+      <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2017/02/24/testing-the-simple-features-r-package/</guid>
+      <description>Load and look at basics of simple features package library(devtools) # install_github(&amp;quot;edzer/sfr&amp;quot;) library(sf)  ## Linking to GEOS 3.5.0, GDAL 2.1.1, proj.4 4.9.3  nc &amp;lt;- st_read(system.file(&amp;quot;shape/nc.shp&amp;quot;, package=&amp;quot;sf&amp;quot;))  ## Reading layer `nc&#39; from data source `C:\Users\mweber\R\library\sf\shape\nc.shp&#39; using driver `ESRI Shapefile&#39; ## converted into: MULTIPOLYGON ## Simple feature collection with 100 features and 14 fields ## geometry type: MULTIPOLYGON ## dimension: XY ## bbox: xmin: -84.32385 ymin: 33.88199 xmax: -75.</description>
+    </item>
+    
+    <item>
+      <title>Rasterize shapefiles in Python with rasterio and geopandas</title>
+      <link>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</link>
+      <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</guid>
+      <description> Here&amp;rsquo;s a snippet showing how to rasterize a shapefile in python using rasterio and geopandas:  </description>
+    </item>
+    
+    <item>
+      <title>Read PostGIS in R</title>
+      <link>/2016/12/02/read-postgis-in-r/</link>
+      <pubDate>Fri, 02 Dec 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/12/02/read-postgis-in-r/</guid>
+      <description> Working with Postgres / PostGIS more now and playing with reading and writing from R and Python. Here&amp;rsquo;s snippet showing read in of PostGIS in R:  </description>
+    </item>
+    
+    <item>
+      <title>Download StreamCat data</title>
+      <link>/2016/09/20/download-streamcat-data/</link>
+      <pubDate>Tue, 20 Sep 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/09/20/download-streamcat-data/</guid>
+      <description> Here&amp;rsquo;s an example code snippet using ftplib in python to download StreamCat data  </description>
+    </item>
+    
+    <item>
+      <title>R lookup</title>
+      <link>/2016/03/10/r-lookup/</link>
+      <pubDate>Thu, 10 Mar 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/03/10/r-lookup/</guid>
+      <description> Using match and indexing to create a lookup in R This code takes a lookup table and applies it to a data frame, updating only values for records that occur in the lookup table using indexing and match:
+ </description>
+    </item>
+    
+    <item>
+      <title>R extract line endpoints</title>
+      <link>/2016/02/02/r-extract-line-endpoints/</link>
+      <pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/02/02/r-extract-line-endpoints/</guid>
+      <description>Extracting line end nodes in R
+I noticed the maptools package in R had a SpatialLinesMidPoints function but couldn&amp;rsquo;t find any other out of the box functions in any packages to extract line endpoints. So I modified SpatialLinesMidPoints slightly to do the job:
+ </description>
+    </item>
+    
+  </channel>
+</rss>

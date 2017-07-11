@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shapefiles on Marc Weber</title>
+    <link>/tags/shapefiles/</link>
+    <description>Recent content in Shapefiles on Marc Weber</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
+    <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
+    <lastBuildDate>Mon, 12 Dec 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/shapefiles/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Rasterize shapefiles in Python with rasterio and geopandas</title>
+      <link>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</link>
+      <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</guid>
+      <description> Here&amp;rsquo;s a snippet showing how to rasterize a shapefile in python using rasterio and geopandas:  </description>
+    </item>
+    
+  </channel>
+</rss>
