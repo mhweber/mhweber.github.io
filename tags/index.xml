@@ -105,7 +105,7 @@
     <item>
       <title>Python</title>
       <link>/tags/python/</link>
-      <pubDate>Fri, 05 May 2017 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/python/</guid>
       <description></description>
@@ -162,6 +162,15 @@
       <pubDate>Tue, 20 Sep 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/streamcat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wordcloud</title>
+      <link>/tags/wordcloud/</link>
+      <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/tags/wordcloud/</guid>
       <description></description>
     </item>
     

@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
-    <lastBuildDate>Fri, 05 May 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Jul 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Wordcloud</title>
+      <link>/2017/07/13/wordcloud/</link>
+      <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2017/07/13/wordcloud/</guid>
+      <description>I&amp;rsquo;ve been toying with building a wordcloud of all my publications in both R and python on and off for some time, and while there&amp;rsquo;s a really nice R library for doing this wordcloud2, this example uses wordcloud, a python word cloud generator.
+I pasted all my publications into a single text file which is read into python and used by wordcloud as shown in code and results below.
+from os import path from wordcloud import WordCloud # Read the whole text.</description>
+    </item>
     
     <item>
       <title>Test georasters</title>

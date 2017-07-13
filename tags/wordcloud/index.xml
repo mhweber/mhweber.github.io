@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Python on Marc Weber</title>
-    <link>/categories/python/</link>
-    <description>Recent content in Python on Marc Weber</description>
+    <title>Wordcloud on Marc Weber</title>
+    <link>/tags/wordcloud/</link>
+    <description>Recent content in Wordcloud on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Thu, 13 Jul 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/wordcloud/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -21,15 +21,6 @@
       <description>I&amp;rsquo;ve been toying with building a wordcloud of all my publications in both R and python on and off for some time, and while there&amp;rsquo;s a really nice R library for doing this wordcloud2, this example uses wordcloud, a python word cloud generator.
 I pasted all my publications into a single text file which is read into python and used by wordcloud as shown in code and results below.
 from os import path from wordcloud import WordCloud # Read the whole text.</description>
-    </item>
-    
-    <item>
-      <title>Test georasters</title>
-      <link>/2017/05/05/test-georasters/</link>
-      <pubDate>Fri, 05 May 2017 00:00:00 +0000</pubDate>
-      <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2017/05/05/test-georasters/</guid>
-      <description> Tried out the georasters python package for changing data types of rasters, recoding, merging, and writing out - very nice, handy python package!  </description>
     </item>
     
   </channel>
