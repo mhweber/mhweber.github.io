@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>Fiona</title>
+      <link>/tags/fiona/</link>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/tags/fiona/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Ftplib</title>
       <link>/tags/ftplib/</link>
       <pubDate>Tue, 20 Sep 2016 00:00:00 +0000</pubDate>
@@ -33,7 +42,7 @@
     <item>
       <title>Geopandas</title>
       <link>/tags/geopandas/</link>
-      <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/geopandas/</guid>
       <description></description>
@@ -96,7 +105,7 @@
     <item>
       <title>Postgis</title>
       <link>/tags/postgis/</link>
-      <pubDate>Fri, 02 Dec 2016 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/postgis/</guid>
       <description></description>
@@ -105,7 +114,7 @@
     <item>
       <title>Python</title>
       <link>/tags/python/</link>
-      <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/python/</guid>
       <description></description>
@@ -123,9 +132,18 @@
     <item>
       <title>Rasterio</title>
       <link>/tags/rasterio/</link>
-      <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/rasterio/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rasterstats</title>
+      <link>/tags/rasterstats/</link>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/tags/rasterstats/</guid>
       <description></description>
     </item>
     

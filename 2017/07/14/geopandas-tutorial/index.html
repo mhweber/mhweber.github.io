@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>GeoPandas Tutorial</title>
+  <meta property="og:title" content="GeoPandas Tutorial" />
+  <meta name="twitter:title" content="GeoPandas Tutorial" />
+  <meta name="description" content="This is an implementation of the excellent PostGIS / geopandas tutorial here using NHDPlus WBD polygons for PNW. All the ideas and methods are from this tutorial, simply implementing with a different dataset and in Oregon.
+%matplotlib inline import os import json import psycopg2 import matplotlib.pyplot as plt # The two statemens below are used mainly to set up a plotting # default style that&#39;s better than the default from matplotlib import seaborn as sns plt.">
+  <meta property="og:description" content="This is an implementation of the excellent PostGIS / geopandas tutorial here using NHDPlus WBD polygons for PNW. All the ideas and methods are from this tutorial, simply implementing with a different dataset and in Oregon.
+%matplotlib inline import os import json import psycopg2 import matplotlib.pyplot as plt # The two statemens below are used mainly to set up a plotting # default style that&#39;s better than the default from matplotlib import seaborn as sns plt.">
+  <meta name="twitter:description" content="This is an implementation of the excellent PostGIS / geopandas tutorial here using NHDPlus WBD polygons for PNW. All the ideas and methods are from this tutorial, simply implementing with a different …">
+  <meta name="author" content="Marc Weber"/>
+  <link href='/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="/img/MeBiking.png" />
+  <meta name="twitter:image" content="/img/MeBiking.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@marc_h_weber" />
+  <meta name="twitter:creator" content="@marc_h_weber" />
+  <meta property="og:url" content="/2017/07/14/geopandas-tutorial/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Marc Weber" />
+
+  <meta name="generator" content="Hugo 0.22" />
+  <link rel="canonical" href="/2017/07/14/geopandas-tutorial/" />
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Marc Weber">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="/css/pygment_highlights.css" />
+  <link rel="stylesheet" href="/css/highlight.min.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99730307-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Marc Weber</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="CV" href="/page/cv/">CV</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Marc Weber" href="/">
+            <img class="avatar-img" src="/img/MeBiking.png" alt="Marc Weber" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>GeoPandas Tutorial</h1>
+                
+                
+                  <span class="post-meta">
+  Posted on July 14, 2017
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>This is an implementation of the excellent PostGIS / geopandas tutorial <a href="https://geohackweek.github.io/vector/06-geopandas-advanced/">here</a> using NHDPlus WBD polygons for PNW.  All the ideas and methods are from this tutorial, simply implementing with a different dataset and in Oregon.</p>
+
+<pre><code class="language-python">%matplotlib inline
+
+import os
+import json
+import psycopg2
+
+import matplotlib.pyplot as plt
+# The two statemens below are used mainly to set up a plotting
+# default style that's better than the default from matplotlib
+import seaborn as sns
+plt.style.use('bmh')
+
+from shapely.geometry import Point
+import pandas as pd
+import geopandas as gpd
+from geopandas import GeoSeries, GeoDataFrame
+</code></pre>
+
+<p>Connect to PostGIS database of NHDPlus, select WBD features that are in Oregon, and load into a geopandas geodataframe.</p>
+
+<pre><code class="language-python">con = psycopg2.connect(database=&quot;nhdplus&quot;, user=&quot;postgres&quot;,password=&quot;postgres&quot;,host=&quot;localhost&quot;,port=&quot;5432&quot;)
+sql= &quot;SELECT * FROM wbd_subwatershed WHERE states = 'OR'&quot;
+wbd=gpd.GeoDataFrame.from_postgis(sql, con, geom_col='geom',crs={'init': u'epsg:4326'})
+con.close()
+len(wbd)
+</code></pre>
+
+<pre><code>3875
+</code></pre>
+
+<p>Check out first feature using .iloc (could use wbd.head() also)</p>
+
+<pre><code class="language-python">wbd.iloc[0]
+</code></pre>
+
+<pre><code>gid                                                         793
+objectid                                                  95489
+huc_8                                                  17100306
+huc_10                                               1710030604
+huc_12                                             171003060402
+acres                                                  0.246648
+ncontrb_a                                                     0
+hu_10_gnis                                                 None
+hu_12_gnis                                                 None
+hu_10_name                   Euchre Creek-Frontal Pacific Ocean
+hu_10_mod                                                    NM
+hu_10_type                                                    F
+hu_12_ds                                           171003060500
+hu_12_name                   Mussel Creek-Frontal Pacific Ocean
+hu_12_mod                                                    NM
+hu_12_type                                                    I
+meta_id                                                    OR04
+states                                                       OR
+globalid                 {E9EA2E61-1E74-41BB-AC4B-F1568B110DF9}
+shape_leng                                            0.0013213
+shape_area                                          1.09467e-07
+gaz_id                                                   -71052
+geom          (POLYGON ((-124.3979671835871 42.5876281986771...
+Name: 0, dtype: object
+</code></pre>
+
+<p>Make a map of WBD polygons and color by 8-digit HUC number</p>
+
+<pre><code class="language-python">wbd.plot(column='huc_8', cmap='Paired', categorical=True, figsize=(14,6))
+</code></pre>
+
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1fe76d30&gt;
+</code></pre>
+
+<p><img src="/img/huc12.png" alt="" /></p>
+
+<p>Now try dissolving WBD HUC12 polygons using the HUC_8 field to make new HUC8 geodataframe.  We&rsquo;ll keep all the HUC ID and name fields in resulting dissolved geodataframe.</p>
+
+<pre><code class="language-python">type(wbd)
+</code></pre>
+
+<pre><code>geopandas.geodataframe.GeoDataFrame
+</code></pre>
+
+<pre><code class="language-python">huc8 = wbd.dissolve('huc_8')
+len(huc8)
+</code></pre>
+
+<pre><code>79
+</code></pre>
+
+<p>Re-apply crs to file (and verify it&rsquo;s missing first and it&rsquo;s back after)</p>
+
+<pre><code class="language-python">print huc8.crs
+</code></pre>
+
+<pre><code>None
+</code></pre>
+
+<pre><code class="language-python">huc8.crs = wbd.crs
+print huc8.crs
+</code></pre>
+
+<pre><code>{'init': u'epsg:4326'}
+</code></pre>
+
+<p>Now plot the dissolved 8-digit HUC polygons-</p>
+
+<pre><code class="language-python">huc8.plot(cmap = 'Paired', categorical=True, figsize=(14,6));
+</code></pre>
+
+<p><img src="/img/huc8.png" alt="" /></p>
+
+<p>Project to Oregon statewide Lambert projection - using pyepsg - and then reproject</p>
+
+<pre><code class="language-python">import pyepsg
+pyepsg.get('2991')
+</code></pre>
+
+<pre><code>&lt;ProjectedCRS: 2991, NAD83 / Oregon LCC (m)&gt;
+</code></pre>
+
+<pre><code class="language-python">huc8 = huc8.to_crs(epsg=2991)
+</code></pre>
+
+<p>Now plot the re-projected geodataframe</p>
+
+<pre><code class="language-python">huc8.plot(cmap = 'Paired', categorical=True, figsize=(14,6));
+</code></pre>
+
+<p><img src="/img/huc8proj.png" alt="" /></p>
+
+<p>Plot choropleth map using HUC area - and convert area to kilometers (map projection is in meters)</p>
+
+<pre><code class="language-python">huc8['area_km2'] = huc8.geom.area * 1e-6
+huc8.iloc[[0,1,2],[0,22]]
+</code></pre>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geom</th>
+      <th>area_km2</th>
+    </tr>
+    <tr>
+      <th>huc_8</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>17050103</th>
+      <td>(POLYGON ((679446.0847084918 184070.6811281344...</td>
+      <td>386.085209</td>
+    </tr>
+    <tr>
+      <th>17050106</th>
+      <td>POLYGON ((680084.8704586171 49496.81553380163,...</td>
+      <td>98.131472</td>
+    </tr>
+    <tr>
+      <th>17050107</th>
+      <td>POLYGON ((664255.7335354568 39951.32383508176,...</td>
+      <td>2590.766262</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<pre><code class="language-python">f, ax = plt.subplots(1, figsize=(8, 6))
+huc8.plot(column='area_km2', scheme='fisher_jenks', k=7, 
+                         alpha=0.9, cmap=plt.cm.Blues, legend=True,ax=ax)
+plt.axis('equal')
+ax.set_title('Watersheds by area ($km^2$)')
+</code></pre>
+
+<pre><code>&lt;matplotlib.text.Text at 0x23840a58&gt;
+</code></pre>
+
+<p><img src="/img/huc8chor.png" alt="" /></p>
+
+<p>Try a spatial join of polygons on points - I&rsquo;ll use a set of USGS stream gages I have handy for the point layer.</p>
+
+<pre><code class="language-python">gages = pd.read_csv('c:/users/mweber/temp/streamgages.csv')
+gages.iloc[0]
+</code></pre>
+
+<pre><code>SOURCE_FEA                          14361500
+EVENTTYPE                         StreamGage
+STATION_NM    ROGUE RIVER AT GRANTS PASS, OR
+STATE                                     OR
+LON_SITE                            -123.318
+LAT_SITE                             42.4304
+Name: 0, dtype: object
+</code></pre>
+
+<p>Promote the pandas dataframe to a geodataframe using the lattitude and longitude</p>
+
+<pre><code class="language-python">from shapely.geometry import Point
+
+geometry = [Point(xy) for xy in zip(gages.LON_SITE, gages.LAT_SITE)]
+crs = {'init': 'epsg:4326'}
+gages = GeoDataFrame(gages, crs=crs, geometry=geometry)
+type(gages)
+</code></pre>
+
+<pre><code>geopandas.geodataframe.GeoDataFrame
+</code></pre>
+
+<pre><code class="language-python">gages.iloc[0]
+</code></pre>
+
+<pre><code>SOURCE_FEA                             14361500
+EVENTTYPE                            StreamGage
+STATION_NM       ROGUE RIVER AT GRANTS PASS, OR
+STATE                                        OR
+LON_SITE                               -123.318
+LAT_SITE                                42.4304
+geometry      POINT (-123.31783647 42.43039607)
+Name: 0, dtype: object
+</code></pre>
+
+<p>Restrict gages to just Oregon, reproject the gages to the huc8 proojection, then rename the huc8 &lsquo;geom&rsquo; column to &lsquo;geometry&rsquo; and then we&rsquo;ll try an inner spatial join</p>
+
+<pre><code class="language-python">from geopandas.tools import sjoin
+#gages = gages.to_crs(epsg=2991)
+huc8 = huc8.rename(columns={'geom': 'geometry'}).set_geometry('geometry')
+gages.crs == huc8.crs
+gages = gages.loc[gages['STATE']=='OR']
+gages_huc8 = gpd.sjoin(gages, huc8, how='inner')
+f, ax = plt.subplots(1, figsize=(8, 6))
+plt.axis('equal')
+huc8.plot(ax=ax)
+gages_huc8.plot(markersize=6, categorical=True, ax=ax)
+</code></pre>
+
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x3a84f1d0&gt;
+</code></pre>
+
+<p><img src="/img/huc8sjoin.png" alt="" /></p>
+
+<p>Now run zonal statistics using polygons and rasters with rasterstats</p>
+
+<pre><code class="language-python">import rasterio
+import rasterio.plot as rioplot
+import numpy as np
+with rasterio.open('H:/WorkingData/Prism_30yr_OR.tif') as src:
+    transform = src.meta['transform']
+    precip = src.read(1)
+precip[precip &lt; 0] = np.nan
+</code></pre>
+
+<p>Look at raster metadata</p>
+
+<pre><code class="language-python">src.meta
+</code></pre>
+
+<pre><code>{'count': 1,
+ 'crs': CRS({u'lon_0': -96, u'datum': u'NAD83', u'y_0': 0, u'no_defs': True, u'proj': u'aea', u'x_0': 0, u'units': u'm', u'lat_2': 45.5, u'lat_1': 29.5, u'lat_0': 23}),
+ 'driver': u'GTiff',
+ 'dtype': 'float32',
+ 'height': 1187,
+ 'nodata': -9999.0,
+ 'transform': Affine(800.0, 0.0, -2472125.020833,
+       0.0, -800.0, 3080024.0625),
+ 'width': 1259}
+</code></pre>
+
+<pre><code class="language-python">rioplot.show(precip, with_bounds=True, cmap=plt.cm.Blues)
+</code></pre>
+
+<p><img src="/img/prism.png" alt="" /></p>
+
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x2e9ca860&gt;
+</code></pre>
+
+<pre><code class="language-python">import rasterstats as rs
+import fiona
+#huc8 = huc8.to_crs('+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0')
+precip_zonal = rs.zonal_stats(huc8, 'H:/WorkingData/Prism_30yr_OR.tif', geojson_out=True)
+</code></pre>
+
+<pre><code class="language-python">precip_zonal = GeoDataFrame.from_features(precip_zonal)
+precip_zonal.head(2)
+</code></pre>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>acres</th>
+      <th>count</th>
+      <th>gaz_id</th>
+      <th>geometry</th>
+      <th>gid</th>
+      <th>globalid</th>
+      <th>hu_10_gnis</th>
+      <th>hu_10_mod</th>
+      <th>hu_10_name</th>
+      <th>hu_10_type</th>
+      <th>...</th>
+      <th>huc_12</th>
+      <th>max</th>
+      <th>mean</th>
+      <th>meta_id</th>
+      <th>min</th>
+      <th>ncontrb_a</th>
+      <th>objectid</th>
+      <th>shape_area</th>
+      <th>shape_leng</th>
+      <th>states</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>22381.271444</td>
+      <td>600</td>
+      <td>-72812</td>
+      <td>(POLYGON ((-1684470.024757544 2449556.42795410...</td>
+      <td>2553</td>
+      <td>{BC0BA51C-9970-43C3-A810-C6F12B99911A}</td>
+      <td>None</td>
+      <td>NM</td>
+      <td>Lower Succor Creek</td>
+      <td>S</td>
+      <td>...</td>
+      <td>170501030901</td>
+      <td>620.897461</td>
+      <td>308.655677</td>
+      <td>OR01</td>
+      <td>229.144257</td>
+      <td>0.0</td>
+      <td>103018</td>
+      <td>0.010043</td>
+      <td>0.530808</td>
+      <td>OR</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>24225.748801</td>
+      <td>154</td>
+      <td>-78734</td>
+      <td>POLYGON ((-1719043.984217515 2318687.346051499...</td>
+      <td>8475</td>
+      <td>{BF6E742F-F812-4F50-AF09-B55A52CAE3CC}</td>
+      <td>None</td>
+      <td>NM</td>
+      <td>Tent Creek</td>
+      <td>S</td>
+      <td>...</td>
+      <td>170501060502</td>
+      <td>367.764740</td>
+      <td>327.508903</td>
+      <td>OR01</td>
+      <td>313.125732</td>
+      <td>0.0</td>
+      <td>220900</td>
+      <td>0.010666</td>
+      <td>0.628540</td>
+      <td>OR</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 26 columns</p>
+</div>
+
+<p>Now a choropleth map of 30-year average precip by 8-digit HUC in Oregon</p>
+
+<pre><code class="language-python">f, ax = plt.subplots(1, figsize=(8, 6))
+precip_zonal.plot(column='mean', scheme='Equal_Interval', k=5, 
+                   alpha=1, cmap=plt.cm.Blues, legend=True, ax=ax)
+plt.axis('equal')
+ax.set_title('Average 30-year precipitation ($mm/month$) by HUC8');
+</code></pre>
+
+<p><img src="/img/zonal.png" alt="" /></p>
+
+      </article>
+
+      <ul class="pager blog-pager">
+        
+          <li class="previous">
+            <a href="/2017/07/13/wordcloud/" data-toggle="tooltip" data-placement="top" title="Wordcloud">&larr; Previous Post</a>
+          </li>
+        
+        
+      </ul>
+
+      
+        
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'Marc Weber';
+    var disqus_identifier = '\/2017\/07\/14\/geopandas-tutorial\/';
+    var disqus_title = 'GeoPandas Tutorial';
+    var disqus_url = '\/2017\/07\/14\/geopandas-tutorial\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:mweber36@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/mhweber" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/marc_h_weber" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/marc-weber-a41a3190" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/1905305/mweber" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/mweber46" title="Instagram">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          Marc Weber
+          &nbsp;&bull;&nbsp;
+          2017
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="/">Marc Weber</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.22</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/main.js"></script>
+<script src="/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.js" integrity="sha256-UplRCs9v4KXVJvVY+p+RSo5Q4ilAUXh7kpjyIP5odyc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.min.js" integrity="sha256-PWHOlUzc96pMc8ThwRIXPn8yH4NOLu42RQ0b9SpnpFk=" crossorigin="anonymous"></script>
+<script src="/js/load-photoswipe.js"></script>
+
+
+
+
+  </body>
+</html>
+
