@@ -62,13 +62,13 @@
   </url>
   
   <url>
-    <loc>/categories/blogdown/</loc>
+    <loc>/tags/blogdown/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/blogdown/</loc>
+    <loc>/categories/blogdown/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -108,25 +108,25 @@
   </url>
   
   <url>
-    <loc>/categories/github/</loc>
-    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/github/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/hugo/</loc>
+    <loc>/categories/github/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/hugo/</loc>
+    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/hugo/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -167,25 +167,25 @@
   </url>
   
   <url>
-    <loc>/categories/python/</loc>
-    <lastmod>2017-07-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/python/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+    <loc>/categories/python/</loc>
+    <lastmod>2017-07-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/r/</loc>
+    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/r/</loc>
     <lastmod>2017-02-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
