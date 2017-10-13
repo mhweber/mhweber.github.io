@@ -114,7 +114,7 @@
     <item>
       <title>Python</title>
       <link>/tags/python/</link>
-      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/python/</guid>
       <description></description>
@@ -141,7 +141,7 @@
     <item>
       <title>Rasterstats</title>
       <link>/tags/rasterstats/</link>
-      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/rasterstats/</guid>
       <description></description>
@@ -189,6 +189,15 @@
       <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>/tags/wordcloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Zonal Statistics</title>
+      <link>/tags/zonal-statistics/</link>
+      <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/tags/zonal-statistics/</guid>
       <description></description>
     </item>
     

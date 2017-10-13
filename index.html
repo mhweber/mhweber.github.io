@@ -202,6 +202,39 @@ ga('send', 'pageview');
           
           
             <article class="post-preview">
+              <a href="/2017/10/13/playing-with-python-rasterstats/">
+                
+              </a>
+
+              <span class="post-meta">
+  Posted on October 13, 2017
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&rsquo;ll import some libraries.
+import pandas as pd import numpy as np import geopandas as gp  Bring in US Counties using US Census counties shapefile
+counties = gp.GeoDataFrame.from_file('L:/Priv/CORFiles/Geospatial_Library/Data/RESOURCE/POLITICAL/BOUNDARIES/NATIONAL/Counties_Census_2010.shp') list(counties) counties.STATE_NAME.unique() counties = counties[(counties.STATE_NAME != 'Hawaii') &amp; (counties.STATE_NAME != 'Alaska')] counties = counties[['FIPS','NAME','geometry']] counties.head()    .dataframe thead tr:only-child th { text-align: right; } .
+                  <a href="/2017/10/13/playing-with-python-rasterstats/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="/tags/python">Python</a>&nbsp;
+                
+                  #<a href="/tags/rasterstats">rasterstats</a>&nbsp;
+                
+                  #<a href="/tags/zonal-statistics">zonal statistics</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
               <a href="/2017/07/14/geopandas-tutorial/">
                 
               </a>
@@ -507,43 +540,17 @@ from os import path from wordcloud import WordCloud # Read the whole text.
               
             </article>
           
-            <article class="post-preview">
-              <a href="/2016/02/02/r-extract-line-endpoints/">
-                
-              </a>
-
-              <span class="post-meta">
-  Posted on February 2, 2016
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p>Extracting line end nodes in R</p>
-
-<p>I noticed the <a href="https://cran.r-project.org/web/packages/maptools/index.html">maptools</a> package in <a href="https://www.r-project.org/">R</a> had a SpatialLinesMidPoints function but couldn&rsquo;t find any other out of the box functions in any packages to extract line endpoints.  So I modified SpatialLinesMidPoints slightly to do the job:</p>
-
-<script src="//gist.github.com/mhweber/d0e16ae9ff9beee798ea.js"></script>
-
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="/tags/r">R</a>&nbsp;
-                
-                  #<a href="/tags/spatial-data">spatial data</a>&nbsp;
-                
-                  #<a href="/tags/maptools">maptools</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
         </div>
 
+        
+          <ul class="pager main-pager">
+            
+            
+              <li class="next">
+                <a href="/page/2">Older Posts &rarr;</a>
+              </li>
+            
+          </ul>
         
       </div>
     </div>

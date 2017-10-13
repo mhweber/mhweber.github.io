@@ -179,6 +179,39 @@ ga('send', 'pageview');
         <div class="posts-list">
           
             <article class="post-preview">
+              <a href="/2017/10/13/playing-with-python-rasterstats/">
+                <h2 class="post-title">Playing with Python Rasterstats</h2>
+    
+                
+              </a>
+    
+              <p class="post-meta">
+                Posted on October 13, 2017
+              </p>
+              <div class="post-entry">
+                
+                  This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&rsquo;ll import some libraries.
+import pandas as pd import numpy as np import geopandas as gp  Bring in US Counties using US Census counties shapefile
+counties = gp.GeoDataFrame.from_file('L:/Priv/CORFiles/Geospatial_Library/Data/RESOURCE/POLITICAL/BOUNDARIES/NATIONAL/Counties_Census_2010.shp') list(counties) counties.STATE_NAME.unique() counties = counties[(counties.STATE_NAME != 'Hawaii') &amp; (counties.STATE_NAME != 'Alaska')] counties = counties[['FIPS','NAME','geometry']] counties.head()    .dataframe thead tr:only-child th { text-align: right; } .
+                  <a href="/2017/10/13/playing-with-python-rasterstats/" class="post-read-more">[Read More]</a>
+                
+              </div>
+    
+              
+                <span class="post-meta">
+                  
+                    #<a href="/tags/python">Python</a>&nbsp;
+                  
+                    #<a href="/tags/rasterstats">rasterstats</a>&nbsp;
+                  
+                    #<a href="/tags/zonal-statistics">zonal statistics</a>&nbsp;
+                  
+                </span>
+              
+    
+            </article>
+          
+            <article class="post-preview">
               <a href="/2017/07/14/geopandas-tutorial/">
                 <h2 class="post-title">GeoPandas Tutorial</h2>
     

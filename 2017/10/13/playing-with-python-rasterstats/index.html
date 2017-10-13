@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Playing with Python Rasterstats</title>
+  <meta property="og:title" content="Playing with Python Rasterstats" />
+  <meta name="twitter:title" content="Playing with Python Rasterstats" />
+  <meta name="description" content="This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&rsquo;ll import some libraries.
+import pandas as pd import numpy as np import geopandas as gp  Bring in US Counties using US Census counties shapefile
+counties = gp.GeoDataFrame.from_file(&#39;L:/Priv/CORFiles/Geospatial_Library/Data/RESOURCE/POLITICAL/BOUNDARIES/NATIONAL/Counties_Census_2010.shp&#39;) list(counties) counties.STATE_NAME.unique() counties = counties[(counties.STATE_NAME != &#39;Hawaii&#39;) &amp; (counties.STATE_NAME != &#39;Alaska&#39;)] counties = counties[[&#39;FIPS&#39;,&#39;NAME&#39;,&#39;geometry&#39;]] counties.head()    .dataframe thead tr:only-child th { text-align: right; } .">
+  <meta property="og:description" content="This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&rsquo;ll import some libraries.
+import pandas as pd import numpy as np import geopandas as gp  Bring in US Counties using US Census counties shapefile
+counties = gp.GeoDataFrame.from_file(&#39;L:/Priv/CORFiles/Geospatial_Library/Data/RESOURCE/POLITICAL/BOUNDARIES/NATIONAL/Counties_Census_2010.shp&#39;) list(counties) counties.STATE_NAME.unique() counties = counties[(counties.STATE_NAME != &#39;Hawaii&#39;) &amp; (counties.STATE_NAME != &#39;Alaska&#39;)] counties = counties[[&#39;FIPS&#39;,&#39;NAME&#39;,&#39;geometry&#39;]] counties.head()    .dataframe thead tr:only-child th { text-align: right; } .">
+  <meta name="twitter:description" content="This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&rsquo;ll import some libraries.
+import pandas as pd import numpy as np import geopandas as gp  Bring in US Counties using …">
+  <meta name="author" content="Marc Weber"/>
+  <link href='/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="/img/MeBiking.png" />
+  <meta name="twitter:image" content="/img/MeBiking.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@marc_h_weber" />
+  <meta name="twitter:creator" content="@marc_h_weber" />
+  <meta property="og:url" content="/2017/10/13/playing-with-python-rasterstats/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Marc Weber" />
+
+  <meta name="generator" content="Hugo 0.22" />
+  <link rel="canonical" href="/2017/10/13/playing-with-python-rasterstats/" />
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Marc Weber">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="/css/pygment_highlights.css" />
+  <link rel="stylesheet" href="/css/highlight.min.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-99730307-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Marc Weber</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="CV" href="/page/cv/">CV</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Marc Weber" href="/">
+            <img class="avatar-img" src="/img/MeBiking.png" alt="Marc Weber" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              <h1>Playing with Python Rasterstats</h1>
+                
+                
+                  <span class="post-meta">
+  Posted on October 13, 2017
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&rsquo;ll import some libraries.</p>
+
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+import geopandas as gp
+</code></pre>
+
+<p>Bring in US Counties using US Census counties shapefile</p>
+
+<pre><code class="language-python">counties = gp.GeoDataFrame.from_file('L:/Priv/CORFiles/Geospatial_Library/Data/RESOURCE/POLITICAL/BOUNDARIES/NATIONAL/Counties_Census_2010.shp')
+list(counties)
+counties.STATE_NAME.unique()
+counties = counties[(counties.STATE_NAME != 'Hawaii') &amp; (counties.STATE_NAME != 'Alaska')]
+counties = counties[['FIPS','NAME','geometry']]
+counties.head()
+</code></pre>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>FIPS</th>
+      <th>NAME</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>27077</td>
+      <td>Lake of the Woods</td>
+      <td>POLYGON ((-95.34283127277658 48.546679319076, ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>53019</td>
+      <td>Ferry</td>
+      <td>POLYGON ((-118.8516288013387 47.94956368481996...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>53065</td>
+      <td>Stevens</td>
+      <td>POLYGON ((-117.438831576286 48.04411548512263,...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53047</td>
+      <td>Okanogan</td>
+      <td>POLYGON ((-118.972093862835 47.93915200536639,...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>53051</td>
+      <td>Pend Oreille</td>
+      <td>POLYGON ((-117.4385804303028 48.99991850672649...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<pre><code class="language-python">counties.crs
+</code></pre>
+
+<pre><code>{'init': u'epsg:4326'}
+</code></pre>
+
+<pre><code class="language-python">import rasterio
+test = rasterio.open(nlcd)
+test.meta
+</code></pre>
+
+<pre><code>{'count': 1,
+ 'crs': CRS({'init': u'epsg:5070'}),
+ 'driver': u'GTiff',
+ 'dtype': 'uint8',
+ 'height': 114503,
+ 'nodata': 255.0,
+ 'transform': Affine(30.0, 0.0, -2470965.0,
+       0.0, -30.0, 3621375.0),
+ 'width': 163008}
+</code></pre>
+
+<p>Put counties in same projection as nlcd raster</p>
+
+<pre><code class="language-python">counties = counties.to_crs(epsg=5070) 
+</code></pre>
+
+<pre><code class="language-python">from rasterstats import raster_stats 
+nlcd = 'L:/Priv/CORFiles/Geospatial_Library/Data/Project/StreamCat/LandscapeRasters/QAComplete/nlcd2006.tif'
+county_stats = zonal_stats(counties, nlcd, stats=&quot;count majority minority unique&quot;, geojson_out=True, 
+                            nodata_value=0, categorical=True)
+</code></pre>
+
+<p>Check some results</p>
+
+<pre><code class="language-python">county_stats[0]['properties']
+</code></pre>
+
+<pre><code>{11: 1362310L,
+ 21: 42144L,
+ 22: 5143L,
+ 23: 731L,
+ 24: 250L,
+ 31: 1483L,
+ 41: 76356L,
+ 42: 38248L,
+ 43: 109L,
+ 52: 20046L,
+ 71: 67010L,
+ 81: 132403L,
+ 82: 183559L,
+ 90: 2166970L,
+ 95: 988350L,
+ u'FIPS': u'27077',
+ u'NAME': u'Lake of the Woods',
+ 'count': 5085112,
+ 'majority': 90.0,
+ 'minority': 43.0,
+ 'unique': 15}
+</code></pre>
+
+<pre><code class="language-python">[x['properties'] for x in county_stats if x['properties']['NAME'] == &quot;Multnomah&quot;]
+</code></pre>
+
+<pre><code>[{11: 55949L,
+  21: 61237L,
+  22: 161213L,
+  23: 165285L,
+  24: 80374L,
+  31: 12215L,
+  41: 30543L,
+  42: 465915L,
+  43: 90782L,
+  52: 65540L,
+  71: 22643L,
+  81: 41366L,
+  82: 78362L,
+  90: 31820L,
+  95: 22234L,
+  u'FIPS': u'41051',
+  u'NAME': u'Multnomah',
+  'count': 1385478,
+  'majority': 42.0,
+  'minority': 31.0,
+  'unique': 15}]
+</code></pre>
+
+<p>Now we need to pull out %Ag an %Urb for each county - pull out into lists and then stack into a pandas data frame to write out</p>
+
+<pre><code class="language-python">FIPS = [x['properties']['FIPS'] for x in county_stats]
+Hay = [x['properties'][81] if x['properties'].has_key(81) else 0 for x in county_stats]
+Crops = [x['properties'][82] if x['properties'].has_key(82) else 0 for x in county_stats]
+DevO = [x['properties'][21] if x['properties'].has_key(21) else 0 for x in county_stats]
+DevL = [x['properties'][22] if x['properties'].has_key(22) else 0 for x in county_stats]
+DevM = [x['properties'][23] if x['properties'].has_key(23) else 0 for x in county_stats]
+DevH = [x['properties'][24] if x['properties'].has_key(24) else 0 for x in county_stats]
+Total = [x['properties']['count'] for x in county_stats]
+</code></pre>
+
+<pre><code class="language-python">from operator import truediv
+Ag =  [sum(x) for x in zip(Hay, Crops)]
+PctAg =  map(truediv, Ag, Total)
+PctAg = [x * 100 for x in PctAg]
+Urb = [sum(x) for x in zip(DevO, DevL, DevM, DevH)]
+PctUrb =  map(truediv, Urb, Total)
+PctUrb = [x * 100 for x in PctUrb]
+</code></pre>
+
+<pre><code class="language-python">Results = pd.DataFrame(np.column_stack([FIPS, PctAg, PctUrb]), 
+                               columns=['FIPS', 'PctAg', 'PctUrb'])
+Results.head()
+Results.to_csv('H:/WorkingData/CountyPctAgPctUrb.csv', sep = ',', index=False)
+</code></pre>
+
+<p>geo_interface is what we&rsquo;re making use of in zonal_stats &lsquo;geojson_out&rsquo; parameter just for clarity</p>
+
+<pre><code class="language-python">counties.__geo_interface__['features'][0]
+</code></pre>
+
+<pre><code>{'bbox': (-95.34283127277658,
+  48.368212434671534,
+  -94.43063445677862,
+  49.371730136640736),
+ 'geometry': {'coordinates': (((-95.34283127277658, 48.546679319076),
+    (-95.34105289190684, 48.71517195733587),
+    (-95.09435905148669, 48.71735751795556),
+    (-95.09491035007436, 48.91176243313237),
+    (-95.13382124476209, 48.89448474990026),
+    (-95.21957848050616, 48.87944650348885),
+    (-95.29026017093044, 48.902949581747855),
+    (-95.31417172404038, 48.93207199957641),
+    (-95.30375729897271, 48.94593890485217),
+    (-95.32091645456259, 48.96097699585145),
+    (-95.32323587682019, 48.97895631299366),
+    (-95.31012059635258, 48.993395445689),
+    (-95.27665710362751, 48.99999118779381),
+    (-95.15774989320504, 48.9999959019614),
+    (-95.15186733731112, 49.371730136640736),
+    (-94.83203924782775, 49.33080592976444),
+    (-94.68124996659202, 48.87716132370133),
+    (-94.69443202246646, 48.777615510389126),
+    (-94.57031275583246, 48.71367627110933),
+    (-94.43063445677862, 48.71078529488466),
+    (-94.43169006769017, 48.368212434671534),
+    (-95.21178803364391, 48.36900472565064),
+    (-95.21983978008106, 48.54435777285279),
+    (-95.34283127277658, 48.546679319076)),),
+  'type': 'Polygon'},
+ 'id': '0',
+ 'properties': {u'FIPS': u'27077', u'NAME': u'Lake of the Woods'},
+ 'type': 'Feature'}
+</code></pre>
+
+<pre><code class="language-python">
+</code></pre>
+
+      </article>
+
+      <ul class="pager blog-pager">
+        
+          <li class="previous">
+            <a href="/2017/07/14/geopandas-tutorial/" data-toggle="tooltip" data-placement="top" title="GeoPandas Tutorial">&larr; Previous Post</a>
+          </li>
+        
+        
+      </ul>
+
+      
+        
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mhweber';
+    var disqus_identifier = '\/2017\/10\/13\/playing-with-python-rasterstats\/';
+    var disqus_title = 'Playing with Python Rasterstats';
+    var disqus_url = '\/2017\/10\/13\/playing-with-python-rasterstats\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:mweber36@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/mhweber" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/marc_h_weber" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/marc-weber-a41a3190" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/1905305/mweber" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/mweber46" title="Instagram">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          Marc Weber
+          &nbsp;&bull;&nbsp;
+          2017
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="/">Marc Weber</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.22</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/main.js"></script>
+<script src="/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.js" integrity="sha256-UplRCs9v4KXVJvVY+p+RSo5Q4ilAUXh7kpjyIP5odyc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.min.js" integrity="sha256-PWHOlUzc96pMc8ThwRIXPn8yH4NOLu42RQ0b9SpnpFk=" crossorigin="anonymous"></script>
+<script src="/js/load-photoswipe.js"></script>
+
+
+
+
+  </body>
+</html>
+
