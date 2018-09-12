@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>Dataretrieval</title>
+      <link>https://mhweber.github.io/tags/dataretrieval/</link>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/dataretrieval/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Fiona</title>
       <link>https://mhweber.github.io/tags/fiona/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
@@ -85,11 +94,29 @@
     </item>
     
     <item>
+      <title>Leaflet</title>
+      <link>https://mhweber.github.io/tags/leaflet/</link>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/leaflet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Maptools</title>
       <link>https://mhweber.github.io/tags/maptools/</link>
       <pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/maptools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mapview</title>
+      <link>https://mhweber.github.io/tags/mapview/</link>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/mapview/</guid>
       <description></description>
     </item>
     
@@ -123,9 +150,18 @@
     <item>
       <title>R</title>
       <link>https://mhweber.github.io/tags/r/</link>
-      <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Raster</title>
+      <link>https://mhweber.github.io/tags/raster/</link>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/raster/</guid>
       <description></description>
     </item>
     
@@ -150,7 +186,7 @@
     <item>
       <title>Sf</title>
       <link>https://mhweber.github.io/tags/sf/</link>
-      <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/sf/</guid>
       <description></description>
@@ -162,6 +198,15 @@
       <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/shapefiles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sp</title>
+      <link>https://mhweber.github.io/tags/sp/</link>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/sp/</guid>
       <description></description>
     </item>
     

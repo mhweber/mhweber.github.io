@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mhweber.github.io/2018/09/12/spatial-tutorial/</loc>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mhweber.github.io/2017/10/13/playing-with-python-rasterstats/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
   </url>
@@ -59,7 +64,7 @@
   
   <url>
     <loc>https://mhweber.github.io/</loc>
-    <lastmod>2017-10-13T00:00:00+00:00</lastmod>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -86,6 +91,12 @@
   
   <url>
     <loc>https://mhweber.github.io/page/cv/</loc>
+  </url>
+  
+  <url>
+    <loc>https://mhweber.github.io/tags/dataretrieval/</loc>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -143,8 +154,20 @@
   </url>
   
   <url>
+    <loc>https://mhweber.github.io/tags/leaflet/</loc>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mhweber.github.io/tags/maptools/</loc>
     <lastmod>2016-02-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mhweber.github.io/tags/mapview/</loc>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -167,7 +190,7 @@
   
   <url>
     <loc>https://mhweber.github.io/post/</loc>
-    <lastmod>2017-10-13T00:00:00+00:00</lastmod>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -185,13 +208,19 @@
   
   <url>
     <loc>https://mhweber.github.io/tags/r/</loc>
-    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mhweber.github.io/categories/r/</loc>
-    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mhweber.github.io/tags/raster/</loc>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -209,13 +238,19 @@
   
   <url>
     <loc>https://mhweber.github.io/tags/sf/</loc>
-    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mhweber.github.io/tags/shapefiles/</loc>
     <lastmod>2016-12-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mhweber.github.io/tags/sp/</loc>
+    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
