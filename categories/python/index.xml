@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on Marc Weber</title>
-    <link>/categories/python/</link>
+    <link>https://mhweber.github.io/categories/python/</link>
     <description>Recent content in Python on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Fri, 13 Oct 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mhweber.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Playing with Python Rasterstats</title>
-      <link>/2017/10/13/playing-with-python-rasterstats/</link>
+      <link>https://mhweber.github.io/2017/10/13/playing-with-python-rasterstats/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2017/10/13/playing-with-python-rasterstats/</guid>
+      <guid>https://mhweber.github.io/2017/10/13/playing-with-python-rasterstats/</guid>
       <description>This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&amp;rsquo;ll import some libraries.
 import pandas as pd import numpy as np import geopandas as gp  Bring in US Counties using US Census counties shapefile
 counties = gp.GeoDataFrame.from_file(&#39;L:/Priv/CORFiles/Geospatial_Library/Data/RESOURCE/POLITICAL/BOUNDARIES/NATIONAL/Counties_Census_2010.shp&#39;) list(counties) counties.STATE_NAME.unique() counties = counties[(counties.STATE_NAME != &#39;Hawaii&#39;) &amp;amp; (counties.STATE_NAME != &#39;Alaska&#39;)] counties = counties[[&#39;FIPS&#39;,&#39;NAME&#39;,&#39;geometry&#39;]] counties.head()    .dataframe thead tr:only-child th { text-align: right; } .</description>
@@ -25,10 +25,10 @@ counties = gp.GeoDataFrame.from_file(&#39;L:/Priv/CORFiles/Geospatial_Library/Da
     
     <item>
       <title>Wordcloud</title>
-      <link>/2017/07/13/wordcloud/</link>
+      <link>https://mhweber.github.io/2017/07/13/wordcloud/</link>
       <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2017/07/13/wordcloud/</guid>
+      <guid>https://mhweber.github.io/2017/07/13/wordcloud/</guid>
       <description>I&amp;rsquo;ve been toying with building a wordcloud of all my publications in both R and python on and off for some time, and while there&amp;rsquo;s a really nice R library for doing this wordcloud2, this example uses wordcloud, a python word cloud generator.
 I pasted all my publications into a single text file which is read into python and used by wordcloud as shown in code and results below.
 from os import path from wordcloud import WordCloud # Read the whole text.</description>
@@ -36,10 +36,10 @@ from os import path from wordcloud import WordCloud # Read the whole text.</desc
     
     <item>
       <title>Test georasters</title>
-      <link>/2017/05/05/test-georasters/</link>
+      <link>https://mhweber.github.io/2017/05/05/test-georasters/</link>
       <pubDate>Fri, 05 May 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2017/05/05/test-georasters/</guid>
+      <guid>https://mhweber.github.io/2017/05/05/test-georasters/</guid>
       <description> Tried out the georasters python package for changing data types of rasters, recoding, merging, and writing out - very nice, handy python package!  </description>
     </item>
     

@@ -2,202 +2,202 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Marc Weber</title>
-    <link>/tags/</link>
+    <link>https://mhweber.github.io/tags/</link>
     <description>Recent content in Tags on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Thu, 06 Jul 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mhweber.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Blogdown</title>
-      <link>/tags/blogdown/</link>
+      <link>https://mhweber.github.io/tags/blogdown/</link>
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/blogdown/</guid>
+      <guid>https://mhweber.github.io/tags/blogdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Fiona</title>
-      <link>/tags/fiona/</link>
+      <link>https://mhweber.github.io/tags/fiona/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/fiona/</guid>
+      <guid>https://mhweber.github.io/tags/fiona/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ftplib</title>
-      <link>/tags/ftplib/</link>
+      <link>https://mhweber.github.io/tags/ftplib/</link>
       <pubDate>Tue, 20 Sep 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/ftplib/</guid>
+      <guid>https://mhweber.github.io/tags/ftplib/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Geopandas</title>
-      <link>/tags/geopandas/</link>
+      <link>https://mhweber.github.io/tags/geopandas/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/geopandas/</guid>
+      <guid>https://mhweber.github.io/tags/geopandas/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Georasters</title>
-      <link>/tags/georasters/</link>
+      <link>https://mhweber.github.io/tags/georasters/</link>
       <pubDate>Fri, 05 May 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/georasters/</guid>
+      <guid>https://mhweber.github.io/tags/georasters/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Github</title>
-      <link>/tags/github/</link>
+      <link>https://mhweber.github.io/tags/github/</link>
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/github/</guid>
+      <guid>https://mhweber.github.io/tags/github/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hugo</title>
-      <link>/tags/hugo/</link>
+      <link>https://mhweber.github.io/tags/hugo/</link>
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/hugo/</guid>
+      <guid>https://mhweber.github.io/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Jekyll</title>
-      <link>/tags/jekyll/</link>
+      <link>https://mhweber.github.io/tags/jekyll/</link>
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/jekyll/</guid>
+      <guid>https://mhweber.github.io/tags/jekyll/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Maptools</title>
-      <link>/tags/maptools/</link>
+      <link>https://mhweber.github.io/tags/maptools/</link>
       <pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/maptools/</guid>
+      <guid>https://mhweber.github.io/tags/maptools/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Match</title>
-      <link>/tags/match/</link>
+      <link>https://mhweber.github.io/tags/match/</link>
       <pubDate>Thu, 10 Mar 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/match/</guid>
+      <guid>https://mhweber.github.io/tags/match/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Postgis</title>
-      <link>/tags/postgis/</link>
+      <link>https://mhweber.github.io/tags/postgis/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/postgis/</guid>
+      <guid>https://mhweber.github.io/tags/postgis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>/tags/python/</link>
+      <link>https://mhweber.github.io/tags/python/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/python/</guid>
+      <guid>https://mhweber.github.io/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/tags/r/</link>
+      <link>https://mhweber.github.io/tags/r/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/r/</guid>
+      <guid>https://mhweber.github.io/tags/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rasterio</title>
-      <link>/tags/rasterio/</link>
+      <link>https://mhweber.github.io/tags/rasterio/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/rasterio/</guid>
+      <guid>https://mhweber.github.io/tags/rasterio/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rasterstats</title>
-      <link>/tags/rasterstats/</link>
+      <link>https://mhweber.github.io/tags/rasterstats/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/rasterstats/</guid>
+      <guid>https://mhweber.github.io/tags/rasterstats/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sf</title>
-      <link>/tags/sf/</link>
+      <link>https://mhweber.github.io/tags/sf/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/sf/</guid>
+      <guid>https://mhweber.github.io/tags/sf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Shapefiles</title>
-      <link>/tags/shapefiles/</link>
+      <link>https://mhweber.github.io/tags/shapefiles/</link>
       <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/shapefiles/</guid>
+      <guid>https://mhweber.github.io/tags/shapefiles/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Spatial Data</title>
-      <link>/tags/spatial-data/</link>
+      <link>https://mhweber.github.io/tags/spatial-data/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/spatial-data/</guid>
+      <guid>https://mhweber.github.io/tags/spatial-data/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Streamcat</title>
-      <link>/tags/streamcat/</link>
+      <link>https://mhweber.github.io/tags/streamcat/</link>
       <pubDate>Tue, 20 Sep 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/streamcat/</guid>
+      <guid>https://mhweber.github.io/tags/streamcat/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Wordcloud</title>
-      <link>/tags/wordcloud/</link>
+      <link>https://mhweber.github.io/tags/wordcloud/</link>
       <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/wordcloud/</guid>
+      <guid>https://mhweber.github.io/tags/wordcloud/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Zonal Statistics</title>
-      <link>/tags/zonal-statistics/</link>
+      <link>https://mhweber.github.io/tags/zonal-statistics/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/tags/zonal-statistics/</guid>
+      <guid>https://mhweber.github.io/tags/zonal-statistics/</guid>
       <description></description>
     </item>
     

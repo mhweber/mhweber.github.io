@@ -2,50 +2,50 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on Marc Weber</title>
-    <link>/tags/r/</link>
+    <link>https://mhweber.github.io/tags/r/</link>
     <description>Recent content in R on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Fri, 24 Feb 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mhweber.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Testing the simple features R package</title>
-      <link>/2017/02/24/testing-the-simple-features-r-package/</link>
+      <link>https://mhweber.github.io/2017/02/24/testing-the-simple-features-r-package/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2017/02/24/testing-the-simple-features-r-package/</guid>
+      <guid>https://mhweber.github.io/2017/02/24/testing-the-simple-features-r-package/</guid>
       <description>Load and look at basics of simple features package library(devtools) # install_github(&amp;quot;edzer/sfr&amp;quot;) library(sf)  ## Linking to GEOS 3.5.0, GDAL 2.1.1, proj.4 4.9.3  nc &amp;lt;- st_read(system.file(&amp;quot;shape/nc.shp&amp;quot;, package=&amp;quot;sf&amp;quot;))  ## Reading layer `nc&#39; from data source `C:\Users\mweber\R\library\sf\shape\nc.shp&#39; using driver `ESRI Shapefile&#39; ## converted into: MULTIPOLYGON ## Simple feature collection with 100 features and 14 fields ## geometry type: MULTIPOLYGON ## dimension: XY ## bbox: xmin: -84.32385 ymin: 33.88199 xmax: -75.</description>
     </item>
     
     <item>
       <title>Read PostGIS in R</title>
-      <link>/2016/12/02/read-postgis-in-r/</link>
+      <link>https://mhweber.github.io/2016/12/02/read-postgis-in-r/</link>
       <pubDate>Fri, 02 Dec 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2016/12/02/read-postgis-in-r/</guid>
+      <guid>https://mhweber.github.io/2016/12/02/read-postgis-in-r/</guid>
       <description> Working with Postgres / PostGIS more now and playing with reading and writing from R and Python. Here&amp;rsquo;s snippet showing read in of PostGIS in R:  </description>
     </item>
     
     <item>
       <title>R lookup</title>
-      <link>/2016/03/10/r-lookup/</link>
+      <link>https://mhweber.github.io/2016/03/10/r-lookup/</link>
       <pubDate>Thu, 10 Mar 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2016/03/10/r-lookup/</guid>
+      <guid>https://mhweber.github.io/2016/03/10/r-lookup/</guid>
       <description> Using match and indexing to create a lookup in R This code takes a lookup table and applies it to a data frame, updating only values for records that occur in the lookup table using indexing and match:
  </description>
     </item>
     
     <item>
       <title>R extract line endpoints</title>
-      <link>/2016/02/02/r-extract-line-endpoints/</link>
+      <link>https://mhweber.github.io/2016/02/02/r-extract-line-endpoints/</link>
       <pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2016/02/02/r-extract-line-endpoints/</guid>
+      <guid>https://mhweber.github.io/2016/02/02/r-extract-line-endpoints/</guid>
       <description>Extracting line end nodes in R
 I noticed the maptools package in R had a SpatialLinesMidPoints function but couldn&amp;rsquo;t find any other out of the box functions in any packages to extract line endpoints. So I modified SpatialLinesMidPoints slightly to do the job:
  </description>
