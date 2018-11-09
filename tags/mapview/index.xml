@@ -2,22 +2,33 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mapview on Marc Weber</title>
-    <link>https://mhweber.github.io/tags/mapview/</link>
+    <link>/tags/mapview/</link>
     <description>Recent content in Mapview on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
-    <lastBuildDate>Wed, 12 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mhweber.github.io/tags/mapview/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/mapview/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Adding WMS basemap in R with mapview</title>
+      <link>/2018/11/09/adding-wms-basemap-in-r-with-mapview/</link>
+      <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2018/11/09/adding-wms-basemap-in-r-with-mapview/</guid>
+      <description>Recently I wanted to be able to add a custom basemap of NHDPlus features to mapview leaflet maps. It&amp;rsquo;s not straitforward out of the box in mapview, but I found the helpful tips to do it here and here.
+Below I add the WMS service from EPA Waters along with USGS StreamGage stations in Benton County, OR using the dataRetrieval package.
+library(dataRetrieval) library(mapview) library(sf) library(leaflet) Stations &amp;lt;- readNWISdata(stateCd=&amp;quot;Oregon&amp;quot;, countyCd=&amp;quot;Benton&amp;quot;) # DataRetrival returns objects as &#39;attributes&#39; - things like the url used, site metadata, site info, etc - just use attributes(Durham_Stations) to examine siteInfo &amp;lt;- attr(Stations , &amp;quot;siteInfo&amp;quot;) stations_sf = st_as_sf(siteInfo, coords = c(&amp;quot;dec_lon_va&amp;quot;, &amp;quot;dec_lat_va&amp;quot;), crs = 4269,agr = &amp;quot;constant&amp;quot;) m &amp;lt;- mapview(stations_sf) m@map = m@map %&amp;gt;% addWMSTiles(group = &#39;NHDPlus&#39;, &amp;quot;https://watersgeo.</description>
+    </item>
+    
+    <item>
       <title>R Spatial Tutorial</title>
-      <link>https://mhweber.github.io/2018/09/12/spatial-tutorial/</link>
+      <link>/2018/09/12/spatial-tutorial/</link>
       <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2018/09/12/spatial-tutorial/</guid>
+      <guid>/2018/09/12/spatial-tutorial/</guid>
       <description>Just finished putting together and running a half-day R Spatial Workshop covering some cool new R spatial things using packages such as sf, DataRetrieval, mapview, and combining dplyr chained operations with sf among other things. And I finally, after a year, got Disqus to start working on my blog! All I did was update blogdown and rebuild - if only everything were so simple&amp;hellip;</description>
     </item>
     

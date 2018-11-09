@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Match on Marc Weber</title>
-    <link>https://mhweber.github.io/tags/match/</link>
+    <link>/tags/match/</link>
     <description>Recent content in Match on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Thu, 10 Mar 2016 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mhweber.github.io/tags/match/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/match/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>R lookup</title>
-      <link>https://mhweber.github.io/2016/03/10/r-lookup/</link>
+      <link>/2016/03/10/r-lookup/</link>
       <pubDate>Thu, 10 Mar 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/03/10/r-lookup/</guid>
+      <guid>/2016/03/10/r-lookup/</guid>
       <description> Using match and indexing to create a lookup in R This code takes a lookup table and applies it to a data frame, updating only values for records that occur in the lookup table using indexing and match:
  </description>
     </item>

@@ -2,31 +2,42 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Marc Weber</title>
-    <link>https://mhweber.github.io/post/</link>
+    <link>/post/</link>
     <description>Recent content in Posts on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
-    <lastBuildDate>Wed, 12 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mhweber.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Adding WMS basemap in R with mapview</title>
+      <link>/2018/11/09/adding-wms-basemap-in-r-with-mapview/</link>
+      <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>/2018/11/09/adding-wms-basemap-in-r-with-mapview/</guid>
+      <description>Recently I wanted to be able to add a custom basemap of NHDPlus features to mapview leaflet maps. It&amp;rsquo;s not straitforward out of the box in mapview, but I found the helpful tips to do it here and here.
+Below I add the WMS service from EPA Waters along with USGS StreamGage stations in Benton County, OR using the dataRetrieval package.
+library(dataRetrieval) library(mapview) library(sf) library(leaflet) Stations &amp;lt;- readNWISdata(stateCd=&amp;quot;Oregon&amp;quot;, countyCd=&amp;quot;Benton&amp;quot;) # DataRetrival returns objects as &#39;attributes&#39; - things like the url used, site metadata, site info, etc - just use attributes(Durham_Stations) to examine siteInfo &amp;lt;- attr(Stations , &amp;quot;siteInfo&amp;quot;) stations_sf = st_as_sf(siteInfo, coords = c(&amp;quot;dec_lon_va&amp;quot;, &amp;quot;dec_lat_va&amp;quot;), crs = 4269,agr = &amp;quot;constant&amp;quot;) m &amp;lt;- mapview(stations_sf) m@map = m@map %&amp;gt;% addWMSTiles(group = &#39;NHDPlus&#39;, &amp;quot;https://watersgeo.</description>
+    </item>
+    
+    <item>
       <title>R Spatial Tutorial</title>
-      <link>https://mhweber.github.io/2018/09/12/spatial-tutorial/</link>
+      <link>/2018/09/12/spatial-tutorial/</link>
       <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2018/09/12/spatial-tutorial/</guid>
+      <guid>/2018/09/12/spatial-tutorial/</guid>
       <description>Just finished putting together and running a half-day R Spatial Workshop covering some cool new R spatial things using packages such as sf, DataRetrieval, mapview, and combining dplyr chained operations with sf among other things. And I finally, after a year, got Disqus to start working on my blog! All I did was update blogdown and rebuild - if only everything were so simple&amp;hellip;</description>
     </item>
     
     <item>
       <title>Playing with Python Rasterstats</title>
-      <link>https://mhweber.github.io/2017/10/13/playing-with-python-rasterstats/</link>
+      <link>/2017/10/13/playing-with-python-rasterstats/</link>
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2017/10/13/playing-with-python-rasterstats/</guid>
+      <guid>/2017/10/13/playing-with-python-rasterstats/</guid>
       <description>This is code to get PctAg and PctUrb using NLCD 2006 for US Counties. First we&amp;rsquo;ll import some libraries.
 import pandas as pd import numpy as np import geopandas as gp  Bring in US Counties using US Census counties shapefile
 counties = gp.GeoDataFrame.from_file(&#39;L:/Priv/CORFiles/Geospatial_Library/Data/RESOURCE/POLITICAL/BOUNDARIES/NATIONAL/Counties_Census_2010.shp&#39;) list(counties) counties.STATE_NAME.unique() counties = counties[(counties.STATE_NAME != &#39;Hawaii&#39;) &amp;amp; (counties.STATE_NAME != &#39;Alaska&#39;)] counties = counties[[&#39;FIPS&#39;,&#39;NAME&#39;,&#39;geometry&#39;]] counties.head()    .dataframe thead tr:only-child th { text-align: right; } .</description>
@@ -34,20 +45,20 @@ counties = gp.GeoDataFrame.from_file(&#39;L:/Priv/CORFiles/Geospatial_Library/Da
     
     <item>
       <title>GeoPandas Tutorial</title>
-      <link>https://mhweber.github.io/2017/07/14/geopandas-tutorial/</link>
+      <link>/2017/07/14/geopandas-tutorial/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2017/07/14/geopandas-tutorial/</guid>
+      <guid>/2017/07/14/geopandas-tutorial/</guid>
       <description>This is an implementation of the excellent PostGIS / geopandas tutorial here using NHDPlus WBD polygons for PNW. All the ideas and methods are from this tutorial, simply implementing with a different dataset and in Oregon.
 %matplotlib inline import os import json import psycopg2 import matplotlib.pyplot as plt # The two statemens below are used mainly to set up a plotting # default style that&#39;s better than the default from matplotlib import seaborn as sns plt.</description>
     </item>
     
     <item>
       <title>Wordcloud</title>
-      <link>https://mhweber.github.io/2017/07/13/wordcloud/</link>
+      <link>/2017/07/13/wordcloud/</link>
       <pubDate>Thu, 13 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2017/07/13/wordcloud/</guid>
+      <guid>/2017/07/13/wordcloud/</guid>
       <description>I&amp;rsquo;ve been toying with building a wordcloud of all my publications in both R and python on and off for some time, and while there&amp;rsquo;s a really nice R library for doing this wordcloud2, this example uses wordcloud, a python word cloud generator.
 I pasted all my publications into a single text file which is read into python and used by wordcloud as shown in code and results below.
 from os import path from wordcloud import WordCloud # Read the whole text.</description>
@@ -55,74 +66,74 @@ from os import path from wordcloud import WordCloud # Read the whole text.</desc
     
     <item>
       <title>Switching website from Jekyll to Hugo using Blogdown</title>
-      <link>https://mhweber.github.io/2017/07/06/jekyll-to-hugo-with-blogdown/</link>
+      <link>/2017/07/06/jekyll-to-hugo-with-blogdown/</link>
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2017/07/06/jekyll-to-hugo-with-blogdown/</guid>
+      <guid>/2017/07/06/jekyll-to-hugo-with-blogdown/</guid>
       <description>I set up my personal website using GitHub Pages a little while back using Jekyll and a Hyde template that I thought was pretty nice. However, after listening to Yihui&amp;rsquo;s RStudio webinar on using blogdown, I decided maybe it was time to give blogdown a try and switch from Jekyll to Hugo. I spent a good couple weeks off and on reading up on Hugo, exploring different Hugo themes, and building test websites and locally before finally feeling comfortable enough to take the plunge and make the switch.</description>
     </item>
     
     <item>
       <title>Test georasters</title>
-      <link>https://mhweber.github.io/2017/05/05/test-georasters/</link>
+      <link>/2017/05/05/test-georasters/</link>
       <pubDate>Fri, 05 May 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2017/05/05/test-georasters/</guid>
+      <guid>/2017/05/05/test-georasters/</guid>
       <description> Tried out the georasters python package for changing data types of rasters, recoding, merging, and writing out - very nice, handy python package!  </description>
     </item>
     
     <item>
       <title>Testing the simple features R package</title>
-      <link>https://mhweber.github.io/2017/02/24/testing-the-simple-features-r-package/</link>
+      <link>/2017/02/24/testing-the-simple-features-r-package/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2017/02/24/testing-the-simple-features-r-package/</guid>
+      <guid>/2017/02/24/testing-the-simple-features-r-package/</guid>
       <description>Load and look at basics of simple features package library(devtools) # install_github(&amp;quot;edzer/sfr&amp;quot;) library(sf)  ## Linking to GEOS 3.5.0, GDAL 2.1.1, proj.4 4.9.3  nc &amp;lt;- st_read(system.file(&amp;quot;shape/nc.shp&amp;quot;, package=&amp;quot;sf&amp;quot;))  ## Reading layer `nc&#39; from data source `C:\Users\mweber\R\library\sf\shape\nc.shp&#39; using driver `ESRI Shapefile&#39; ## converted into: MULTIPOLYGON ## Simple feature collection with 100 features and 14 fields ## geometry type: MULTIPOLYGON ## dimension: XY ## bbox: xmin: -84.32385 ymin: 33.88199 xmax: -75.</description>
     </item>
     
     <item>
       <title>Rasterize shapefiles in Python with rasterio and geopandas</title>
-      <link>https://mhweber.github.io/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</link>
+      <link>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</link>
       <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</guid>
+      <guid>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</guid>
       <description> Here&amp;rsquo;s a snippet showing how to rasterize a shapefile in python using rasterio and geopandas:  </description>
     </item>
     
     <item>
       <title>Read PostGIS in R</title>
-      <link>https://mhweber.github.io/2016/12/02/read-postgis-in-r/</link>
+      <link>/2016/12/02/read-postgis-in-r/</link>
       <pubDate>Fri, 02 Dec 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/12/02/read-postgis-in-r/</guid>
+      <guid>/2016/12/02/read-postgis-in-r/</guid>
       <description> Working with Postgres / PostGIS more now and playing with reading and writing from R and Python. Here&amp;rsquo;s snippet showing read in of PostGIS in R:  </description>
     </item>
     
     <item>
       <title>Download StreamCat data</title>
-      <link>https://mhweber.github.io/2016/09/20/download-streamcat-data/</link>
+      <link>/2016/09/20/download-streamcat-data/</link>
       <pubDate>Tue, 20 Sep 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/09/20/download-streamcat-data/</guid>
+      <guid>/2016/09/20/download-streamcat-data/</guid>
       <description> Here&amp;rsquo;s an example code snippet using ftplib in python to download StreamCat data  </description>
     </item>
     
     <item>
       <title>R lookup</title>
-      <link>https://mhweber.github.io/2016/03/10/r-lookup/</link>
+      <link>/2016/03/10/r-lookup/</link>
       <pubDate>Thu, 10 Mar 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/03/10/r-lookup/</guid>
+      <guid>/2016/03/10/r-lookup/</guid>
       <description> Using match and indexing to create a lookup in R This code takes a lookup table and applies it to a data frame, updating only values for records that occur in the lookup table using indexing and match:
  </description>
     </item>
     
     <item>
       <title>R extract line endpoints</title>
-      <link>https://mhweber.github.io/2016/02/02/r-extract-line-endpoints/</link>
+      <link>/2016/02/02/r-extract-line-endpoints/</link>
       <pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/02/02/r-extract-line-endpoints/</guid>
+      <guid>/2016/02/02/r-extract-line-endpoints/</guid>
       <description>Extracting line end nodes in R
 I noticed the maptools package in R had a SpatialLinesMidPoints function but couldn&amp;rsquo;t find any other out of the box functions in any packages to extract line endpoints. So I modified SpatialLinesMidPoints slightly to do the job:
  </description>

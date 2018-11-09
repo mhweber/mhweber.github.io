@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Geopandas on Marc Weber</title>
-    <link>https://mhweber.github.io/tags/geopandas/</link>
+    <link>/tags/geopandas/</link>
     <description>Recent content in Geopandas on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Fri, 14 Jul 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mhweber.github.io/tags/geopandas/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/geopandas/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>GeoPandas Tutorial</title>
-      <link>https://mhweber.github.io/2017/07/14/geopandas-tutorial/</link>
+      <link>/2017/07/14/geopandas-tutorial/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2017/07/14/geopandas-tutorial/</guid>
+      <guid>/2017/07/14/geopandas-tutorial/</guid>
       <description>This is an implementation of the excellent PostGIS / geopandas tutorial here using NHDPlus WBD polygons for PNW. All the ideas and methods are from this tutorial, simply implementing with a different dataset and in Oregon.
 %matplotlib inline import os import json import psycopg2 import matplotlib.pyplot as plt # The two statemens below are used mainly to set up a plotting # default style that&#39;s better than the default from matplotlib import seaborn as sns plt.</description>
     </item>
     
     <item>
       <title>Rasterize shapefiles in Python with rasterio and geopandas</title>
-      <link>https://mhweber.github.io/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</link>
+      <link>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</link>
       <pubDate>Mon, 12 Dec 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</guid>
+      <guid>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</guid>
       <description> Here&amp;rsquo;s a snippet showing how to rasterize a shapefile in python using rasterio and geopandas:  </description>
     </item>
     

@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Maptools on Marc Weber</title>
-    <link>https://mhweber.github.io/tags/maptools/</link>
+    <link>/tags/maptools/</link>
     <description>Recent content in Maptools on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Tue, 02 Feb 2016 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mhweber.github.io/tags/maptools/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/maptools/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>R extract line endpoints</title>
-      <link>https://mhweber.github.io/2016/02/02/r-extract-line-endpoints/</link>
+      <link>/2016/02/02/r-extract-line-endpoints/</link>
       <pubDate>Tue, 02 Feb 2016 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>https://mhweber.github.io/2016/02/02/r-extract-line-endpoints/</guid>
+      <guid>/2016/02/02/r-extract-line-endpoints/</guid>
       <description>Extracting line end nodes in R
 I noticed the maptools package in R had a SpatialLinesMidPoints function but couldn&amp;rsquo;t find any other out of the box functions in any packages to extract line endpoints. So I modified SpatialLinesMidPoints slightly to do the job:
  </description>

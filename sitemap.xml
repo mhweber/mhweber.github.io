@@ -3,283 +3,294 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://mhweber.github.io/2018/09/12/spatial-tutorial/</loc>
+    <loc>/2018/11/09/adding-wms-basemap-in-r-with-mapview/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2018/09/12/spatial-tutorial/</loc>
     <lastmod>2018-09-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2017/10/13/playing-with-python-rasterstats/</loc>
+    <loc>/2017/10/13/playing-with-python-rasterstats/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2017/07/14/geopandas-tutorial/</loc>
+    <loc>/2017/07/14/geopandas-tutorial/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2017/07/13/wordcloud/</loc>
+    <loc>/2017/07/13/wordcloud/</loc>
     <lastmod>2017-07-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2017/07/06/jekyll-to-hugo-with-blogdown/</loc>
+    <loc>/2017/07/06/jekyll-to-hugo-with-blogdown/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2017/05/05/test-georasters/</loc>
+    <loc>/2017/05/05/test-georasters/</loc>
     <lastmod>2017-05-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2017/02/24/testing-the-simple-features-r-package/</loc>
+    <loc>/2017/02/24/testing-the-simple-features-r-package/</loc>
     <lastmod>2017-02-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</loc>
+    <loc>/2016/12/12/rasterize-shapefiles-in-python-with-rasterio-and-geopandas/</loc>
     <lastmod>2016-12-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2016/12/02/read-postgis-in-r/</loc>
+    <loc>/2016/12/02/read-postgis-in-r/</loc>
     <lastmod>2016-12-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2016/09/20/download-streamcat-data/</loc>
+    <loc>/2016/09/20/download-streamcat-data/</loc>
     <lastmod>2016-09-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2016/03/10/r-lookup/</loc>
+    <loc>/2016/03/10/r-lookup/</loc>
     <lastmod>2016-03-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/2016/02/02/r-extract-line-endpoints/</loc>
+    <loc>/2016/02/02/r-extract-line-endpoints/</loc>
     <lastmod>2016-02-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/</loc>
+    <loc>/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/page/about/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/blogdown/</loc>
+    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/blogdown/</loc>
+    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/page/cv/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/dataretrieval/</loc>
     <lastmod>2018-09-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/page/about/</loc>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/tags/blogdown/</loc>
-    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/categories/blogdown/</loc>
-    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/categories/</loc>
-    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/page/cv/</loc>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/tags/dataretrieval/</loc>
-    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/tags/fiona/</loc>
+    <loc>/tags/fiona/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/ftplib/</loc>
+    <loc>/tags/ftplib/</loc>
     <lastmod>2016-09-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/geopandas/</loc>
+    <loc>/tags/geopandas/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/georasters/</loc>
+    <loc>/tags/georasters/</loc>
     <lastmod>2017-05-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/github/</loc>
+    <loc>/tags/github/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/categories/github/</loc>
+    <loc>/categories/github/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/hugo/</loc>
+    <loc>/tags/hugo/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/categories/hugo/</loc>
+    <loc>/categories/hugo/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/jekyll/</loc>
+    <loc>/tags/jekyll/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/leaflet/</loc>
-    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+    <loc>/tags/leaflet/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/maptools/</loc>
+    <loc>/tags/maptools/</loc>
     <lastmod>2016-02-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/mapview/</loc>
-    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+    <loc>/tags/mapview/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/match/</loc>
+    <loc>/tags/match/</loc>
     <lastmod>2016-03-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/page/</loc>
+    <loc>/page/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/postgis/</loc>
+    <loc>/tags/postgis/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/post/</loc>
-    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+    <loc>/post/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/python/</loc>
+    <loc>/tags/python/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/categories/python/</loc>
+    <loc>/categories/python/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/r/</loc>
+    <loc>/tags/r/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/r/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/raster/</loc>
     <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/categories/r/</loc>
-    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/tags/raster/</loc>
-    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mhweber.github.io/tags/rasterio/</loc>
+    <loc>/tags/rasterio/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/rasterstats/</loc>
+    <loc>/tags/rasterstats/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/sf/</loc>
-    <lastmod>2018-09-12T00:00:00+00:00</lastmod>
+    <loc>/tags/sf/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/shapefiles/</loc>
+    <loc>/tags/shapefiles/</loc>
     <lastmod>2016-12-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/sp/</loc>
+    <loc>/tags/sp/</loc>
     <lastmod>2018-09-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/spatial-data/</loc>
+    <loc>/tags/spatial-data/</loc>
     <lastmod>2017-02-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/streamcat/</loc>
+    <loc>/tags/streamcat/</loc>
     <lastmod>2016-09-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/</loc>
+    <loc>/tags/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/wordcloud/</loc>
+    <loc>/tags/wms/</loc>
+    <lastmod>2018-11-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/wordcloud/</loc>
     <lastmod>2017-07-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mhweber.github.io/tags/zonal-statistics/</loc>
+    <loc>/tags/zonal-statistics/</loc>
     <lastmod>2017-10-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
