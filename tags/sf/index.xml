@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sf on Marc Weber</title>
-    <link>/tags/sf/</link>
+    <link>https://mhweber.github.io/tags/sf/</link>
     <description>Recent content in Sf on Marc Weber</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
     <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/sf/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mhweber.github.io/tags/sf/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Adding WMS basemap in R with mapview</title>
-      <link>/2018/11/09/adding-wms-basemap-in-r-with-mapview/</link>
+      <link>https://mhweber.github.io/2018/11/09/adding-wms-basemap-in-r-with-mapview/</link>
       <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2018/11/09/adding-wms-basemap-in-r-with-mapview/</guid>
+      <guid>https://mhweber.github.io/2018/11/09/adding-wms-basemap-in-r-with-mapview/</guid>
       <description>Recently I wanted to be able to add a custom basemap of NHDPlus features to mapview leaflet maps. It&amp;rsquo;s not straitforward out of the box in mapview, but I found the helpful tips to do it here and here.
 Below I add the WMS service from EPA Waters along with USGS StreamGage stations in Benton County, OR using the dataRetrieval package.
 library(dataRetrieval) library(mapview) library(sf) library(leaflet) Stations &amp;lt;- readNWISdata(stateCd=&amp;quot;Oregon&amp;quot;, countyCd=&amp;quot;Benton&amp;quot;) # DataRetrival returns objects as &#39;attributes&#39; - things like the url used, site metadata, site info, etc - just use attributes(Durham_Stations) to examine siteInfo &amp;lt;- attr(Stations , &amp;quot;siteInfo&amp;quot;) stations_sf = st_as_sf(siteInfo, coords = c(&amp;quot;dec_lon_va&amp;quot;, &amp;quot;dec_lat_va&amp;quot;), crs = 4269,agr = &amp;quot;constant&amp;quot;) m &amp;lt;- mapview(stations_sf) m@map = m@map %&amp;gt;% addWMSTiles(group = &#39;NHDPlus&#39;, &amp;quot;https://watersgeo.</description>
@@ -25,19 +25,19 @@ library(dataRetrieval) library(mapview) library(sf) library(leaflet) Stations &a
     
     <item>
       <title>R Spatial Tutorial</title>
-      <link>/2018/09/12/spatial-tutorial/</link>
+      <link>https://mhweber.github.io/2018/09/12/spatial-tutorial/</link>
       <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2018/09/12/spatial-tutorial/</guid>
+      <guid>https://mhweber.github.io/2018/09/12/spatial-tutorial/</guid>
       <description>Just finished putting together and running a half-day R Spatial Workshop covering some cool new R spatial things using packages such as sf, DataRetrieval, mapview, and combining dplyr chained operations with sf among other things. And I finally, after a year, got Disqus to start working on my blog! All I did was update blogdown and rebuild - if only everything were so simple&amp;hellip;</description>
     </item>
     
     <item>
       <title>Testing the simple features R package</title>
-      <link>/2017/02/24/testing-the-simple-features-r-package/</link>
+      <link>https://mhweber.github.io/2017/02/24/testing-the-simple-features-r-package/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
-      <guid>/2017/02/24/testing-the-simple-features-r-package/</guid>
+      <guid>https://mhweber.github.io/2017/02/24/testing-the-simple-features-r-package/</guid>
       <description>Load and look at basics of simple features package library(devtools) # install_github(&amp;quot;edzer/sfr&amp;quot;) library(sf)  ## Linking to GEOS 3.5.0, GDAL 2.1.1, proj.4 4.9.3  nc &amp;lt;- st_read(system.file(&amp;quot;shape/nc.shp&amp;quot;, package=&amp;quot;sf&amp;quot;))  ## Reading layer `nc&#39; from data source `C:\Users\mweber\R\library\sf\shape\nc.shp&#39; using driver `ESRI Shapefile&#39; ## converted into: MULTIPOLYGON ## Simple feature collection with 100 features and 14 fields ## geometry type: MULTIPOLYGON ## dimension: XY ## bbox: xmin: -84.32385 ymin: 33.88199 xmax: -75.</description>
     </item>
     
