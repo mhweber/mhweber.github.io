@@ -67,6 +67,15 @@
     </item>
     
     <item>
+      <title>Ggplot2</title>
+      <link>https://mhweber.github.io/tags/ggplot2/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/ggplot2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Github</title>
       <link>https://mhweber.github.io/tags/github/</link>
       <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
@@ -130,6 +139,15 @@
     </item>
     
     <item>
+      <title>Packages</title>
+      <link>https://mhweber.github.io/tags/packages/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/packages/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Postgis</title>
       <link>https://mhweber.github.io/tags/postgis/</link>
       <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
@@ -150,7 +168,7 @@
     <item>
       <title>R</title>
       <link>https://mhweber.github.io/tags/r/</link>
-      <pubDate>Fri, 09 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/r/</guid>
       <description></description>
@@ -180,6 +198,15 @@
       <pubDate>Fri, 13 Oct 2017 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/rasterstats/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rnassqs</title>
+      <link>https://mhweber.github.io/tags/rnassqs/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/rnassqs/</guid>
       <description></description>
     </item>
     

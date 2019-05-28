@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
     <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
-    <lastBuildDate>Fri, 09 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mhweber.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Testing the rnassqs R package with Willamette basin data</title>
+      <link>https://mhweber.github.io/2019/05/28/testing-the-rnassqs-r-package-with-willamette-basin-data/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/2019/05/28/testing-the-rnassqs-r-package-with-willamette-basin-data/</guid>
+      <description>Pull in data via API for Survey data This script uses the NASS API to query the NASS Quickstats service for historic acres harvested of primary crop groups in Willamette basin counties in Oregon from 1969-2013. An example of using the NASS Quickstats API to pull in and examine crop data in Willamette basin.
+library(dplyr)  ## Warning: package &#39;dplyr&#39; was built under R version 3.5.2  library(tibble) library(tidyr) library(rnassqs) library(lubridate) library(readr) years &amp;lt;- seq(as.</description>
+    </item>
     
     <item>
       <title>Adding WMS basemap in R with mapview</title>
