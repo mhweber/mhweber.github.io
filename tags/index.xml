@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>Bookdown</title>
+      <link>https://mhweber.github.io/tags/bookdown/</link>
+      <pubDate>Wed, 12 Feb 2020 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/bookdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Dataretrieval</title>
       <link>https://mhweber.github.io/tags/dataretrieval/</link>
       <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
@@ -78,7 +87,7 @@
     <item>
       <title>Github</title>
       <link>https://mhweber.github.io/tags/github/</link>
-      <pubDate>Thu, 06 Jul 2017 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 12 Feb 2020 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/github/</guid>
       <description></description>
@@ -168,9 +177,18 @@
     <item>
       <title>R</title>
       <link>https://mhweber.github.io/tags/r/</link>
-      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 12 Feb 2020 00:00:00 +0000</pubDate>
       <author>mweber36@gmail.com (Marc Weber)</author>
       <guid>https://mhweber.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R Markdown</title>
+      <link>https://mhweber.github.io/tags/r-markdown/</link>
+      <pubDate>Wed, 12 Feb 2020 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/tags/r-markdown/</guid>
       <description></description>
     </item>
     

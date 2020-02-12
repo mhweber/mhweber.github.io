@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mhweber.github.io/2020/02/12/trying-out-bookdown-and-publishing-to-github-pages/</loc>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mhweber.github.io/2019/05/28/testing-the-rnassqs-r-package-with-willamette-basin-data/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url>
@@ -74,7 +79,11 @@
   
   <url>
     <loc>https://mhweber.github.io/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mhweber.github.io/1/01/01/</loc>
   </url>
   
   <url>
@@ -90,6 +99,12 @@
   <url>
     <loc>https://mhweber.github.io/categories/blogdown/</loc>
     <lastmod>2017-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mhweber.github.io/tags/bookdown/</loc>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -141,7 +156,7 @@
   
   <url>
     <loc>https://mhweber.github.io/tags/github/</loc>
-    <lastmod>2017-07-06T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -212,7 +227,7 @@
   
   <url>
     <loc>https://mhweber.github.io/post/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -230,13 +245,19 @@
   
   <url>
     <loc>https://mhweber.github.io/tags/r/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mhweber.github.io/categories/r/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mhweber.github.io/tags/r-markdown/</loc>
+    <lastmod>2020-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
