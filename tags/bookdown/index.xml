@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bookdown on Marc Weber</title>
+    <link>https://mhweber.github.io/tags/bookdown/</link>
+    <description>Recent content in bookdown on Marc Weber</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>mweber36@gmail.com (Marc Weber)</managingEditor>
+    <webMaster>mweber36@gmail.com (Marc Weber)</webMaster>
+    <lastBuildDate>Wed, 12 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://mhweber.github.io/tags/bookdown/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Trying Out Bookdown and Publishing to GitHub Pages</title>
+      <link>https://mhweber.github.io/2020/02/12/trying-out-bookdown-and-publishing-to-github-pages/</link>
+      <pubDate>Wed, 12 Feb 2020 00:00:00 +0000</pubDate>
+      <author>mweber36@gmail.com (Marc Weber)</author>
+      <guid>https://mhweber.github.io/2020/02/12/trying-out-bookdown-and-publishing-to-github-pages/</guid>
+      <description>I finally decided to try creating a bookdown project and see if I could figure out hosting it on GitHub Pages. The steps I followed were:
+  Create a new empty GitHub repo on GitHub without a readme
+  Create a new local R Project in a new directory as project type Book Project using bookdown
+  Initialize a .git repository for the project after it is created</description>
+    </item>
+    
+  </channel>
+</rss>
