@@ -1,0 +1,25 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Marc Weber"
+  navbar:
+    right:
+      - href: index.qmd
+        text: About
+      - href: today.qmd
+        text: Today I Learned
+      - href: resume.qmd
+        text: Resume
+
+format:
+  html:
+    theme: cosmo dark
+    css: styles.css
+    toc: true
+
+editor: visual
+
+resources:
+  - CNAME

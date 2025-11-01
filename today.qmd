@@ -1,0 +1,19 @@
+---
+title: "Writing"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: table
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title, description, categories]
+  field-display-names:
+    description: "Short Description"
+    categories: "Tags"
+---
+
+
+### Today I Learned
+
+Below are posts on various topics covering programming tips in R and Python, GIS tools and techniques and maps and data visualizations.
