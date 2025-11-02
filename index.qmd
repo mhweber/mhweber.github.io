@@ -21,4 +21,4 @@ about:
       href: https://www.https://www.linkedin.com/in/marchweber/
 ---
 
-I'm Marc Weber - I’m a geographer whose work focuses on GIS and spatial analysis. I work at the US EPA in the Office of Water as well as teaching GIS in the GIS Certificate Program at the University of Washington. I've worked for the last 20+ years using GIS software (ESRI and QGIS) and using open source approaches in R and Python for spatial analysis. This site serves primarily as a place to share new tools, tips and techniques.
+I'm Marc Weber - I’m a geographer working at the US EPA in the Office of Water as well as teaching GIS in the GIS Certificate Program at the University of Washington. I've worked for the last 20+ years with GIS software (ESRI and QGIS) and using open source approaches in R and Python for spatial analysis. This site serves primarily as a place to share new tools, tips and techniques.

@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Marc Weber",
     "section": "",
-    "text": "I’m Marc Weber - I’m a geographer whose work focuses on GIS and spatial analysis. I work at the US EPA in the Office of Water as well as teaching GIS in the GIS Certificate Program at the University of Washington. I’ve worked for the last 20+ years using GIS software (ESRI and QGIS) and using open source approaches in R and Python for spatial analysis. This site serves primarily as a place to share new tools, tips and techniques."
+    "text": "I’m Marc Weber - I’m a geographer working at the US EPA in the Office of Water as well as teaching GIS in the GIS Certificate Program at the University of Washington. I’ve worked for the last 20+ years with GIS software (ESRI and QGIS) and using open source approaches in R and Python for spatial analysis. This site serves primarily as a place to share new tools, tips and techniques."
   },
   {
     "objectID": "posts/2025-03-16-academia-to-industry/index.html",
@@ -75,5 +75,12 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "today.html",
+    "href": "today.html",
+    "title": "Today I Learned",
+    "section": "",
+    "text": "Today I Learned\nBelow are posts on various topics covering programming tips in R and Python, GIS tools and techniques and maps and data visualizations.\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nShort Description\n\n\n\nTags\n\n\n\n\n\n\n\n\nNov 1, 2025\n\n\nMore to Come\n\n\nMore to Come\n\n\nmapping\n\n\n\n\n\n\nNo matching items"
   }
 ]

@@ -1,5 +1,5 @@
 ---
-title: "Writing"
+title: "Today I Learned"
 listing:
   contents: posts
   sort: "date desc"
