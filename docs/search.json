@@ -81,6 +81,27 @@
     "href": "today.html",
     "title": "Today I Learned",
     "section": "",
-    "text": "Today I Learned\nBelow are posts on various topics covering programming tips in R and Python, GIS tools and techniques and maps and data visualizations.\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nShort Description\n\n\n\nTags\n\n\n\n\n\n\n\n\nNov 1, 2025\n\n\nMore to Come\n\n\nMore to Come\n\n\nmapping\n\n\n\n\n\n\nNo matching items"
+    "text": "Today I Learned\nBelow are posts on various topics covering programming tips in R and Python, GIS tools and techniques and maps and data visualizations.\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nShort Description\n\n\n\nTags\n\n\n\n\n\n\n\n\nNov 2, 2025\n\n\nStrava Heatmap\n\n\nCreating a Strava Heatmap with dowloaded activity files using ggpmap in R\n\n\nmapping, R, Strava, heatmap, ggmap\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/2025-11-01-Strava-R-map/index.html",
+    "href": "posts/2025-11-01-Strava-R-map/index.html",
+    "title": "Strava Heatmap",
+    "section": "",
+    "text": "I wanted to create a basic heatmap like you can create based on your activities in Strava. The challenge was downloading / scraping all the data, wrangling it into a format to use, adding an underlying basemap from Stamen and mapping it using ggpmap in R. I bulk downloaded the activies from my Strava account page and then processed in R. I also generated an interactive heatmap with leaflet."
+  },
+  {
+    "objectID": "posts/2025-11-01-Strava-R-map/index.html#make-the-map",
+    "href": "posts/2025-11-01-Strava-R-map/index.html#make-the-map",
+    "title": "Strava Heatmap",
+    "section": "Make the Map!",
+    "text": "Make the Map!\n\nggmap(base_map) +\n  geom_tile(data=binned_data, aes(x = lon_mid, y = lat_mid, fill = count)) +\n  scale_fill_gradientn(colors = c(\"blue\", \"green\", \"yellow\", \"red\")) + # Customize color scale\n  theme_minimal() +\n  labs(title = \"Strava Activity Density Heatmap\", fill = \"Activity Count\") +\n  coord_fixed(ratio = 1.3)"
+  },
+  {
+    "objectID": "posts/2025-11-01-Strava-R-map/index.html#make-the-static-map-with-ggmap",
+    "href": "posts/2025-11-01-Strava-R-map/index.html#make-the-static-map-with-ggmap",
+    "title": "Strava Heatmap",
+    "section": "Make the static map with ggmap",
+    "text": "Make the static map with ggmap\n\nggmap(base_map) +\n  geom_tile(data=binned_data, aes(x = lon_mid, y = lat_mid, fill = count)) +\n  scale_fill_gradientn(colors = c(\"blue\", \"green\", \"yellow\", \"red\")) + # Customize color scale\n  theme_minimal() +\n  labs(title = \"Strava Activity Density Heatmap\", fill = \"Activity Count\") +\n  coord_fixed(ratio = 1.3)\n\n\n\n\n\n\n\n\n\nMake an interactive heatmap with leaflet\n\nrun_map &lt;- filtered_df  |&gt; \n  leaflet()  |&gt; \n  addTiles()  |&gt;  # Add default OpenStreetMap map tiles\n  addHeatmap(\n    lng = ~position_long,\n    lat = ~position_lat,\n    blur = 20,    # Adjust blur and radius for desired look\n    max = 0.5,\n    radius = 15,\n  )\n\n# Display the map\nrun_map"
   }
 ]
