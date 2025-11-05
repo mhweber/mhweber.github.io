@@ -81,7 +81,7 @@
     "href": "today.html",
     "title": "Today I Learned",
     "section": "",
-    "text": "Today I Learned\nBelow are posts on various topics covering programming tips in R and Python, GIS tools and techniques and maps and data visualizations.\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nShort Description\n\n\n\nTags\n\n\n\n\n\n\n\n\nNov 2, 2025\n\n\nStrava Heatmap\n\n\nCreating a Strava Heatmap with dowloaded activity files using ggpmap in R\n\n\nmapping, R, Strava, heatmap, ggmap\n\n\n\n\n\n\nNo matching items"
+    "text": "Today I Learned\nBelow are posts on various topics covering programming tips in R and Python, GIS tools and techniques and maps and data visualizations.\n\n\n\n\n\n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nShort Description\n\n\n\nTags\n\n\n\n\n\n\n\n\nNov 2, 2025\n\n\nStrava Heatmap\n\n\nCreating a Strava Heatmap with dowloaded activity files using ggpmap in R\n\n\nmapping, R, Strava, heatmap, ggmap\n\n\n\n\n\n\nApr 17, 2024\n\n\nWeb Services in R\n\n\nWeb services, STAC, and COG for accessing spatial data in R\n\n\nwebservice, R, API, geoconnex, arcgislayers, STAC, COGs, ESRI REST\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2025-11-01-Strava-R-map/index.html",
@@ -103,5 +103,327 @@
     "title": "Strava Heatmap",
     "section": "Make the static map with ggmap",
     "text": "Make the static map with ggmap\n\nggmap(base_map) +\n  geom_tile(data=binned_data, aes(x = lon_mid, y = lat_mid, fill = count)) +\n  scale_fill_gradientn(colors = c(\"blue\", \"green\", \"yellow\", \"red\")) + # Customize color scale\n  theme_minimal() +\n  labs(title = \"Strava Activity Density Heatmap\", fill = \"Activity Count\") +\n  coord_fixed(ratio = 1.3)\n\n\n\n\n\n\n\n\n\nMake an interactive heatmap with leaflet\n\nrun_map &lt;- filtered_df  |&gt; \n  leaflet()  |&gt; \n  addTiles()  |&gt;  # Add default OpenStreetMap map tiles\n  addHeatmap(\n    lng = ~position_long,\n    lat = ~position_lat,\n    blur = 20,    # Adjust blur and radius for desired look\n    max = 0.5,\n    radius = 15,\n  )\n\n# Display the map\nrun_map"
+  },
+  {
+    "objectID": "posts/2025-11-01-Strava-R-map/index.html#make-a-static-map-with-ggmap",
+    "href": "posts/2025-11-01-Strava-R-map/index.html#make-a-static-map-with-ggmap",
+    "title": "Strava Heatmap",
+    "section": "Make a static map with ggmap",
+    "text": "Make a static map with ggmap\n\nggmap(base_map) +\n  geom_tile(data=binned_data, aes(x = lon_mid, y = lat_mid, fill = count)) +\n  scale_fill_gradientn(colors = c(\"blue\", \"green\", \"yellow\", \"red\")) + # Customize color scale\n  theme_minimal() +\n  labs(title = \"Strava Activity Density Heatmap\", fill = \"Activity Count\") +\n  coord_fixed(ratio = 1.3)\n\n\n\n\n\n\n\n\n\nA more pleasing static map with ggplot and cowplot\nInspired by great example of mapping Strava data in this great R-bloggers post\n\np &lt;- ggplot() + \n  # Construct the Heatmap Portion\n  stat_density2d(data = filtered_df,\n                 aes(x = position_long, y = position_lat, fill = after_stat(count)),\n                 geom = 'tile',\n                 contour = F,\n                 n = 1000\n                 ) +\n  #Draw the map local trails\n  geom_sf(data = roads, color = '#DDDDDD', alpha = .15) + \n  scale_fill_viridis_c(option = \"B\", guide = F) +\n  ggthemes::theme_map() + \n  theme(\n    panel.background = element_rect(fill = 'black'),\n    plot.background = element_rect(fill = 'black')\n  )\n\ncowplot::ggdraw(p) + \n  labs(title = \"My Trails Heatmap\",\n       caption = \"An Adventure with scraping Strava data and mapping in R\") +\n  theme(panel.background = element_rect(fill = \"black\"),\n        plot.background = element_rect(fill = 'black'),\n        plot.title = element_text(color = \"#DDDDDD\",\n                                  family = 'Calibri',\n                                  #face = 'bold',\n                                  size = 18),\n        plot.caption = ggtext::element_markdown(color = '#DDDDDD',\n                                    family = 'Calibri',\n                                    size = 12))\n\n\n\n\n\n\n\n\n\n\nMake an interactive heatmap with leaflet\nAlso, just for fun, make a simple interactive leaflet map\n\nrun_map &lt;- filtered_df  |&gt; \n  leaflet()  |&gt; \n  addTiles()  |&gt;  # Add default OpenStreetMap map tiles\n  addHeatmap(\n    lng = ~position_long,\n    lat = ~position_lat,\n    blur = 20,    # Adjust blur and radius for desired look\n    max = 0.5,\n    radius = 15,\n  )\n\n# Display the map\nrun_map"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html",
+    "href": "posts/2024-04-17-WebServices/index.html",
+    "title": "Web Services in R",
+    "section": "",
+    "text": "The code below demonstrates use of a few different web services, or APIs, for accessing spatial data in R"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#the-problem",
+    "href": "posts/2024-04-17-WebServices/index.html#the-problem",
+    "title": "Web Services in R",
+    "section": "The Problem",
+    "text": "The Problem\n\nWorking with spatial in R has typically involved importing data locally into R from a variety of sources\n\nThis is a manual process\nIt’s not easily reproducible\nIt requires storing local data and passing data files for code to work\n\n\nLet’s walk through a few different examples of: - Accessing data with RESTful APIs in R - Accessing spatial data using packages in R that wrap web services - Accessing ESRI REST services in R - Accessing spatial data via STAC (Spatial-Temporal Asset Catalogs) in R - Accessing and working with Cloud-Optimized GeoTiffs (COGS) in R"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#outline",
+    "href": "posts/2024-04-17-WebServices/index.html#outline",
+    "title": "Web Services in R",
+    "section": "Outline",
+    "text": "Outline\n\nAccessing data with RESTful APIs in R\nAccessing spatial data using packages in R that wrap web services\nAccessing ESRI REST services in R\nAccessing spatial data via STAC (Spatial-Temporal Asset Catalogs) in R\nAccessing and working with Cloud-Optimized GeoTiffs (COGS) in R"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#apis-web-services-rest-http",
+    "href": "posts/2024-04-17-WebServices/index.html#apis-web-services-rest-http",
+    "title": "Web Services in R",
+    "section": "APIs, Web Services, REST, HTTP?",
+    "text": "APIs, Web Services, REST, HTTP?\n\nAPI: Application Programming Interface - a set of definitions and protocols for building and integrating application software - does not have to be online!\nWeb Services: API with web service - a network is required to transfer information\nHTTP: Hypertext Transfer Protocol - the protocol for transmitting data between client and server (GET, POST, PATCH)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#apis-web-services-rest-http-1",
+    "href": "posts/2024-04-17-WebServices/index.html#apis-web-services-rest-http-1",
+    "title": "Web Services in R",
+    "section": "APIs, Web Services, REST, HTTP?",
+    "text": "APIs, Web Services, REST, HTTP?\n\nREST: a set of architectural constraints, not a protocol or a standard - When a client request is made via a RESTful API, it transfers a representation of the state of the resource to the requesting client\n\nThis information, or representation, is delivered in one of several formats via HTTP such as JSON (Javascript Object Notation),XML, YAML, HTML or plain text."
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#web-services-in-r",
+    "href": "posts/2024-04-17-WebServices/index.html#web-services-in-r",
+    "title": "Web Services in R",
+    "section": "Web Services in R",
+    "text": "Web Services in R\n\nhttr2 is arguably the go-to library currently for accessing APIs in R\nhttr2 replaces the httr package, providing a wrapper for the curl package\nbuilt for working with most modern web APIs.\njsonlite also used as a JSON parser and generator\n\n\nLoad Libraries\n\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(FITfileR)\nlibrary(R.utils)\nlibrary(ggplot2)\nlibrary(ggmap)\nlibrary(leaflet)\nlibrary(leaflet.extras)\nlibrary(arrow)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#echo-data-using-web-service",
+    "href": "posts/2024-04-17-WebServices/index.html#echo-data-using-web-service",
+    "title": "Web Services in R",
+    "section": "ECHO data using Web Service",
+    "text": "ECHO data using Web Service\n\nHere I’ll show a basic example of a GET request using httr2 package\nWe structure a request following parameters in the ECHO detailed facility report API documentation\nFirst off, we can use curl_translate to generate an example query for httr2 from ECHO API documentation\n\n\nhttr2::curl_translate(\"curl -X 'GET' \\\n  'https://echodata.epa.gov/echo/dfr_rest_services.get_dfr?output=JSON&p_id=110042133367&p_system=FRS&p_gt5yr=N' \\\n  -H 'accept: application/json'\")\n\nrequest(\"https://echodata.epa.gov/echo/dfr_rest_services.get_dfr\") |&gt;\n  req_method(\"GET\") |&gt;\n  req_url_query(\n    output = \"JSON\",\n    p_id = \"110042133367\",\n    p_system = \"FRS\",\n    p_gt5yr = \"N\",\n  ) |&gt;\n  req_headers(\n    accept = \"application/json\",\n  ) |&gt;\n  req_perform()"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#echo-data-using-web-service-1",
+    "href": "posts/2024-04-17-WebServices/index.html#echo-data-using-web-service-1",
+    "title": "Web Services in R",
+    "section": "ECHO data using Web Service",
+    "text": "ECHO data using Web Service\n\nThen we take the result from curl_translate to generate a simple non-spatial request\nWe’ll come back to this in following slides and walk through pulling in an ESRI REST service for spatial FRS data\n\n\nresp &lt;- httr2::request(\"https://echodata.epa.gov/echo/dfr_rest_services.get_dfr\") |&gt; \n  httr2::req_method(\"GET\") |&gt; \n  httr2::req_url_query(\n    output = \"JSON\",\n    p_id = \"110042133367\",\n    p_system = \"FRS\",\n    p_gt5yr = \"N\",\n  ) |&gt; \n  httr2::req_headers(\n    accept = \"application/json\",\n  ) |&gt; \n  httr2::req_perform()"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#echo-data-using-web-service-2",
+    "href": "posts/2024-04-17-WebServices/index.html#echo-data-using-web-service-2",
+    "title": "Web Services in R",
+    "section": "ECHO data using Web Service",
+    "text": "ECHO data using Web Service\n\nYou have to know where to look to mine the results!\n\n\nresult &lt;- resp |&gt; \n  httr2::resp_body_json()\nresult$Results$Permits[[1]]$FacilityName\n\n[1] \"ROSS ISLAND HARDTACK ISLAND PLANT\""
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#spatial-data-via-web-services-in-a-package",
+    "href": "posts/2024-04-17-WebServices/index.html#spatial-data-via-web-services-in-a-package",
+    "title": "Web Services in R",
+    "section": "Spatial data via web services in a package",
+    "text": "Spatial data via web services in a package\n\nWith the tigris package we can easily retrieve and load census geographies and Census Tiger line files for anywhere we like\n\n\nCorvallis_roads &lt;- tigris::roads(\"OR\", \"Benton\", progress_bar = FALSE)\n\nggplot2::ggplot(Corvallis_roads) + \n  ggplot2::geom_sf() + \n  ggplot2::theme_void()"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#spatial-data-via-web-services-in-a-package-1",
+    "href": "posts/2024-04-17-WebServices/index.html#spatial-data-via-web-services-in-a-package-1",
+    "title": "Web Services in R",
+    "section": "Spatial data via web services in a package",
+    "text": "Spatial data via web services in a package\n\nAccess hydrology data using the Network-Linked Data Index (NLDI) Service\nHere we demonstrate using the NLDI service with the nhdplusTools package as well as pulling in an area of interest with the AOI package\n\n\ncorvallis &lt;- AOI::aoi_ext(geo = \"Corvallis, OR\", wh = 10000, bbox = TRUE) |&gt; \n  sf::st_as_sf()\ncorvallis_hydro &lt;- nhdplusTools::get_nhdplus(corvallis, realization = \"all\")\n# get stream gages too\ncorvallis_hydro$gages &lt;- nhdplusTools::get_nwis(AOI::aoi_get(state=\"OR\",county=\"Benton\"))\nmapview::mapview(corvallis_hydro)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#pull-in-landscape-data-for-hydrology-data-via-an-api",
+    "href": "posts/2024-04-17-WebServices/index.html#pull-in-landscape-data-for-hydrology-data-via-an-api",
+    "title": "Web Services in R",
+    "section": "Pull in landscape data for hydrology data via an API",
+    "text": "Pull in landscape data for hydrology data via an API\n\nWe can add in watershed data using another API we’ve developed for accessing StreamCat data using the StreamCatTools R package\nHere we’ll add in the % impervious for each stream reach in the watershed using National Land Cover Database (NLCD) 2019 Impervious data"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#pull-in-landscape-data-for-hydrology-data-via-an-api-1",
+    "href": "posts/2024-04-17-WebServices/index.html#pull-in-landscape-data-for-hydrology-data-via-an-api-1",
+    "title": "Web Services in R",
+    "section": "Pull in landscape data for hydrology data via an API",
+    "text": "Pull in landscape data for hydrology data via an API\n\ncomids &lt;- paste(as.integer(corvallis_hydro$flowline$comid), collapse=\",\",sep=\"\")\n\ndf &lt;- StreamCatTools::sc_get_data(metric='PctImp2019', aoi='cat', comid=comids)\n\nflowlines &lt;- corvallis_hydro$flowline\nflowlines$PCTIMP2019CAT &lt;- df$pctimp2019cat[match(flowlines$comid, df$comid)]\n\nmapview::mapview(flowlines, zcol = \"PCTIMP2019CAT\", legend = TRUE)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#geoconnex",
+    "href": "posts/2024-04-17-WebServices/index.html#geoconnex",
+    "title": "Web Services in R",
+    "section": "geoconnex",
+    "text": "geoconnex\n\ngeoconnex is essentially a catalog of reference features with Uniform Resource Identifiers (URIs) to easily ingest programmatically using an OGC API implementation\nWe can see current geoconnex features by reading in the json of existing collections"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#geoconnex-1",
+    "href": "posts/2024-04-17-WebServices/index.html#geoconnex-1",
+    "title": "Web Services in R",
+    "section": "geoconnex",
+    "text": "geoconnex\n\ncollection_url &lt;- \"https://reference.geoconnex.us/collections\"\ncollections &lt;- jsonlite::fromJSON(collection_url)\n\ncollections$collections |&gt; dplyr::select(title) |&gt; \n  dplyr::slice(4:10:15) \n\n                                                     title\n1                                                     HU08\n2                                                     HU10\n3                                   USGS National Aquifers\n4                                  USGS Principal Aquifers\n5                     USGS Secondary Hydrogeologic Regions\n6                                          Reference Gages\n7                                      Reference Mainstems\n8                                           Reference Dams\n9                                     Public Water Systems\n10                                                  States\n11                                                Counties\n12 American Indian/Alaska Native Areas/Hawaiian Home Lands"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#geoconnex-2",
+    "href": "posts/2024-04-17-WebServices/index.html#geoconnex-2",
+    "title": "Web Services in R",
+    "section": "geoconnex",
+    "text": "geoconnex\n\nWe can see a listing of features in a particular collection - in this case rivers that are part of the ‘mainstems’ collection in geoconnex\n\n\nmainstems_url &lt;- \"https://reference.geoconnex.us/collections/mainstems/items?f=jsonld\"\nmainstems_list &lt;- jsonlite::fromJSON(mainstems_url)\nhead(mainstems_list$features)\n\n         @type                                        @id\n1 schema:Place       https://geoconnex.us/ref/mainstems/1\n2 schema:Place https://geoconnex.us/ref/mainstems/1003428\n3 schema:Place   https://geoconnex.us/ref/mainstems/10035\n4 schema:Place https://geoconnex.us/ref/mainstems/1004258\n5 schema:Place https://geoconnex.us/ref/mainstems/1004547\n6 schema:Place https://geoconnex.us/ref/mainstems/1004562"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#geoconnex-3",
+    "href": "posts/2024-04-17-WebServices/index.html#geoconnex-3",
+    "title": "Web Services in R",
+    "section": "geoconnex",
+    "text": "geoconnex\n\nOne example of leveraging geoconnex is grabbing a particular river in it’s entirety by it’s unique identifie5"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#esri-rest-services",
+    "href": "posts/2024-04-17-WebServices/index.html#esri-rest-services",
+    "title": "Web Services in R",
+    "section": "ESRI REST Services",
+    "text": "ESRI REST Services\n\nWe can get a nice listing of available ESRI REST services here or EPA ESRI REST services here\nFirst we’ll show the ‘manual’ way to bring into R as a spatial dataframe\nThen we’ll show how to do using arcgislayers package"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#esri-rest-services-the-hard-way",
+    "href": "posts/2024-04-17-WebServices/index.html#esri-rest-services-the-hard-way",
+    "title": "Web Services in R",
+    "section": "ESRI REST Services the hard way",
+    "text": "ESRI REST Services the hard way\n\nHere we’ll just query a USA Waterbodies ESRI REST service layer using httr\nNote we have to figure out how to parameterize our request body - this can be frustrating!\n\n\nmapview::mapviewOptions(fgb=FALSE)\nurl &lt;- httr::parse_url(\"https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services\")\nurl$path &lt;- paste(url$path, \"USA_Water_Bodies/FeatureServer/0/query\", sep = \"/\")\nurl$query &lt;- list(where = \"STATE = 'OR'\",\n                  outFields = \"*\",\n                  returnGeometry = \"true\",\n                  f = \"geojson\")\nwb &lt;- sf::read_sf(httr::build_url(url))\n\nmapview::mapview(wb, col.regions='light blue',map.types = \"OpenStreetMap\")"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#arcgislayers",
+    "href": "posts/2024-04-17-WebServices/index.html#arcgislayers",
+    "title": "Web Services in R",
+    "section": "Arcgislayers",
+    "text": "Arcgislayers\n\nExample here is from the GitHub repo for arcgislayers\nThis example reads in the ESRI Rest service for the same waterbody features as the previous example\n\n\nlibrary(arcgis, quietly = TRUE)\nurl &lt;- \"https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Water_Bodies/FeatureServer/0\"\nwb &lt;- arcgislayers::arc_open(url)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#arcgislayers-1",
+    "href": "posts/2024-04-17-WebServices/index.html#arcgislayers-1",
+    "title": "Web Services in R",
+    "section": "Arcgislayers",
+    "text": "Arcgislayers\n\nBy using list_fields we can find out more about the service and what attributes we can query (rather than reading in the whole layer)\n\n\nlist_fields(wb)\n\n# A data frame: 5 × 9\n  name     type       alias sqlType nullable editable domain defaultValue length\n* &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;   &lt;lgl&gt;    &lt;lgl&gt;    &lt;lgl&gt;  &lt;lgl&gt;         &lt;int&gt;\n1 OBJECTID esriField… Obje… sqlTyp… FALSE    FALSE    NA     NA               NA\n2 FEATURE  esriField… FEAT… sqlTyp… TRUE     TRUE     NA     NA               22\n3 NAME     esriField… NAME  sqlTyp… TRUE     TRUE     NA     NA               40\n4 STATE    esriField… STATE sqlTyp… TRUE     TRUE     NA     NA               20\n5 SQMI     esriField… SQMI  sqlTyp… TRUE     TRUE     NA     NA               NA"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#arcgislayers-2",
+    "href": "posts/2024-04-17-WebServices/index.html#arcgislayers-2",
+    "title": "Web Services in R",
+    "section": "Arcgislayers",
+    "text": "Arcgislayers\n\nWe can subset spatially this REST service to Oregon as we did in previous example but using arc_select in arcgislayers instead\n\n\nOR_wb &lt;- arcgislayers::arc_select(wb, fields = c(\"FEATURE\", \"NAME\", \"STATE\"), \n  where = \"STATE = 'OR'\")\nhead(OR_wb)\n\nSimple feature collection with 6 features and 3 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: -124.0828 ymin: 45.53727 xmax: -119.1438 ymax: 46.31739\nGeodetic CRS:  WGS 84\n    FEATURE                   NAME STATE                       geometry\n1    Stream         Columbia River    OR POLYGON ((-122.3274 45.5372...\n2    Stream           Youngs River    OR POLYGON ((-123.8371 46.1712...\n3 Reservoir Cold Springs Reservoir    OR POLYGON ((-119.1502 45.8685...\n4      Lake          Sturgeon Lake    OR POLYGON ((-122.8289 45.7422...\n5    Stream       Willamette River    OR POLYGON ((-122.7678 45.6531...\n6      Lake             Smith Lake    OR POLYGON ((-122.7326 45.6139..."
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#arcgislayers-3",
+    "href": "posts/2024-04-17-WebServices/index.html#arcgislayers-3",
+    "title": "Web Services in R",
+    "section": "Arcgislayers",
+    "text": "Arcgislayers\n\nWe can also use sf features to use as a spatial query template for pulling in ESRI REST service layers\nHere we pass a similar arc_select query as last time but apply a spatial filter on waterbodies to filter to just those in Oregon\nWe get the state boundary using the AOI package\n\n\nOR &lt;- AOI::aoi_get(state='OR')\nOR_wb &lt;- arcgislayers::arc_select(\n  wb,\n  filter_geom = sf::st_bbox(OR)\n)\nmapview::mapview(OR_wb, col.regions='light blue',map.types = \"OpenStreetMap\")"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#arcgislayers-4",
+    "href": "posts/2024-04-17-WebServices/index.html#arcgislayers-4",
+    "title": "Web Services in R",
+    "section": "Arcgislayers",
+    "text": "Arcgislayers\n\nTry ECHO ESRI service https://echogeo.epa.gov/arcgis/rest/services/ECHO/Facilities/MapServer\nNote that we need to drill down to a particular numbered feature layer in code below to grab particular features\n\n\nurl &lt;- \"https://echogeo.epa.gov/arcgis/rest/services/ECHO/Facilities/MapServer/3\"\n\nrcra &lt;- arcgislayers::arc_open(url)\nrcra\n\n&lt;FeatureLayer&gt;\nName: RCRA Facilities\nGeometry Type: esriGeometryPoint\nCRS: 3857\nCapabilities: Map,Query,Data"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#arcgislayers-5",
+    "href": "posts/2024-04-17-WebServices/index.html#arcgislayers-5",
+    "title": "Web Services in R",
+    "section": "Arcgislayers",
+    "text": "Arcgislayers\n\nAgain we use list_fields to figure out field query options\n\n\narcgislayers::list_fields(rcra)\n\n# A data frame: 87 × 5\n   name                     type                  alias            length domain\n * &lt;chr&gt;                    &lt;chr&gt;                 &lt;chr&gt;             &lt;int&gt; &lt;lgl&gt; \n 1 FAC_US_CANADA_BORDER_FLG esriFieldTypeString   US/Canada Borde…      1 NA    \n 2 GLOBALID                 esriFieldTypeString   GlobalID             40 NA    \n 3 OBJECTID                 esriFieldTypeOID      ObjectID             NA NA    \n 4 SHAPE                    esriFieldTypeGeometry SHAPE                NA NA    \n 5 SOURCE_ID                esriFieldTypeString   Source ID            30 NA    \n 6 EPA_SYSTEM               esriFieldTypeString   EPA System           10 NA    \n 7 REGISTRY_ID              esriFieldTypeString   Registry ID          50 NA    \n 8 STATUTE                  esriFieldTypeString   Statute              50 NA    \n 9 RCR_NAME                 esriFieldTypeString   Name                200 NA    \n10 RCR_STREET               esriFieldTypeString   Address - Street    200 NA    \n# ℹ 77 more rows"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#arcgislayers-6",
+    "href": "posts/2024-04-17-WebServices/index.html#arcgislayers-6",
+    "title": "Web Services in R",
+    "section": "Arcgislayers",
+    "text": "Arcgislayers\n\nUse a fields based query\nUse mapview to display the result of our query\n\n\nrcra_pdx &lt;- arcgislayers::arc_select(\n  rcra, \n  fields = c(\"GLOBALID\", \"RCR_NAME\", \"RCR_CITY\",\"RCR_STATE\",\"RCR_ZIP\",\"RCRA_CURR_COMPL_STATUS\",\"DFR_URL\"), \n  where = \"RCR_ZIP = '97209'\"\n)\nmapview::mapview(rcra_pdx)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#stac-and-cog",
+    "href": "posts/2024-04-17-WebServices/index.html#stac-and-cog",
+    "title": "Web Services in R",
+    "section": "STAC and COG",
+    "text": "STAC and COG\n\nSpatio-Temporal Asset Catalogs (STAC) are a specification and an API and Cloud-Optimized Geotiffs (COG) are a cloud native geospatial format\nRather than downloading GB worth of data locally, we can collect data from large cloud-based rasters via spatial, temporal and attribute queries"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#stac-and-cog-1",
+    "href": "posts/2024-04-17-WebServices/index.html#stac-and-cog-1",
+    "title": "Web Services in R",
+    "section": "STAC and COG",
+    "text": "STAC and COG\n\nThere are currently petabytes of satellite imagery collections from satellite and national and global scale raster data we can access remotely in cloud-native geospatial format\nMany other cloud-native geospatial formats that we don’t have time to cover today which include:\n\nZarr\nFlatgeobuff\nGeoParquet\nCloud-optimized HDF5 and NetCDF\nCloud-optimized Point Clouds (COPG)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#stac",
+    "href": "posts/2024-04-17-WebServices/index.html#stac",
+    "title": "Web Services in R",
+    "section": "STAC",
+    "text": "STAC\n\nSTAC is just a specification and an ecosystem to describe and work with geospatial information assets in a cloud-native way using STAC specifications and the STAC API\nCurrently for working with STAC resources in R there is just rstac and an in-development package stat4cast for forecast data"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#what-does-cloud-optimized-geotiffs-cog-mean",
+    "href": "posts/2024-04-17-WebServices/index.html#what-does-cloud-optimized-geotiffs-cog-mean",
+    "title": "Web Services in R",
+    "section": "What does Cloud-Optimized Geotiffs (COG) mean?",
+    "text": "What does Cloud-Optimized Geotiffs (COG) mean?\n\nUses 2 key technologies:\n\nstoring and organizing pixels in optimized way\nusing HTTP GET range requests to access just portions of a file needed\n\nSupports partial reads and parallel reads"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#cogs",
+    "href": "posts/2024-04-17-WebServices/index.html#cogs",
+    "title": "Web Services in R",
+    "section": "COGs",
+    "text": "COGs\n\nCOGs are just raster data representing a slice in time of gridded data such as digital elevation models (DEMs) or land cover or climate"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#stac-resources-in-r-using-rstac",
+    "href": "posts/2024-04-17-WebServices/index.html#stac-resources-in-r-using-rstac",
+    "title": "Web Services in R",
+    "section": "STAC resources in R using rstac",
+    "text": "STAC resources in R using rstac\n\nrstac implements a number of STAC endpoints that can be used to retrieve information from a STAC API service\nHere we demonstrate querying the Earth Search API to retrieve Sentinel 2 stored as a COG using the STAC API\n\n\ns = rstac::stac(\"https://earth-search.aws.element84.com/v0\")\n\nitems &lt;- s  |&gt; \n    rstac::stac_search(collections = \"sentinel-s2-l2a-cogs\",\n                bbox = c(-124.4,43.5,-122.2,45.6), # Corvallis\n                datetime = \"2020-05-01/2020-09-30\",\n                limit = 10)  |&gt; \n    rstac::post_request() \n\nprint(items)\n\n###Items\n- matched feature(s): 496\n- features (10 item(s) / 486 not fetched):\n  - S2B_10TCP_20200929_0_L2A\n  - S2B_10TDP_20200929_0_L2A\n  - S2B_10TEP_20200929_0_L2A\n  - S2B_10TDQ_20200929_0_L2A\n  - S2B_10TEQ_20200929_0_L2A\n  - S2B_10TDR_20200929_0_L2A\n  - S2B_10TER_20200929_0_L2A\n  - S2A_10TCP_20200927_0_L2A\n  - S2A_10TDP_20200927_0_L2A\n  - S2A_10TEP_20200927_0_L2A\n- assets: \nAOT, B01, B02, B03, B04, B05, B06, B07, B08, B09, B11, B12, B8A, info, metadata, overview, SCL, thumbnail, visual, WVP\n- item's fields: \nassets, bbox, collection, geometry, id, links, properties, properties.sentinel:boa_offset_applied, stac_extensions, stac_version, type"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#stac-resources-in-r-using-rstac-1",
+    "href": "posts/2024-04-17-WebServices/index.html#stac-resources-in-r-using-rstac-1",
+    "title": "Web Services in R",
+    "section": "STAC resources in R using rstac",
+    "text": "STAC resources in R using rstac\n\nWe can see in previous slide what we get back from our request is a list with metadata as well as a list of features\nEach feature is an image with an identifier, bounding box, date, cloud cover, etc)\nIf we print links to imagery assets they are just URLs of GeoTIFF files located on an AWS S3 bucket.\n\n\nprint(items$features[[5]]$assets$B04$type)\n\n[1] \"image/tiff; application=geotiff; profile=cloud-optimized\"\n\nprint(items$features[[5]]$assets$B04$href)\n\n[1] \"https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/10/T/EQ/2020/9/S2B_10TEQ_20200929_0_L2A/B04.tif\""
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using vsicurl",
+    "text": "Reading COG file from STAC URL using vsicurl\n\nReading COGs in R can be done in a couple ways but using the Geospatial Data Abstraction Library (GDAL) virtual file system is a quick and easy way to read COGs into R with the terra package\nThere are several ‘flavors’ of GDAL virtual file systems for accessing files stored on either public or private networks or cloud storage platforms"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-1",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-1",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using vsicurl",
+    "text": "Reading COG file from STAC URL using vsicurl\n\nThree of the most useful virtual file system formats for common spatial data tasks include:\n\nvsizip –&gt; file handler that allows reading ZIP archives on-the-fly without decompressing them beforehand.\nvsicurl –&gt; A generic file system handler exists for online resources that do not require particular signed authentication schemes\nvsis3 –&gt; specialized into sub-filesystems for commercial cloud storage services (e.g. AWS, also see /vsigs/, /vsiaz/, /vsioss/ or /vsiswift/)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-2",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-2",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using vsicurl",
+    "text": "Reading COG file from STAC URL using vsicurl\n\ncog.url &lt;- \"/vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/10/T/EQ/2020/9/S2B_10TEQ_20200929_0_L2A/B04.tif\"\nsentinel_band4 &lt;- terra::rast(cog.url)\nsentinel_band4\n\nclass       : SpatRaster \nsize        : 10980, 10980, 1  (nrow, ncol, nlyr)\nresolution  : 10, 10  (x, y)\nextent      : 499980, 609780, 4890240, 5000040  (xmin, xmax, ymin, ymax)\ncoord. ref. : WGS 84 / UTM zone 10N (EPSG:32610) \nsource      : B04.tif \nname        : B04"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-3",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-3",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using vsicurl",
+    "text": "Reading COG file from STAC URL using vsicurl\n\nSentinel data is big, let’s show another example from Microsoft Planetary Computer\nWe’ll bring in a feature from the USGS Land Change Monitoring, Assessment, and Projection (LCMAP) collection following example here\nFirst we’ll derive the bounding box directly from our area of interest"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-4",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-4",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using vsicurl",
+    "text": "Reading COG file from STAC URL using vsicurl\n\ncorvallis_bbox &lt;- corvallis |&gt;\n  sf::st_transform(4326) |&gt; # provide in WGS84\n  sf::st_bbox()\ncorvallis_bbox\n\n      xmin       ymin       xmax       ymax \n-123.40535   44.48199 -123.15317   44.66197"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using",
+    "text": "Reading COG file from STAC URL using\n\nPass our bounding box to the bounding box argument for stac_search to filter STAC results\n\n\ns &lt;- rstac::stac(\"https://planetarycomputer.microsoft.com/api/stac/v1\")\n\nstac_query &lt;- rstac::stac_search(\n  q = s,\n  collections = \"usgs-lcmap-conus-v13\",\n  bbox = corvallis_bbox,\n  datetime = \"2021-01-01/2021-12-31\"\n)\nitems &lt;- rstac::get_request(stac_query)\nitems$features[[1]]\n\n###Item\n- id: LCMAP_CU_002004_2021_V13_CCDC\n- collection: usgs-lcmap-conus-v13\n- bbox: xmin: -124.91810, ymin: 43.01321, xmax: -122.58542, ymax: 44.68808\n- datetime:\n- assets: \ndates, lcpri, lcsec, scmag, scmqa, browse, lcachg, sclast, scstab, sctime, lcpconf, lcsconf, lcpri_metadata, lcsec_metadata, scmag_metadata, scmqa_metadata, lcachg_metadata, sclast_metadata, scstab_metadata, sctime_metadata, lcpconf_metadata, lcsconf_metadata, tilejson, rendered_preview\n- item's fields: \nassets, bbox, collection, geometry, id, links, properties, stac_extensions, stac_version, type"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-1",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-1",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using",
+    "text": "Reading COG file from STAC URL using\n\nWe can extract the url to pass to GDAL vsicurl using assets_url from rstac\n\n\nlcpri_url &lt;- rstac::assets_url(items, \"lcpri\")\nlcpri_url\n\n[1] \"https://landcoverdata.blob.core.windows.net/lcmap/CU/V13/002004/2021/LCMAP_CU_002004_2021_20220723_V13_CCDC/LCMAP_CU_002004_2021_20220701_V13_LCPRI.tif\"\n[2] \"https://landcoverdata.blob.core.windows.net/lcmap/CU/V13/002003/2021/LCMAP_CU_002003_2021_20220723_V13_CCDC/LCMAP_CU_002003_2021_20220701_V13_LCPRI.tif\""
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-5",
+    "href": "posts/2024-04-17-WebServices/index.html#reading-cog-file-from-stac-url-using-vsicurl-5",
+    "title": "Web Services in R",
+    "section": "Reading COG file from STAC URL using vsicurl",
+    "text": "Reading COG file from STAC URL using vsicurl\n\nWe’ll use a couple functions (not listed out here) to construct the GDAL vsicurl URL and use gdal_utils to download and reproject the asset\n\n\ntemp &lt;- terra::rast(out_file)\nmapview::mapview(temp)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#cog-without-stac",
+    "href": "posts/2024-04-17-WebServices/index.html#cog-without-stac",
+    "title": "Web Services in R",
+    "section": "COG without STAC",
+    "text": "COG without STAC\n\nSTAC is a specification and an API - COGS are a format\nWe can read COGs directly using GDAL virtual file systems without using STAC\nRemember! - all we need to do is add /vsicurl/ prefix before the path to the file"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#cog-without-stac-1",
+    "href": "posts/2024-04-17-WebServices/index.html#cog-without-stac-1",
+    "title": "Web Services in R",
+    "section": "COG without STAC",
+    "text": "COG without STAC\n\nHere is an example directly from Geocomputation with R\nThis is a global monthly December snow probability raster at 500m resolution stored as a COG file at zenodo.org\n\n\nurl = paste0(\"/vsicurl/https://zenodo.org/record/5774954/files/\",\n               \"clm_snow.prob_esacci.dec_p.90_500m_s0..0cm_2000..2012_v2.0.tif\")\nsnow = terra::rast(url)\nsnow\n\nclass       : SpatRaster \nsize        : 35849, 86400, 1  (nrow, ncol, nlyr)\nresolution  : 0.004166667, 0.004166667  (x, y)\nextent      : -180, 180, -62.00083, 87.37  (xmin, xmax, ymin, ymax)\ncoord. ref. : lon/lat WGS 84 (EPSG:4326) \nsource      : clm_snow.prob_esacci.dec_p.90_500m_s0..0cm_2000..2012_v2.0.tif \nname        : clm_snow.prob_esacci.dec_p.90_500m_s0..0cm_2000..2012_v2.0"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#cog-without-stac-2",
+    "href": "posts/2024-04-17-WebServices/index.html#cog-without-stac-2",
+    "title": "Web Services in R",
+    "section": "COG without STAC",
+    "text": "COG without STAC\n\nImportant point - we are simply creating a connection to this COG - we are not reading this file to our RAM yet\nValues will be read once we apply any value based operation like crop or extract\n\n\ncorvallis_snow &lt;- terra::crop(snow, corvallis_bbox)\nmapview::mapview(corvallis_snow)"
+  },
+  {
+    "objectID": "posts/2024-04-17-WebServices/index.html#resouces",
+    "href": "posts/2024-04-17-WebServices/index.html#resouces",
+    "title": "Web Services in R",
+    "section": "Resouces",
+    "text": "Resouces\n\nhttr2\narcgislayers\nSTAC\nrstac\nProcessing satelitte data using STAC and COG in R\nSTAC Catalogs\nCOGs with gdal and terra in R"
   }
 ]

@@ -14,9 +14,12 @@ I wanted to create a basic heatmap like you can create based on your activities 
 #| warning: false
 library(tidyverse)
 library(sf)
+library(tigris)
 library(FITfileR)
+library(litedown)
 library(R.utils)
 library(ggplot2)
+library(osmdata)
 library(ggmap)
 library(leaflet)
 library(leaflet.extras)
@@ -118,19 +121,19 @@ write_parquet(all_data,'C:/Users/mwebe/OneDrive/GitProjects/mhweber.github.io/po
 all_data <- read_parquet('C:/Users/mwebe/OneDrive/GitProjects/mhweber.github.io/posts/2025-11-01-Strava-R-map/all_data.parquet')
 all_data$timestamp <- as.POSIXct(all_data$timestamp, format = "%Y-%m-%d %H:%M:%S")
 
-all_data <- all_data  |> 
-      filter(timestamp > as.POSIXct("2023-01-01 00:00:00", format = "%Y-%m-%d %H:%M:%S"))
-
 head(all_data)
 ```
 
-### Truncate the data to just local activities
+### Truncate the data to just local activities within the last year and make spatial
 
 ```{r}
 #| warning: false
 filtered_df <- all_data |> 
-  filter(position_lat > 44.4 & position_lat < 44.8) |> 
-  filter(position_long > -123.6 & position_long < -123.1)
+  filter(position_lat > 44.5 & position_lat < 44.7) |> 
+  filter(position_long > -123.4 & position_long < -123.2) |> 
+  filter(timestamp > as.POSIXct("2025-01-01 00:00:00", format = "%Y-%m-%d %H:%M:%S"))
+filtered_df_sf <- st_as_sf(filtered_df, coords = c('position_long', 'position_lat'))  |>  st_set_crs(4326)
+
 ```
 
 ### Bin the data for better viewing in ggmap
@@ -149,6 +152,8 @@ binned_data <- filtered_df %>%
     lon_mid = as.numeric(sub(',.*', '', sub('\\(', '', lon_bin))) + (as.numeric(sub('.*,', '', sub('\\]', '', lon_bin))) - as.numeric(sub(',.*', '', sub('\\(', '', lon_bin))))/2,
     lat_mid = as.numeric(sub(',.*', '', sub('\\(', '', lat_bin))) + (as.numeric(sub('.*,', '', sub('\\]', '', lat_bin))) - as.numeric(sub(',.*', '', sub('\\(', '', lat_bin))))/2
   )
+
+binned_data_sf <- st_as_sf(binned_data, coords = c('lon_mid', 'lat_mid'))  |>  st_set_crs(4326)
 ```
 
 ### Get Stamen background map
@@ -156,11 +161,20 @@ binned_data <- filtered_df %>%
 ```{r}
 #| warning: false
 # Get the map tiles
-map_bbox <-c(left = -123.5, bottom = 44.4, right = -123, top = 44.9)
+map_bbox <-c(left = -123.4, bottom = 44.5, right = -123.2, top = 44.7)
 base_map <- get_stadiamap(bbox = map_bbox, zoom = 12, maptype = "stamen_terrain_lines")
 ```
 
-## Make the static map with ggmap
+### Get background roads as an sf object
+First query for hiking trails within the bounding box of activity data.  Then convert the osm data to an `sf` object and extract just the trail line features
+```{r}
+roads <- roads("OR", c("Benton","Polk"), progress_bar = FALSE)
+roads <- roads |> 
+  st_transform(roads,crs=st_crs(filtered_df_sf)) |> 
+  st_crop(st_bbox(filtered_df_sf))
+```
+
+## Make a static map with ggmap
 
 ```{r}
 #| warning: false
@@ -172,8 +186,44 @@ ggmap(base_map) +
   coord_fixed(ratio = 1.3)
 ```
 
-### Make an interactive heatmap with leaflet
+### A more pleasing static map with ggplot and cowplot
+Inspired by great example of mapping Strava data in [this great R-bloggers post](https://www.r-bloggers.com/2021/03/heatmapping-my-new-york-city-marathon-training/)
 
+```{r}
+#| warning: false
+p <- ggplot() + 
+  # Construct the Heatmap Portion
+  stat_density2d(data = filtered_df,
+                 aes(x = position_long, y = position_lat, fill = after_stat(count)),
+                 geom = 'tile',
+                 contour = F,
+                 n = 1000
+                 ) +
+  #Draw the map local trails
+  geom_sf(data = roads, color = '#DDDDDD', alpha = .15) + 
+  scale_fill_viridis_c(option = "B", guide = F) +
+  ggthemes::theme_map() + 
+  theme(
+    panel.background = element_rect(fill = 'black'),
+    plot.background = element_rect(fill = 'black')
+  )
+
+cowplot::ggdraw(p) + 
+  labs(title = "My Trails Heatmap",
+       caption = "An Adventure with scraping Strava data and mapping in R") +
+  theme(panel.background = element_rect(fill = "black"),
+        plot.background = element_rect(fill = 'black'),
+        plot.title = element_text(color = "#DDDDDD",
+                                  family = 'Calibri',
+                                  #face = 'bold',
+                                  size = 18),
+        plot.caption = ggtext::element_markdown(color = '#DDDDDD',
+                                    family = 'Calibri',
+                                    size = 12))
+```
+
+### Make an interactive heatmap with leaflet
+Also, just for fun, make a simple interactive leaflet map
 ```{r}
 #| warning: false
 run_map <- filtered_df  |> 
