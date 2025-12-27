@@ -1,15 +1,17 @@
 ---
 title: "Geoparquet in R"
-date: "2024-04-17"
+date: "2025-12-19"
 description: "Accessing an example geoparquet file in an S3 bucket and pulling data in only within a bounding box and for certain criteria"
 categories: [geoparquet, R, arrow]
 author: Marc Weber
 ---
 
-Geoparquet extends the parquet file format and as nicely described in [this blog post by Kyle Barron](https://cloudnativegeo.org/blog/2024/12/interview-with-kyle-barron-on-geoarrow-and-geoparquet-and-the-future-of-geospatial-data-analysis/#:~:text=GeoParquet%20is%20a%20file%20format,single%20row%20of%20your%20data.) and provides a powerful new way to store and share geospatial data in a cloud-optimized format.  I've been using it for more and more of my spatial data, and below is just a quick example using Overture Maps buildings data and doing spatial and attribute filtering to subset the data prior to reading in.
+Geoparquet extends the parquet file format and as nicely described in [this blog post by Kyle Barron](https://cloudnativegeo.org/blog/2024/12/interview-with-kyle-barron-on-geoarrow-and-geoparquet-and-the-future-of-geospatial-data-analysis/#:~:text=GeoParquet%20is%20a%20file%20format,single%20row%20of%20your%20data.) and provides a powerful new way to store and share geospatial data in a cloud-optimized format. I've been using it for more and more of my spatial data, and below is just a quick example using Overture Maps buildings data and doing spatial and attribute filtering to subset the data prior to reading in.
 
 ### First open a connection to a cloud-hosted GeoParquet file
+
 For this example we use Overture Maps buildings (public S3 bucket). We'll open a connection (but we are not actually reading it in yet)
+
 ```{r}
 #| warning: false
 #| message: false
@@ -29,6 +31,7 @@ bbox_field <- buildings_ds$schema$GetFieldByName("bbox")
 ```
 
 ### Look at a slice to see structure of data
+
 ```{r}
 collect(
   buildings_ds %>%
@@ -47,7 +50,9 @@ print(bbox_field$type)
 ```
 
 ### Prune the data
+
 We define your query bbox in EPSG:4326 lon/lat
+
 ```{r}
 xmin <- -123.32; ymin <- 44.52
 xmax <- -123.20; ymax <- 44.63
@@ -68,6 +73,7 @@ ds_pruned <- buildings_ds %>%
 ```
 
 ### Materialize and convert to sf
+
 ```{r}
 # Materialize and convert to sf
 tbl <- collect(ds_pruned)
@@ -80,8 +86,3 @@ buildings_bbox <- st_filter(buildings_sf, bbox_sfc)
 
 mapview::mapview(buildings_bbox)
 ```
-
-
-
-
-
