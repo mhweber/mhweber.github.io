@@ -10,40 +10,37 @@ The code below demonstrates use of a few different web services, or APIs, for ac
 
 ## The Problem
 
--   Working with spatial in R has typically involved importing data locally into R from a variety of sources
-    -   This is a manual process
-    -   It's not easily reproducible
-    -   It requires storing local data and passing data files for code to work
-    
-Let's walk through a few different examples of:
--   Accessing data with RESTful APIs in R
--   Accessing spatial data using packages in R that wrap web services
--   Accessing ESRI REST services in R
--   Accessing spatial data via STAC (Spatial-Temporal Asset Catalogs) in R
--   Accessing and working with Cloud-Optimized GeoTiffs (COGS) in R
+- Working with spatial in R has typically involved importing data locally into R from a variety of sources
+  - This is a manual process
+  - It's not easily reproducible
+  - It requires storing local data and passing data files for code to work
+
+Let's walk through a few different examples of: - Accessing data with RESTful APIs in R - Accessing spatial data using packages in R that wrap web services - Accessing ESRI REST services in R - Accessing spatial data via STAC (Spatial-Temporal Asset Catalogs) in R - Accessing and working with Cloud-Optimized GeoTiffs (COGS) in R
 
 ## APIs, Web Services, REST, HTTP?
 
--   **API**: Application Programming Interface - a set of definitions and protocols for building and integrating application software - *does not have to be online*!
--   **Web Services**: API with web service - a network is required to transfer information
--   **HTTP**: Hypertext Transfer Protocol - the protocol for transmitting data between client and server (GET, POST, PATCH)
+- **API**: Application Programming Interface - a set of definitions and protocols for building and integrating application software - *does not have to be online*!
+- **Web Services**: API with web service - a network is required to transfer information
+- **HTTP**: Hypertext Transfer Protocol - the protocol for transmitting data between client and server (GET, POST, PATCH)
 
 ## APIs, Web Services, REST, HTTP?
 
--   **REST**: a set of architectural constraints, not a protocol or a standard - When a client request is made via a RESTful API, it transfers a representation of the state of the resource to the requesting client
-    -   This information, or *representation*, is delivered in one of several formats via **HTTP** such as **JSON** (Javascript Object Notation),**XML**, **YAML**, **HTML** or plain text.
+- **REST**: a set of architectural constraints, not a protocol or a standard - When a client request is made via a RESTful API, it transfers a representation of the state of the resource to the requesting client
+  - This information, or *representation*, is delivered in one of several formats via **HTTP** such as **JSON** (Javascript Object Notation),**XML**, **YAML**, **HTML** or plain text.
 
 ## Web Services in R
 
--   `httr2` is arguably the go-to library currently for accessing APIs in R
--   `httr2` replaces the `httr` package, providing a wrapper for the `curl` package
--   built for working with most modern web APIs.
--   `jsonlite` also used as a JSON parser and generator
+- `httr2` is arguably the go-to library currently for accessing APIs in R
+- `httr2` replaces the `httr` package, providing a wrapper for the `curl` package
+- built for working with most modern web APIs.
+- `jsonlite` also used as a JSON parser and generator
 
 ### Load Libraries
 
 ```{r}
 #| warning: false
+#| echo: false
+#| message: false
 library(tidyverse)
 library(sf)
 library(FITfileR)
@@ -55,60 +52,10 @@ library(leaflet.extras)
 library(arrow)
 ```
 
-## ECHO data using Web Service
-
--   Here I'll show a basic example of a `GET` request using `httr2` package
--   We structure a request following parameters in the [ECHO detailed facility report API documentation](https://echo.epa.gov/tools/web-services/detailed-facility-report#/Detailed%20Facility%20Report/get_dfr_rest_services_get_dfr)
--   First off, we can use `curl_translate` to generate an example query for `httr2` from ECHO API documentation
-
-```{r}
-#| warning: false
-#| message: false
-#| error: false
-httr2::curl_translate("curl -X 'GET' \
-  'https://echodata.epa.gov/echo/dfr_rest_services.get_dfr?output=JSON&p_id=110042133367&p_system=FRS&p_gt5yr=N' \
-  -H 'accept: application/json'")
-```
-
-## ECHO data using Web Service
-
--   Then we take the result from `curl_translate` to generate a simple non-spatial request
--   We'll come back to this in following slides and walk through pulling in an ESRI REST service for spatial FRS data
-
-```{r}
-#| warning: false
-#| message: false
-#| error: false
-resp <- httr2::request("https://echodata.epa.gov/echo/dfr_rest_services.get_dfr") |> 
-  httr2::req_method("GET") |> 
-  httr2::req_url_query(
-    output = "JSON",
-    p_id = "110042133367",
-    p_system = "FRS",
-    p_gt5yr = "N",
-  ) |> 
-  httr2::req_headers(
-    accept = "application/json",
-  ) |> 
-  httr2::req_perform()
-```
-
-## ECHO data using Web Service
-
--   You have to know where to look to mine the results!
-
-```{r}
-#| warning: false
-#| message: false
-#| error: false
-result <- resp |> 
-  httr2::resp_body_json()
-result$Results$Permits[[1]]$FacilityName
-```
 
 ## Spatial data via web services in a package
 
--   With the [tigris](https://github.com/walkerke/tigris) package we can easily retrieve and load census geographies and Census Tiger line files for anywhere we like
+- With the [tigris](https://github.com/walkerke/tigris) package we can easily retrieve and load census geographies and Census Tiger line files for anywhere we like
 
 ```{r}
 #| warning: false
@@ -123,8 +70,8 @@ ggplot2::ggplot(Corvallis_roads) +
 
 ## Spatial data via web services in a package
 
--   Access hydrology data using the [Network-Linked Data Index (NLDI) Service](https://waterdata.usgs.gov/blog/nldi-intro/)
--   Here we demonstrate using the NLDI service with the `nhdplusTools` package as well as pulling in an area of interest with the `AOI` package
+- Access hydrology data using the [Network-Linked Data Index (NLDI) Service](https://waterdata.usgs.gov/blog/nldi-intro/)
+- Here we demonstrate using the NLDI service with the `nhdplusTools` package as well as pulling in an area of interest with the `AOI` package
 
 ```{r}
 #| warning: false
@@ -140,8 +87,8 @@ mapview::mapview(corvallis_hydro)
 
 ## Pull in landscape data for hydrology data via an API
 
--   We can add in watershed data using another API we've developed for accessing [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data using the [StreamCatTools](https://usepa.github.io/StreamCatTools/) R package
--   Here we'll add in the % impervious for each stream reach in the watershed using [National Land Cover Database (NLCD) 2019 Impervious data](https://www.mrlc.gov/home)
+- We can add in watershed data using another API we've developed for accessing [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data using the [StreamCatTools](https://usepa.github.io/StreamCatTools/) R package
+- Here we'll add in the % impervious for each stream reach in the watershed using [National Land Cover Database (NLCD) 2019 Impervious data](https://www.mrlc.gov/home)
 
 ## Pull in landscape data for hydrology data via an API
 
@@ -161,8 +108,8 @@ mapview::mapview(flowlines, zcol = "PCTIMP2019CAT", legend = TRUE)
 
 ## geoconnex
 
--   [geoconnex](https://reference.geoconnex.us/) is essentially a catalog of reference features with Uniform Resource Identifiers (URIs) to easily ingest programmatically using an [OGC API](https://www.ogc.org/standards/ogcapi-features) implementation
--   We can see current geoconnex features by reading in the json of existing collections
+- [geoconnex](https://reference.geoconnex.us/) is essentially a catalog of reference features with Uniform Resource Identifiers (URIs) to easily ingest programmatically using an [OGC API](https://www.ogc.org/standards/ogcapi-features) implementation
+- We can see current geoconnex features by reading in the json of existing collections
 
 ## geoconnex
 
@@ -179,7 +126,7 @@ collections$collections |> dplyr::select(title) |>
 
 ## geoconnex
 
--   We can see a listing of features in a particular collection - in this case rivers that are part of the 'mainstems' collection in geoconnex
+- We can see a listing of features in a particular collection - in this case rivers that are part of the 'mainstems' collection in geoconnex
 
 ```{r}
 #| warning: false
@@ -193,7 +140,7 @@ head(mainstems_list$features)
 
 ## geoconnex
 
--   One example of leveraging `geoconnex` is grabbing a particular river in it's entirety by it's unique identifie5
+- One example of leveraging `geoconnex` is grabbing a particular river in it's entirety by it's unique identifie5
 
 ```{r}
 #| warning: false
@@ -208,14 +155,14 @@ mapview::mapview(colorado_river,color="blue")
 
 ## ESRI REST Services
 
--   We can get a nice listing of available ESRI REST services [here](https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services) or EPA ESRI REST services [here](https://opensourcegisdata.com/environmental-protection-agency-list-of-gis-rest-services.html)
--   First we'll show the 'manual' way to bring into R as a spatial dataframe
--   Then we'll show how to do using `arcgislayers` package
+- We can get a nice listing of available ESRI REST services [here](https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services) or EPA ESRI REST services [here](https://opensourcegisdata.com/environmental-protection-agency-list-of-gis-rest-services.html)
+- First we'll show the 'manual' way to bring into R as a spatial dataframe
+- Then we'll show how to do using `arcgislayers` package
 
 ## ESRI REST Services the hard way
 
--   Here we'll just query a USA Waterbodies ESRI REST service layer using `httr`
--   Note we have to figure out how to parameterize our request body - *this can be frustrating!*
+- Here we'll just query a USA Waterbodies ESRI REST service layer using `httr`
+- Note we have to figure out how to parameterize our request body - *this can be frustrating!*
 
 ```{r}
 #| output-location: slide
@@ -233,8 +180,8 @@ mapview::mapview(wb, col.regions='light blue',map.types = "OpenStreetMap")
 
 ## Arcgislayers
 
--   Example here is from the [GitHub repo for arcgislayers](https://github.com/R-ArcGIS/arcgislayers)
--   This example reads in the ESRI Rest service for the same waterbody features as the previous example
+- Example here is from the [GitHub repo for arcgislayers](https://github.com/R-ArcGIS/arcgislayers)
+- This example reads in the ESRI Rest service for the same waterbody features as the previous example
 
 ```{r}
 #| warning: false
@@ -247,7 +194,7 @@ wb <- arcgislayers::arc_open(url)
 
 ## Arcgislayers
 
--   By using `list_fields` we can find out more about the service and what attributes we can query (rather than reading in the whole layer)
+- By using `list_fields` we can find out more about the service and what attributes we can query (rather than reading in the whole layer)
 
 ```{r}
 #| warning: false
@@ -258,7 +205,7 @@ list_fields(wb)
 
 ## Arcgislayers
 
--   We can subset spatially this REST service to Oregon as we did in previous example but using `arc_select` in `arcgislayers` instead
+- We can subset spatially this REST service to Oregon as we did in previous example but using `arc_select` in `arcgislayers` instead
 
 ```{r}
 #| warning: false
@@ -273,9 +220,9 @@ head(OR_wb)
 
 ## Arcgislayers
 
--   We can also use `sf` features to use as a spatial query template for pulling in ESRI REST service layers
--   Here we pass a similar `arc_select` query as last time but apply a spatial filter on waterbodies to filter to just those in Oregon
--   We get the state boundary using the `AOI` package
+- We can also use `sf` features to use as a spatial query template for pulling in ESRI REST service layers
+- Here we pass a similar `arc_select` query as last time but apply a spatial filter on waterbodies to filter to just those in Oregon
+- We get the state boundary using the `AOI` package
 
 ```{r}
 #| warning: false
@@ -292,8 +239,8 @@ mapview::mapview(OR_wb, col.regions='light blue',map.types = "OpenStreetMap")
 
 ## Arcgislayers
 
--   Try ECHO ESRI service <https://echogeo.epa.gov/arcgis/rest/services/ECHO/Facilities/MapServer>
--   Note that we need to drill down to a particular numbered feature layer in code below to grab particular features
+- Try ECHO ESRI service <https://echogeo.epa.gov/arcgis/rest/services/ECHO/Facilities/MapServer>
+- Note that we need to drill down to a particular numbered feature layer in code below to grab particular features
 
 ```{r}
 #| warning: false
@@ -307,7 +254,7 @@ rcra
 
 ## Arcgislayers
 
--   Again we use `list_fields` to figure out field query options
+- Again we use `list_fields` to figure out field query options
 
 ```{r}
 #| warning: false
@@ -318,8 +265,8 @@ arcgislayers::list_fields(rcra)
 
 ## Arcgislayers
 
--   Use a fields based query
--   Use `mapview` to display the result of our query
+- Use a fields based query
+- Use `mapview` to display the result of our query
 
 ```{r}
 #| warning: false
@@ -335,39 +282,39 @@ mapview::mapview(rcra_pdx)
 
 ## STAC and COG
 
--   [Spatio-Temporal Asset Catalogs (STAC)](https://stacspec.org/en) are a specification and an API and [Cloud-Optimized Geotiffs (COG)](https://www.cogeo.org/) are a cloud native geospatial format
--   Rather than downloading GB worth of data locally, we can collect data from large cloud-based rasters via spatial, temporal and attribute queries
+- [Spatio-Temporal Asset Catalogs (STAC)](https://stacspec.org/en) are a specification and an API and [Cloud-Optimized Geotiffs (COG)](https://www.cogeo.org/) are a cloud native geospatial format
+- Rather than downloading GB worth of data locally, we can collect data from large cloud-based rasters via spatial, temporal and attribute queries
 
 ## STAC and COG
 
--   There are currently petabytes of satellite imagery collections from satellite and national and global scale raster data we can access remotely in cloud-native geospatial format
--   Many other cloud-native geospatial formats that we don't have time to cover today which include:
-    -   Zarr
-    -   Flatgeobuff
-    -   GeoParquet
-    -   Cloud-optimized HDF5 and NetCDF
-    -   Cloud-optimized Point Clouds (COPG)
+- There are currently petabytes of satellite imagery collections from satellite and national and global scale raster data we can access remotely in cloud-native geospatial format
+- Many other cloud-native geospatial formats that we don't have time to cover today which include:
+  - Zarr
+  - Flatgeobuff
+  - GeoParquet
+  - Cloud-optimized HDF5 and NetCDF
+  - Cloud-optimized Point Clouds (COPG)
 
 ## STAC
 
--   [STAC](https://stacspec.org/) is just a specification and an ecosystem to describe and work with geospatial information assets in a cloud-native way using [STAC specifications](https://github.com/radiantearth/stac-spec) and the [STAC API](https://github.com/radiantearth/stac-api-spec)
--   Currently for working with [STAC resources in R](https://stacindex.org/ecosystem?language=R) there is just `rstac` and an in-development package `stat4cast` for forecast data
+- [STAC](https://stacspec.org/) is just a specification and an ecosystem to describe and work with geospatial information assets in a cloud-native way using [STAC specifications](https://github.com/radiantearth/stac-spec) and the [STAC API](https://github.com/radiantearth/stac-api-spec)
+- Currently for working with [STAC resources in R](https://stacindex.org/ecosystem?language=R) there is just `rstac` and an in-development package `stat4cast` for forecast data
 
 ## What does [Cloud-Optimized Geotiffs (COG)](https://www.cogeo.org/) mean?
 
--   Uses 2 key technologies:
-    -   storing and organizing pixels in optimized way
-    -   using HTTP GET range requests to access just portions of a file needed
--   Supports partial reads and parallel reads
+- Uses 2 key technologies:
+  - storing and organizing pixels in optimized way
+  - using HTTP GET range requests to access just portions of a file needed
+- Supports partial reads and parallel reads
 
 ## COGs
 
--   COGs are just raster data representing a slice in time of gridded data such as digital elevation models (DEMs) or land cover or climate
+- COGs are just raster data representing a slice in time of gridded data such as digital elevation models (DEMs) or land cover or climate
 
 ## STAC resources in R using `rstac`
 
--   [rstac](https://brazil-data-cube.github.io/rstac/) implements a number of STAC endpoints that can be used to retrieve information from a STAC API service
--   Here we demonstrate querying the [Earth Search API](https://www.element84.com/earth-search) to retrieve Sentinel 2 stored as a COG using the STAC API
+- [rstac](https://brazil-data-cube.github.io/rstac/) implements a number of STAC endpoints that can be used to retrieve information from a STAC API service
+- Here we demonstrate querying the [Earth Search API](https://www.element84.com/earth-search) to retrieve Sentinel 2 stored as a COG using the STAC API
 
 ```{r}
 s = rstac::stac("https://earth-search.aws.element84.com/v0")
@@ -384,9 +331,9 @@ print(items)
 
 ## STAC resources in R using `rstac`
 
--   We can see in previous slide what we get back from our request is a list with metadata as well as a list of features
--   Each feature is an image with an identifier, bounding box, date, cloud cover, etc)
--   If we print links to imagery assets they are just URLs of GeoTIFF files located on an AWS S3 bucket.
+- We can see in previous slide what we get back from our request is a list with metadata as well as a list of features
+- Each feature is an image with an identifier, bounding box, date, cloud cover, etc)
+- If we print links to imagery assets they are just URLs of GeoTIFF files located on an AWS S3 bucket.
 
 ```{r}
 print(items$features[[5]]$assets$B04$type)
@@ -395,18 +342,18 @@ print(items$features[[5]]$assets$B04$href)
 
 ## Reading COG file from STAC URL using `vsicurl`
 
--   Reading COGs in R can be done in a couple ways but using the [Geospatial Data Abstraction Library (GDAL)](https://gdal.org/index.html) [virtual file system](https://gdal.org/user/virtual_file_systems.html) is a quick and easy way to read COGs into R with the `terra` package
--   There are several 'flavors' of GDAL virtual file systems for accessing files stored on either public or private networks or cloud storage platforms
+- Reading COGs in R can be done in a couple ways but using the [Geospatial Data Abstraction Library (GDAL)](https://gdal.org/index.html) [virtual file system](https://gdal.org/user/virtual_file_systems.html) is a quick and easy way to read COGs into R with the `terra` package
+- There are several 'flavors' of GDAL virtual file systems for accessing files stored on either public or private networks or cloud storage platforms
 
 ## Reading COG file from STAC URL using `vsicurl`
 
--   Three of the most useful virtual file system formats for common spatial data tasks include:
+- Three of the most useful virtual file system formats for common spatial data tasks include:
 
-    -   vsizip –\> file handler that allows reading ZIP archives on-the-fly without decompressing them beforehand.
+  - vsizip –\> file handler that allows reading ZIP archives on-the-fly without decompressing them beforehand.
 
-    -   vsicurl –\> A generic file system handler exists for online resources that do not require particular signed authentication schemes
+  - vsicurl –\> A generic file system handler exists for online resources that do not require particular signed authentication schemes
 
-    -   vsis3 –\> specialized into sub-filesystems for commercial cloud storage services (e.g. AWS, also see /vsigs/, /vsiaz/, /vsioss/ or /vsiswift/)
+  - vsis3 –\> specialized into sub-filesystems for commercial cloud storage services (e.g. AWS, also see /vsigs/, /vsiaz/, /vsioss/ or /vsiswift/)
 
 ## Reading COG file from STAC URL using `vsicurl`
 
@@ -418,9 +365,9 @@ sentinel_band4
 
 ## Reading COG file from STAC URL using `vsicurl`
 
--   Sentinel data is big, let's show another example from [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/)
--   We'll bring in a feature from the [USGS Land Change Monitoring, Assessment, and Projection (LCMAP) collection](https://planetarycomputer.microsoft.com/dataset/usgs-lcmap-conus-v13) following example [here](https://stacspec.org/en/tutorials/1-download-data-using-r/)
--   First we'll derive the bounding box directly from our area of interest
+- Sentinel data is big, let's show another example from [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/)
+- We'll bring in a feature from the [USGS Land Change Monitoring, Assessment, and Projection (LCMAP) collection](https://planetarycomputer.microsoft.com/dataset/usgs-lcmap-conus-v13) following example [here](https://stacspec.org/en/tutorials/1-download-data-using-r/)
+- First we'll derive the bounding box directly from our area of interest
 
 ## Reading COG file from STAC URL using `vsicurl`
 
@@ -433,7 +380,7 @@ corvallis_bbox
 
 ## Reading COG file from STAC URL using
 
--   Pass our bounding box to the bounding box argument for `stac_search` to filter STAC results
+- Pass our bounding box to the bounding box argument for `stac_search` to filter STAC results
 
 ```{r}
 s <- rstac::stac("https://planetarycomputer.microsoft.com/api/stac/v1")
@@ -450,7 +397,7 @@ items$features[[1]]
 
 ## Reading COG file from STAC URL using
 
--   We can extract the url to pass to GDAL vsicurl using `assets_url` from `rstac`
+- We can extract the url to pass to GDAL vsicurl using `assets_url` from `rstac`
 
 ```{r}
 lcpri_url <- rstac::assets_url(items, "lcpri")
@@ -459,7 +406,7 @@ lcpri_url
 
 ## Reading COG file from STAC URL using `vsicurl`
 
--   We'll use a couple functions (not listed out here) to construct the GDAL vsicurl URL and use `gdal_utils` to download and reproject the asset
+- We'll use a couple functions (not listed out here) to construct the GDAL vsicurl URL and use `gdal_utils` to download and reproject the asset
 
 ```{r}
 #| warning: false
@@ -502,14 +449,14 @@ mapview::mapview(temp)
 
 ## COG without STAC
 
--   STAC is a *specification and an API* - COGS are a *format*
--   We can read COGs directly using GDAL virtual file systems without using STAC
--   **Remember!** - all we need to do is add `/vsicurl/` prefix before the path to the file
+- STAC is a *specification and an API* - COGS are a *format*
+- We can read COGs directly using GDAL virtual file systems without using STAC
+- **Remember!** - all we need to do is add `/vsicurl/` prefix before the path to the file
 
 ## COG without STAC
 
--   Here is an example directly from [Geocomputation with R](https://r.geocompx.org/)
--   This is a global monthly December snow probability raster at 500m resolution stored as a COG file at [zenodo.org](https://zenodo.org/record/5774954/files/clm_snow.prob_esacci.dec_p.90_500m_s0..0cm_2000..2012_v2.0.tif)
+- Here is an example directly from [Geocomputation with R](https://r.geocompx.org/)
+- This is a global monthly December snow probability raster at 500m resolution stored as a COG file at [zenodo.org](https://zenodo.org/record/5774954/files/clm_snow.prob_esacci.dec_p.90_500m_s0..0cm_2000..2012_v2.0.tif)
 
 ```{r}
 url = paste0("/vsicurl/https://zenodo.org/record/5774954/files/",
@@ -520,8 +467,8 @@ snow
 
 ## COG without STAC
 
--   **Important point** - we are simply creating a *connection* to this COG - we are not reading this file to our RAM yet
--   Values will be read once we apply any value based operation like `crop` or `extract`
+- **Important point** - we are simply creating a *connection* to this COG - we are not reading this file to our RAM yet
+- Values will be read once we apply any value based operation like `crop` or `extract`
 
 ```{r}
 corvallis_snow <- terra::crop(snow, corvallis_bbox)
@@ -530,10 +477,10 @@ mapview::mapview(corvallis_snow)
 
 ## Resouces
 
--   [httr2](https://github.com/r-lib/httr2)
--   [arcgislayers](https://github.com/R-ArcGIS/arcgislayers)
--   [STAC](https://stacspec.org/en/tutorials/1-download-data-using-r/)
--   [rstac](https://github.com/brazil-data-cube/rstac)
--   [Processing satelitte data using STAC and COG in R](https://r-spatial.org/r/2021/04/23/cloud-based-cubes.html)
--   [STAC Catalogs](https://stacindex.org/catalogs#/)
--   [COGs with gdal and terra in R](https://frodriguezsanchez.net/post/accessing-data-from-large-online-rasters-with-cloud-optimized-geotiff-gdal-and-terra-r-package/)
+- [httr2](https://github.com/r-lib/httr2)
+- [arcgislayers](https://github.com/R-ArcGIS/arcgislayers)
+- [STAC](https://stacspec.org/en/tutorials/1-download-data-using-r/)
+- [rstac](https://github.com/brazil-data-cube/rstac)
+- [Processing satelitte data using STAC and COG in R](https://r-spatial.org/r/2021/04/23/cloud-based-cubes.html)
+- [STAC Catalogs](https://stacindex.org/catalogs#/)
+- [COGs with gdal and terra in R](https://frodriguezsanchez.net/post/accessing-data-from-large-online-rasters-with-cloud-optimized-geotiff-gdal-and-terra-r-package/)

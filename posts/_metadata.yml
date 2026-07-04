@@ -1,4 +1,5 @@
 # Default metadata for all posts
 title-block-banner: true
-author: "Your Name"
+author: "Marc Weber"
 date-format: "MMMM D, YYYY"
+freeze: auto

@@ -20,10 +20,17 @@ library(arrow)
 library(dplyr)
 library(sf)
 library(sfarrow)
+library(jsonlite)
 
-# Connect to Overture S3 (anonymous, us-west-2)
-bucket <- s3_bucket("overturemaps-us-west-2", anonymous = TRUE, region = "us-west-2")
-ds_path <- bucket$path("release/2025-12-17.0/theme=buildings/type=building")
+latest <- fromJSON("https://stac.overturemaps.org/catalog.json")$latest
+
+ds_path <- s3_bucket(
+  paste0("overturemaps-us-west-2/release/", latest, "/theme=buildings/type=building/"),
+  region = "us-west-2",
+  anonymous = TRUE
+)
+
+ds <- open_dataset(ds_path, format = "parquet")
 buildings_ds <- open_dataset(ds_path, format = "parquet")
 # Inspect available columns to confirm tile partitioning
 print(buildings_ds$schema$names)  # look for "z", "x", "y" as partition columns

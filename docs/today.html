@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Today I Learned – Marc Weber</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -38,10 +41,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-991b1886d3c685c7aa2b62b80640c7af.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ece42c8223ec2bf36298a08f122c9a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,7 +103,7 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -113,7 +116,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -180,7 +183,7 @@ window.Quarto = {
   <li><a href="#today-i-learned" id="toc-today-i-learned" class="nav-link active" data-scroll-target="#today-i-learned">Today I Learned</a></li>
   </ul>
 </nav>
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="QVBJ">API <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YXJjZ2lzbGF5ZXJz">arcgislayers <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YXJyb3c=">arrow <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q09Hcw==">COGs <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RVNSSSUyMFJFU1Q=">ESRI REST <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2VvY29ubmV4">geoconnex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2VvcGFycXVldA==">geoparquet <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2dtYXA=">ggmap <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aGVhdG1hcA==">heatmap <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWFwcGluZw==">mapping <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="U1RBQw==">STAC <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3RyYXZh">Strava <span class="quarto-category-count">(1)</span></div><div class="category" data-category="d2Vic2VydmljZQ==">webservice <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="QVBJ">API <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YXJjZ2lzbGF5ZXJz">arcgislayers <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YXJyb3c=">arrow <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q09Hcw==">COGs <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RVNSSSUyMFJFU1Q=">ESRI REST <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2VvY29ubmV4">geoconnex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2VvbGlicmU=">geolibre <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2VvcGFycXVldA==">geoparquet <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Z2Vvc3BhdGlhbA==">geospatial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2dtYXA=">ggmap <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aGVhdG1hcA==">heatmap <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWFwcGluZw==">mapping <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHl0aG9u">python <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="U1RBQw==">STAC <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3RyYXZh">Strava <span class="quarto-category-count">(1)</span></div><div class="category" data-category="d2Vic2VydmljZQ==">webservice <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -236,7 +239,23 @@ Tags
 </thead>
 <tbody class="list">
 
-<tr data-index="0" data-categories="Z2VvcGFycXVldCUyQ1IlMkNhcnJvdw==" data-listing-date-sort="1766131200000" data-listing-file-modified-sort="1766811909239" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="380" data-listing-title-sort="Geoparquet in R" data-listing-filename-sort="index.qmd">
+<tr data-index="0" data-categories="cHl0aG9uJTJDZ2Vvc3BhdGlhbCUyQ2dlb2xpYnJlJTJDZ2VvcGFycXVldA==" data-listing-date-sort="1783062000000" data-listing-file-modified-sort="1783144724587" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="612" data-listing-title-sort="Geolibre and Lake Watersheds from Geoparquet on S3" data-listing-filename-sort="Index.ipynb">
+<td>
+<span class="listing-date">Jul 3, 2026</span>
+</td>
+<td>
+<a href="./posts/2026-07-03-Geolibre-LakeCatWatersheds/Index.html" class="title listing-title">Geolibre and Lake Watersheds from Geoparquet on S3</a>
+</td>
+<td>
+<span class="listing-description">Everything runs in memory or via HTTP range requests — <strong>no files are downloaded or saved</strong>.The full stack is:</span>
+</td>
+<td>
+<span class="listing-categories">python, geospatial, geolibre, geoparquet</span>
+</td>
+
+</tr>
+
+<tr data-index="1" data-categories="Z2VvcGFycXVldCUyQ1IlMkNhcnJvdw==" data-listing-date-sort="1766131200000" data-listing-file-modified-sort="1783144295561" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="385" data-listing-title-sort="Geoparquet in R" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Dec 19, 2025</span>
 </td>
@@ -252,7 +271,7 @@ Tags
 
 </tr>
 
-<tr data-index="1" data-categories="bWFwcGluZyUyQ1IlMkNTdHJhdmElMkNoZWF0bWFwJTJDZ2dtYXA=" data-listing-date-sort="1762066800000" data-listing-file-modified-sort="1762315712710" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1334" data-listing-title-sort="Strava Heatmap" data-listing-filename-sort="index.qmd">
+<tr data-index="2" data-categories="bWFwcGluZyUyQ1IlMkNTdHJhdmElMkNoZWF0bWFwJTJDZ2dtYXA=" data-listing-date-sort="1762066800000" data-listing-file-modified-sort="1762315712000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1334" data-listing-title-sort="Strava Heatmap" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Nov 2, 2025</span>
 </td>
@@ -268,7 +287,7 @@ Tags
 
 </tr>
 
-<tr data-index="2" data-categories="d2Vic2VydmljZSUyQ1IlMkNBUEklMkNnZW9jb25uZXglMkNhcmNnaXNsYXllcnMlMkNTVEFDJTJDQ09HcyUyQ0VTUkklMjBSRVNU" data-listing-date-sort="1713337200000" data-listing-file-modified-sort="1762320533381" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2470" data-listing-title-sort="Web Services in R" data-listing-filename-sort="index.qmd">
+<tr data-index="3" data-categories="d2Vic2VydmljZSUyQ1IlMkNBUEklMkNnZW9jb25uZXglMkNhcmNnaXNsYXllcnMlMkNTVEFDJTJDQ09HcyUyQ0VTUkklMjBSRVNU" data-listing-date-sort="1713337200000" data-listing-file-modified-sort="1783141583154" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2063" data-listing-title-sort="Web Services in R" data-listing-filename-sort="index.qmd">
 <td>
 <span class="listing-date">Apr 17, 2024</span>
 </td>
@@ -339,13 +358,14 @@ Tags
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
