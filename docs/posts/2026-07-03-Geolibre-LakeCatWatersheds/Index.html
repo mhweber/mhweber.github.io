@@ -255,8 +255,8 @@ GeoLibre widget — full GIS app in the notebook cell</code></pre>
 </tr>
 <tr class="even">
 <td><strong>HUC2</strong></td>
-<td>17</td>
-<td>17</td>
+<td>18</td>
+<td>18</td>
 </tr>
 <tr class="odd">
 <td><strong>HUC8</strong></td>
@@ -271,11 +271,11 @@ GeoLibre widget — full GIS app in the notebook cell</code></pre>
 <tr class="odd">
 <td><strong>Hydrology</strong></td>
 <td>Major inflows: Williamson R., Wood R.</td>
-<td><strong>No inlets or outlets</strong> — rain + snow only</td>
+<td><strong>No inlets or outlets</strong> — rain + snow</td>
 </tr>
 <tr class="even">
 <td><strong>NLCD signature</strong></td>
-<td>Dominated by cropland, pasture, shrubland</td>
+<td>Dominated by shrubland, cropland, pasture</td>
 <td>Nearly 100% evergreen forest + water</td>
 </tr>
 </tbody>
@@ -295,11 +295,7 @@ GeoLibre widget — full GIS app in the notebook cell</code></pre>
 <p>DuckDB’s <code>httpfs</code> extension streams only the Parquet <strong>row groups</strong> that satisfy the <code>COMID</code> filter.</p>
 <p>The HUC2 Hive partition (<code>HUC2=17/</code>) means DuckDB touches exactly one file rather than globbing all 21 partitions.<br>
 Credentials are intentionally blank — the S3 bucket is fully public.</p>
-<blockquote class="blockquote">
-<p><strong>Why no <code>ST_GeomFromWKB()</code>?</strong><br>
-DuckDB’s <code>spatial</code> extension reads GeoParquet geometry columns as its native <code>GEOMETRY</code> type automatically — not as raw <code>BLOB</code>/WKB bytes. Wrapping an already-decoded <code>GEOMETRY</code> in <code>ST_GeomFromWKB()</code> causes a <code>BinderException</code> because that function expects <code>BLOB</code> input. The fix is simply <code>ST_AsGeoJSON(geometry)</code> — one call, no cast needed.</p>
-</blockquote>
-<div id="query-cell" class="cell">
+<div id="query-cell" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb, json</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
@@ -648,21 +644,24 @@ Chart built.</code></pre>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Map ───────────────────────────────────────────────────────────────────────</span></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> Map(center<span class="op">=</span>(<span class="op">-</span><span class="fl">121.9</span>, <span class="fl">42.6</span>), zoom<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Watershed polygons</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>m.add_geojson(fc, name<span class="op">=</span><span class="st">"LakeCat Watersheds"</span>)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Named basemaps available in GeoLibre: liberty, bright, positron, dark, fiord</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># There is no 'satellite' named basemap — satellite imagery requires add_tile_layer()</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co"># with an XYZ URL (see Section 5 below).</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>m.add_basemap(<span class="st">"positron"</span>)   <span class="co"># clean light background, good contrast with watershed fill</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add NLCD as a COG</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>m.add_cog(</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://data.source.coop/giswqs/opengeos/nlcd_2021_land_cover_30m.tif"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"NLCD 2021"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Watershed polygons</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>m.add_geojson(fc, name<span class="op">=</span><span class="st">"LakeCat Watersheds"</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>m.add_basemap(<span class="st">"positron"</span>)   <span class="co"># clean light background, good contrast with watershed fill</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>fc ready: 2 feature(s)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"7a876c41621c4829943ce056e2f311fe","version_major":2,"version_minor":1,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"be1eb7c248f4487aa9de87acd91ffd69","version_major":2,"version_minor":1,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
