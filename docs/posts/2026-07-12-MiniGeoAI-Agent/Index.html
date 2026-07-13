@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Marc Weber">
+<meta name="dcterms.date" content="2026-07-12">
+
+<title>A Mini GeoAI Agent Example – Marc Weber</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ece42c8223ec2bf36298a08f122c9a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Marc Weber</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../today.html"> 
+<span class="menu-text">Today I Learned</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A Mini GeoAI Agent Example</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">geospatial</div>
+                <div class="quarto-category">geoai</div>
+                <div class="quarto-category">openstreetmap</div>
+                <div class="quarto-category">osm</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Marc Weber </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 12, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#geoai-mini-agent-natural-language-spatial-proximity-questions" id="toc-geoai-mini-agent-natural-language-spatial-proximity-questions" class="nav-link active" data-scroll-target="#geoai-mini-agent-natural-language-spatial-proximity-questions">GeoAI Mini-Agent — Natural-Language Spatial Proximity Questions</a>
+  <ul class="collapse">
+  <li><a href="#portland-oregon-openstreetmap-no-api-keys-required" id="toc-portland-oregon-openstreetmap-no-api-keys-required" class="nav-link" data-scroll-target="#portland-oregon-openstreetmap-no-api-keys-required">Portland, Oregon · OpenStreetMap · No API keys required</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">1 — Setup</a></li>
+  <li><a href="#the-vocabulary-english-terms-osm-tags" id="toc-the-vocabulary-english-terms-osm-tags" class="nav-link" data-scroll-target="#the-vocabulary-english-terms-osm-tags">2 — The vocabulary: English terms → OSM tags</a></li>
+  <li><a href="#parse-stage-distance-phrases" id="toc-parse-stage-distance-phrases" class="nav-link" data-scroll-target="#parse-stage-distance-phrases">3 — Parse stage: distance phrases</a></li>
+  <li><a href="#parse-stage-the-question" id="toc-parse-stage-the-question" class="nav-link" data-scroll-target="#parse-stage-the-question">4 — Parse stage: the question</a>
+  <ul class="collapse">
+  <li><a href="#parser-self-test-runs-offline-no-network-needed" id="toc-parser-self-test-runs-offline-no-network-needed" class="nav-link" data-scroll-target="#parser-self-test-runs-offline-no-network-needed">✅ Parser self-test — runs offline, no network needed</a></li>
+  </ul></li>
+  <li><a href="#ground-stage-keyless-geocoding" id="toc-ground-stage-keyless-geocoding" class="nav-link" data-scroll-target="#ground-stage-keyless-geocoding">5 — Ground stage: keyless geocoding</a></li>
+  <li><a href="#act-stage-the-spatial-engine" id="toc-act-stage-the-spatial-engine" class="nav-link" data-scroll-target="#act-stage-the-spatial-engine">6 — Act stage: the spatial engine</a></li>
+  <li><a href="#the-agent-ask" id="toc-the-agent-ask" class="nav-link" data-scroll-target="#the-agent-ask">7 — The agent: <code>ask()</code></a></li>
+  <li><a href="#ask-it-something" id="toc-ask-it-something" class="nav-link" data-scroll-target="#ask-it-something">8 — Ask it something</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link" data-scroll-target="#try-it-yourself">🔧 Try it yourself</a></li>
+  </ul></li>
+  <li><a href="#caveats-and-where-an-llm-slots-in" id="toc-caveats-and-where-an-llm-slots-in" class="nav-link" data-scroll-target="#caveats-and-where-an-llm-slots-in">9 — Caveats and where an LLM slots in</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="geoai-mini-agent-natural-language-spatial-proximity-questions" class="level1">
+<h1>GeoAI Mini-Agent — Natural-Language Spatial Proximity Questions</h1>
+<section id="portland-oregon-openstreetmap-no-api-keys-required" class="level3">
+<h3 class="anchored" data-anchor-id="portland-oregon-openstreetmap-no-api-keys-required">Portland, Oregon · OpenStreetMap · No API keys required</h3>
+<p><strong>What this is:</strong> a template for the simplest possible <em>geoAI agent</em> — a pipeline that takes a plain-English proximity question and returns a spatial answer with a map:</p>
+<blockquote class="blockquote">
+<p><em>“How many parks are there within a mile of Portland State University?”</em> <em>“How many coffee shops are there within a quarter mile of Powell’s Books?”</em></p>
+</blockquote>
+<p><strong>The agent pipeline</strong> (the same three stages any geoAI system has, with or without an LLM):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>What it does</th>
+<th>This notebook uses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1 · <strong>Parse</strong></td>
+<td>Turn language into structured intent: <em>(what, how far, where)</em></td>
+<td>Regex + a vocabulary table</td>
+</tr>
+<tr class="even">
+<td>2 · <strong>Ground</strong></td>
+<td>Resolve the place name to coordinates</td>
+<td>Nominatim geocoder (keyless)</td>
+</tr>
+<tr class="odd">
+<td>3 · <strong>Act</strong></td>
+<td>Run the spatial query and compose the answer</td>
+<td>OSMnx → Overpass, GeoPandas in EPSG:32610</td>
+</tr>
+</tbody>
+</table>
+<p>No keys anywhere: Nominatim and Overpass are free public OSM services (be polite — see the etiquette note at the end). The parser is deliberately rule-based so the whole agent runs with zero accounts; Section 9 shows where an LLM would slot in if you want open-ended language later.</p>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">1 — Setup</h2>
+<p>One dependency does all the heavy lifting. OSMnx bundles the Nominatim and Overpass clients and returns GeoDataFrames.</p>
+<div id="31223edc" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Terminal] — run once in your environment, not in this cell</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install osmnx matplotlib</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> osmnx <span class="im">as</span> ox</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shapely.geometry <span class="im">import</span> Point</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify yourself to the free OSM services (Nominatim usage policy)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ox.settings.http_user_agent <span class="op">=</span> <span class="st">"GISPR-geoai-demo (educational)"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ox.settings.requests_timeout <span class="op">=</span> <span class="dv">60</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"osmnx </span><span class="sc">{</span>ox<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)   <span class="co"># written against osmnx 2.x</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>osmnx 2.1.0</code></pre>
+</div>
+</div>
+</section>
+<section id="the-vocabulary-english-terms-osm-tags" class="level2">
+<h2 class="anchored" data-anchor-id="the-vocabulary-english-terms-osm-tags">2 — The vocabulary: English terms → OSM tags</h2>
+<p>This table <strong>is</strong> the agent’s world model. Each plain-English term maps to the <a href="https://wiki.openstreetmap.org/wiki/Map_features">OSM tag query</a> that Overpass understands. Extending the agent = adding a row.</p>
+<div id="ada6d107" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>TAG_MAP <span class="op">=</span> {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"park"</span>:           {<span class="st">"leisure"</span>: <span class="st">"park"</span>},</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coffee shop"</span>:    {<span class="st">"amenity"</span>: <span class="st">"cafe"</span>},</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cafe"</span>:           {<span class="st">"amenity"</span>: <span class="st">"cafe"</span>},</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"restaurant"</span>:     {<span class="st">"amenity"</span>: <span class="st">"restaurant"</span>},</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bar"</span>:            {<span class="st">"amenity"</span>: [<span class="st">"bar"</span>, <span class="st">"pub"</span>]},</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"brewery"</span>:        {<span class="st">"craft"</span>: <span class="st">"brewery"</span>},</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"library"</span>:        {<span class="st">"amenity"</span>: <span class="st">"library"</span>},</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"school"</span>:         {<span class="st">"amenity"</span>: <span class="st">"school"</span>},</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"grocery store"</span>:  {<span class="st">"shop"</span>: <span class="st">"supermarket"</span>},</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"supermarket"</span>:    {<span class="st">"shop"</span>: <span class="st">"supermarket"</span>},</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hospital"</span>:       {<span class="st">"amenity"</span>: <span class="st">"hospital"</span>},</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pharmacy"</span>:       {<span class="st">"amenity"</span>: <span class="st">"pharmacy"</span>},</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bus stop"</span>:       {<span class="st">"highway"</span>: <span class="st">"bus_stop"</span>},</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bike shop"</span>:      {<span class="st">"shop"</span>: <span class="st">"bicycle"</span>},</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"food cart"</span>:      {<span class="st">"amenity"</span>: <span class="st">"fast_food"</span>},</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bookstore"</span>:      {<span class="st">"shop"</span>: <span class="st">"books"</span>},</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"playground"</span>:     {<span class="st">"leisure"</span>: <span class="st">"playground"</span>},</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Accept plurals without duplicating rows: "parks" → "park", "pharmacies" → "pharmacy"</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize_term(term):</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> term.lower().strip()</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="kw">in</span> TAG_MAP:</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> t</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t.endswith(<span class="st">"ies"</span>) <span class="kw">and</span> t[:<span class="op">-</span><span class="dv">3</span>] <span class="op">+</span> <span class="st">"y"</span> <span class="kw">in</span> TAG_MAP:      <span class="co"># pharmacies → pharmacy</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> t[:<span class="op">-</span><span class="dv">3</span>] <span class="op">+</span> <span class="st">"y"</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t.endswith(<span class="st">"s"</span>) <span class="kw">and</span> t[:<span class="op">-</span><span class="dv">1</span>] <span class="kw">in</span> TAG_MAP:              <span class="co"># parks → park</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> t[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="parse-stage-distance-phrases" class="level2">
+<h2 class="anchored" data-anchor-id="parse-stage-distance-phrases">3 — Parse stage: distance phrases</h2>
+<p>Handles the ways people actually say distances: <em>“a mile”</em>, <em>“quarter mile”</em>, <em>“half a mile”</em>, <em>“three quarters of a mile”</em>, <em>“800 meters”</em>, <em>“1.5 km”</em>, <em>“2 miles”</em>.</p>
+<div id="fb417bff" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>MI_TO_M <span class="op">=</span> <span class="fl">1609.344</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>FRACTIONS <span class="op">=</span> {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"a quarter"</span>: <span class="fl">0.25</span>, <span class="st">"quarter"</span>: <span class="fl">0.25</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"a third"</span>: <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,    <span class="st">"third"</span>: <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"half a"</span>: <span class="fl">0.5</span>,     <span class="st">"a half"</span>: <span class="fl">0.5</span>, <span class="st">"half"</span>: <span class="fl">0.5</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"three quarters of a"</span>: <span class="fl">0.75</span>, <span class="st">"three-quarters of a"</span>: <span class="fl">0.75</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_distance(text):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Convert a distance phrase to meters."""</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> re.sub(<span class="vs">r"</span><span class="dv">\b</span><span class="vs">of a</span><span class="dv">\b</span><span class="vs">"</span>, <span class="st">""</span>, text.lower().strip()).strip()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.match(<span class="vs">r"</span><span class="kw">(</span><span class="pp">[</span><span class="dv">\d</span><span class="pp">.]</span><span class="op">+</span><span class="kw">)</span><span class="dv">\s</span><span class="op">*</span><span class="kw">(</span><span class="vs">miles</span><span class="op">?</span><span class="cf">|</span><span class="vs">mi</span><span class="cf">|</span><span class="vs">kilometers</span><span class="op">?</span><span class="cf">|</span><span class="vs">km</span><span class="cf">|</span><span class="vs">meters</span><span class="op">?</span><span class="cf">|</span><span class="vs">m</span><span class="kw">)</span><span class="dv">\b</span><span class="vs">"</span>, t)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> m:                                          <span class="co"># "2 miles", "800 meters", "1.5 km"</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        val, unit <span class="op">=</span> <span class="bu">float</span>(m.group(<span class="dv">1</span>)), m.group(<span class="dv">2</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> unit.startswith(<span class="st">"mi"</span>): <span class="cf">return</span> val <span class="op">*</span> MI_TO_M</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> unit.startswith(<span class="st">"k"</span>):  <span class="cf">return</span> val <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> val</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> phrase, frac <span class="kw">in</span> <span class="bu">sorted</span>(FRACTIONS.items(), key<span class="op">=</span><span class="kw">lambda</span> kv: <span class="op">-</span><span class="bu">len</span>(kv[<span class="dv">0</span>])):</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> t.startswith(phrase):                   <span class="co"># "quarter mile", "half a mile"</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> frac <span class="op">*</span> MI_TO_M</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> re.match(<span class="vs">r"</span><span class="kw">(</span><span class="vs">a</span><span class="cf">|</span><span class="vs">an</span><span class="cf">|</span><span class="vs">one</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span><span class="vs">mile"</span>, t):          <span class="co"># "a mile"</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> MI_TO_M</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> re.match(<span class="vs">r"</span><span class="kw">(</span><span class="vs">a</span><span class="cf">|</span><span class="vs">an</span><span class="cf">|</span><span class="vs">one</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span><span class="kw">(</span><span class="vs">kilometer</span><span class="cf">|</span><span class="vs">km</span><span class="kw">)</span><span class="vs">"</span>, t):</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">1000.0</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Couldn't parse the distance: '</span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">'"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="parse-stage-the-question" class="level2">
+<h2 class="anchored" data-anchor-id="parse-stage-the-question">4 — Parse stage: the question</h2>
+<p>One regex covers the target question shape: <code>How many &lt;things&gt; are there within &lt;distance&gt; of &lt;place&gt;?</code></p>
+<p>A rule-based parser is brittle by design — the failure message tells the user exactly what shapes it accepts and what vocabulary it knows. That transparency is a feature in a teaching agent.</p>
+<div id="d650fac6" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>QUESTION_RE <span class="op">=</span> re.<span class="bu">compile</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"how many</span><span class="dv">\s</span><span class="op">+</span><span class="kw">(</span><span class="fu">?P&lt;what&gt;</span><span class="dv">.</span><span class="op">+?</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span>(?:<span class="vs">are there</span><span class="dv">\s</span><span class="op">+</span><span class="cf">|</span><span class="vs">are</span><span class="dv">\s</span><span class="op">+</span><span class="cf">|</span><span class="vs">is there</span><span class="dv">\s</span><span class="op">+</span>)<span class="op">?</span><span class="vs">"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"within</span><span class="dv">\s</span><span class="op">+</span><span class="kw">(</span><span class="fu">?P&lt;dist&gt;</span><span class="dv">.</span><span class="op">+?</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span>(?:<span class="vs">mile</span><span class="pp">[s]</span><span class="op">?</span><span class="dv">\s</span><span class="op">+</span>)<span class="op">?</span><span class="vs">of</span><span class="dv">\s</span><span class="op">+</span><span class="kw">(</span><span class="fu">?P&lt;where&gt;</span><span class="dv">.</span><span class="op">+?</span><span class="kw">)</span><span class="pp">[?.!]</span><span class="op">?</span><span class="dv">$</span><span class="vs">"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    re.IGNORECASE,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_question(question):</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return (tags, radius_m, place, feature_label) or raise with guidance."""</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> QUESTION_RE.match(question.strip())</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> m:</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"I only understand questions shaped like:</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"  'How many &lt;things&gt; are there within &lt;distance&gt; of &lt;place&gt;?'"</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    what_raw   <span class="op">=</span> m.group(<span class="st">"what"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    dist_text  <span class="op">=</span> m.group(<span class="st">"dist"</span>).strip()</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    where      <span class="op">=</span> m.group(<span class="st">"where"</span>).strip()</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The regex may absorb a trailing 'mile(s)' into its own pattern — restore it</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> re.fullmatch(<span class="vs">r"</span><span class="pp">[</span><span class="dv">\d</span><span class="pp">.]</span><span class="op">+</span><span class="cf">|</span><span class="vs">a</span><span class="cf">|</span><span class="vs">an</span><span class="cf">|</span><span class="vs">one</span><span class="cf">|</span><span class="vs">quarter</span><span class="cf">|</span><span class="vs">half</span><span class="cf">|</span><span class="vs">a quarter</span><span class="cf">|</span><span class="vs">a half</span><span class="cf">|</span><span class="vs">third</span><span class="cf">|</span><span class="vs">a third"</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                    dist_text, re.IGNORECASE):</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        dist_text <span class="op">+=</span> <span class="st">" mile"</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    term <span class="op">=</span> normalize_term(what_raw)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> term <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        known <span class="op">=</span> <span class="st">", "</span>.join(<span class="bu">sorted</span>(TAG_MAP))</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"I don't know '</span><span class="sc">{</span>what_raw<span class="sc">}</span><span class="ss">' yet. I know: </span><span class="sc">{</span>known<span class="sc">}</span><span class="ss">.</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>                         <span class="ss">f"Add it to TAG_MAP to teach me."</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> TAG_MAP[term], parse_distance(dist_text), where, term</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="parser-self-test-runs-offline-no-network-needed" class="level3">
+<h3 class="anchored" data-anchor-id="parser-self-test-runs-offline-no-network-needed">✅ Parser self-test — runs offline, no network needed</h3>
+<p>Run this any time you edit the parser or vocabulary. Everything below here <strong>does</strong> hit the network.</p>
+<div id="35391ea4" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tests <span class="op">=</span> [</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How many parks are there within a mile of Portland State University?"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     {<span class="st">"leisure"</span>: <span class="st">"park"</span>}, <span class="fl">1609.3</span>, <span class="st">"Portland State University"</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How many coffee shops are there within a quarter mile of Powell's Books?"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>     {<span class="st">"amenity"</span>: <span class="st">"cafe"</span>}, <span class="fl">402.3</span>, <span class="st">"Powell's Books"</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"how many bars within half a mile of Pioneer Courthouse Square"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>     {<span class="st">"amenity"</span>: [<span class="st">"bar"</span>, <span class="st">"pub"</span>]}, <span class="fl">804.7</span>, <span class="st">"Pioneer Courthouse Square"</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How many bus stops are within 800 meters of Union Station, Portland?"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>     {<span class="st">"highway"</span>: <span class="st">"bus_stop"</span>}, <span class="fl">800.0</span>, <span class="st">"Union Station, Portland"</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> q, etags, edist, ewhere <span class="kw">in</span> tests:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    tags, dist, where, _ <span class="op">=</span> parse_question(q)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> tags <span class="op">==</span> etags <span class="kw">and</span> <span class="bu">abs</span>(dist <span class="op">-</span> edist) <span class="op">&lt;</span> <span class="fl">0.5</span> <span class="kw">and</span> where <span class="op">==</span> ewhere, q</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"OK  </span><span class="sc">{</span>q<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Parser tests passed."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OK  How many parks are there within a mile of Portland State University?
+OK  How many coffee shops are there within a quarter mile of Powell's Books?
+OK  how many bars within half a mile of Pioneer Courthouse Square
+OK  How many bus stops are within 800 meters of Union Station, Portland?
+
+Parser tests passed.</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="ground-stage-keyless-geocoding" class="level2">
+<h2 class="anchored" data-anchor-id="ground-stage-keyless-geocoding">5 — Ground stage: keyless geocoding</h2>
+<p><code>ox.geocode()</code> calls Nominatim, OSM’s free geocoder. A small cache avoids re-asking for the same landmark — both faster and politer to a shared public service.</p>
+<div id="9f76435f" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>_geocode_cache <span class="op">=</span> {}</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> geocode(place, city_hint<span class="op">=</span><span class="st">"Portland, Oregon, USA"</span>):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Place name → (lat, lon). Appends the city hint if the user didn't give one."""</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> place <span class="cf">if</span> <span class="st">","</span> <span class="kw">in</span> place <span class="cf">else</span> <span class="ss">f"</span><span class="sc">{</span>place<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>city_hint<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> query <span class="kw">not</span> <span class="kw">in</span> _geocode_cache:</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        _geocode_cache[query] <span class="op">=</span> ox.geocode(query)      <span class="co"># Nominatim, no key</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _geocode_cache[query]</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick check</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>geocode(<span class="st">"Portland State University"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>(45.5118121, -122.686121)</code></pre>
+</div>
+</div>
+</section>
+<section id="act-stage-the-spatial-engine" class="level2">
+<h2 class="anchored" data-anchor-id="act-stage-the-spatial-engine">6 — Act stage: the spatial engine</h2>
+<p>Two details that separate a correct answer from a hand-wave:</p>
+<ol type="1">
+<li><strong>Bounding box ≠ circle.</strong> <code>features_from_point(dist=...)</code> fetches a <em>square</em> around the point, so we over-fetch slightly and then apply a <strong>true distance filter in a projected CRS</strong> — EPSG:32610 (UTM 10N), the GISPR course standard, which covers Portland. Distance is measured to the feature’s nearest edge, so a park whose boundary crosses the ring counts.</li>
+<li><strong>OSM double-counting.</strong> One real-world park is often mapped as several OSM elements (a relation plus member ways). We report the raw element count <em>and</em> the unique-name count — the honest answer usually lives between them.</li>
+</ol>
+<div id="ba3d1c53" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>CRS_ANALYSIS <span class="op">=</span> <span class="dv">32610</span>          <span class="co"># UTM Zone 10N — GISPR course standard, covers Portland</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> features_within(tags, center_latlon, radius_m):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""GeoDataFrame of OSM features truly within radius_m of the point."""</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    lat, lon <span class="op">=</span> center_latlon</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># over-fetch a square 15% wider than the radius, then filter precisely</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    feats <span class="op">=</span> ox.features_from_point((lat, lon), tags<span class="op">=</span>tags, dist<span class="op">=</span>radius_m <span class="op">*</span> <span class="fl">1.15</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    feats <span class="op">=</span> feats.to_crs(epsg<span class="op">=</span>CRS_ANALYSIS)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    center <span class="op">=</span> gpd.GeoSeries([Point(lon, lat)], crs<span class="op">=</span><span class="dv">4326</span>).to_crs(CRS_ANALYSIS).iloc[<span class="dv">0</span>]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    feats[<span class="st">"dist_m"</span>] <span class="op">=</span> feats.geometry.distance(center)   <span class="co"># edge distance, not centroid</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> feats[feats[<span class="st">"dist_m"</span>] <span class="op">&lt;=</span> radius_m].copy(), center</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-agent-ask" class="level2">
+<h2 class="anchored" data-anchor-id="the-agent-ask">7 — The agent: <code>ask()</code></h2>
+<p>Chains the three stages, composes a sentence, and draws the evidence — the search ring, the landmark, and every matching feature.</p>
+<div id="9569f644" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask(question, show_map<span class="op">=</span><span class="va">True</span>, list_names<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Answer a natural-language proximity question against live OSM data."""</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1 · Parse</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        tags, radius_m, place, term <span class="op">=</span> parse_question(question)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🤔 </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2 · Ground</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        center_latlon <span class="op">=</span> geocode(place)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"🤔 Nominatim couldn't find '</span><span class="sc">{</span>place<span class="sc">}</span><span class="ss">'. Try adding the city or a fuller name."</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3 · Act</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        hits, center <span class="op">=</span> features_within(tags, center_latlon, radius_m)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:            <span class="co"># Overpass returns an error when zero elements match</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        hits <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> hits <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> <span class="bu">len</span>(hits) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"📍 I found no </span><span class="sc">{</span>term<span class="sc">}</span><span class="ss">s within </span><span class="sc">{</span>radius_m<span class="sc">:,.0f}</span><span class="ss"> m of </span><span class="sc">{</span>place<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    n_elements <span class="op">=</span> <span class="bu">len</span>(hits)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    names <span class="op">=</span> hits[<span class="st">"name"</span>].dropna().unique() <span class="cf">if</span> <span class="st">"name"</span> <span class="kw">in</span> hits <span class="cf">else</span> []</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    n_named <span class="op">=</span> <span class="bu">len</span>(names)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    miles <span class="op">=</span> radius_m <span class="op">/</span> <span class="fl">1609.344</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"📍 Within </span><span class="sc">{</span>miles<span class="sc">:g}</span><span class="ss"> mile</span><span class="sc">{</span><span class="st">'s'</span> <span class="cf">if</span> miles <span class="op">!=</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">''</span><span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"(</span><span class="sc">{</span>radius_m<span class="sc">:,.0f}</span><span class="ss"> m) of </span><span class="sc">{</span>place<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>n_elements<span class="sc">}</span><span class="ss"> OSM </span><span class="sc">{</span>term<span class="sc">}</span><span class="ss"> element</span><span class="sc">{</span><span class="st">'s'</span> <span class="cf">if</span> n_elements <span class="op">!=</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">''</span><span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f" · </span><span class="sc">{</span>n_named<span class="sc">}</span><span class="ss"> unique named </span><span class="sc">{</span>term<span class="sc">}{</span><span class="st">'s'</span> <span class="cf">if</span> n_named <span class="op">!=</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">''</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> list_names <span class="kw">and</span> n_named:</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> nm <span class="kw">in</span> <span class="bu">sorted</span>(names):</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"     • </span><span class="sc">{</span>nm<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> show_map:</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>        ring <span class="op">=</span> gpd.GeoSeries([center.<span class="bu">buffer</span>(radius_m)], crs<span class="op">=</span>CRS_ANALYSIS)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>        ax <span class="op">=</span> ring.boundary.plot(color<span class="op">=</span><span class="st">"#4b2e83"</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">7</span>))</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>        hits.plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">"#b7a57a"</span>, edgecolor<span class="op">=</span><span class="st">"#4b2e83"</span>,</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                  alpha<span class="op">=</span><span class="fl">0.75</span>, markersize<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>        gpd.GeoSeries([center], crs<span class="op">=</span>CRS_ANALYSIS).plot(</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>            ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">"#4b2e83"</span>, marker<span class="op">=</span><span class="st">"*"</span>, markersize<span class="op">=</span><span class="dv">250</span>)</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>        ax.set_title(question, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>        ax.set_axis_off()</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> hits</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="ask-it-something" class="level2">
+<h2 class="anchored" data-anchor-id="ask-it-something">8 — Ask it something</h2>
+<p>The two motivating questions. First call per landmark takes a few seconds (live Nominatim + Overpass round trips).</p>
+<div id="de6632d1" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>parks <span class="op">=</span> ask(<span class="st">"How many parks are there within a mile of Portland State University?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📍 Within 1 mile (1,609 m) of Portland State University:
+   26 OSM park elements · 22 unique named parks</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Index_files/figure-html/cell-10-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="e9be6531" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>coffee <span class="op">=</span> ask(<span class="st">"How many coffee shops are there within a quarter mile of Powell's Books?"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>             list_names<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📍 Within 0.25 miles (402 m) of Powell's Books:
+   15 OSM coffee shop elements · 15 unique named coffee shops
+     • Caffè Umbria
+     • Courier Coffee Roasters
+     • Guilder Cafe
+     • Java Man
+     • Kilo D’Cofi
+     • Mako Matcha Mill
+     • Never Coffee
+     • Nuvrei
+     • Oak Street Coffee
+     • Roseline Coffee Bar
+     • Starbucks
+     • Stumptown Coffee Roasters
+     • Sweet Coco G
+     • The Mezz
+     • Water Avenue Coffee Company</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Index_files/figure-html/cell-11-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="53d5bb27" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python] — graceful failure: unknown vocabulary teaches the user the contract</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ask(<span class="st">"How many dragons are there within a mile of Portland State University?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🤔 I don't know 'dragons' yet. I know: bar, bike shop, bookstore, brewery, bus stop, cafe, coffee shop, food cart, grocery store, hospital, library, park, pharmacy, playground, restaurant, school, supermarket.
+Add it to TAG_MAP to teach me.</code></pre>
+</div>
+</div>
+<section id="try-it-yourself" class="level3">
+<h3 class="anchored" data-anchor-id="try-it-yourself">🔧 Try it yourself</h3>
+<ul>
+<li><em>How many breweries are there within 2 miles of the Moda Center?</em></li>
+<li><em>How many food carts are there within a quarter mile of Pioneer Courthouse Square?</em></li>
+<li><em>How many bus stops are within 800 meters of Union Station, Portland?</em></li>
+<li>Teach the agent a new term: add <code>"dog park": {"leisure": "dog_park"}</code> to <code>TAG_MAP</code>, rerun the vocabulary cell, and ask about dog parks near Laurelhurst Park.</li>
+<li>Change <code>city_hint</code> in <code>geocode()</code> to another city and ask about <em>your</em> neighborhood — nothing else in the notebook is Portland-specific.</li>
+</ul>
+</section>
+</section>
+<section id="caveats-and-where-an-llm-slots-in" class="level2">
+<h2 class="anchored" data-anchor-id="caveats-and-where-an-llm-slots-in">9 — Caveats and where an LLM slots in</h2>
+<p><strong>Data honesty.</strong> OSM completeness varies block by block; a count is a count of <em>mapped</em> features. <code>amenity=cafe</code> is OSM’s notion of a coffee shop — a Starbucks tagged <code>amenity=fast_food</code> won’t appear. The element-count vs unique-name gap on parks is a good classroom moment about data models, not an error.</p>
+<p><strong>Service etiquette.</strong> Nominatim and Overpass are donated infrastructure: cache your geocodes (Section 5 does), keep request volumes classroom-scale, and set a descriptive <code>http_user_agent</code> (Section 1 does). For heavy use, run your own Overpass instance or use a regional extract.</p>
+<p><strong>Swapping the parser for an LLM.</strong> Stages 2 and 3 don’t change at all. Replace <code>parse_question()</code> with a call that asks a model to emit the same structured triple, e.g.&nbsp;with the Anthropic API:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install anthropic   (this path DOES require an API key)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt = f'''Extract JSON {{"what": ..., "distance_m": ..., "place": ...}}</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#              from: "{question}". Valid "what" values: {list(TAG_MAP)}'''</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># → json.loads(response) → same (tags, radius_m, place) triple → same engine</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That’s the whole upgrade: the rule-based agent and the LLM agent share their ground-and-act stages — a useful architecture point when you demo this. Other easy extensions: <strong>nearest-X</strong> (“what’s the closest pharmacy to…”) by sorting <code>dist_m</code>; <strong>isochrones</strong> instead of circles using <code>ox.graph_from_point()</code> + network distance; an <strong>arcpy comparison</strong> cell pairing this against <code>arcpy.analysis.Buffer</code> + <code>SelectLayerByLocation</code> on the same question.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

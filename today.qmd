@@ -13,7 +13,6 @@ listing:
     categories: "Tags"
 ---
 
-
 ### Today I Learned
 
 Below are posts on various topics covering programming tips in R and Python, GIS tools and techniques and maps and data visualizations.

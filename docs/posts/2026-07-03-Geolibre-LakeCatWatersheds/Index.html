@@ -280,7 +280,7 @@ GeoLibre widget — full GIS app in the notebook cell</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Swap in any valid NHDPlusV2 COMIDs and update <code>HUC2</code> if they fall outside the PNW.</p>
+<p>Swap in any valid NHDPlusV2 COMIDs and update <code>HUC2</code></p>
 </section>
 </section>
 <section id="install" class="level2">
@@ -295,7 +295,7 @@ GeoLibre widget — full GIS app in the notebook cell</code></pre>
 <p>DuckDB’s <code>httpfs</code> extension streams only the Parquet <strong>row groups</strong> that satisfy the <code>COMID</code> filter.</p>
 <p>The HUC2 Hive partition (<code>HUC2=17/</code>) means DuckDB touches exactly one file rather than globbing all 21 partitions.<br>
 Credentials are intentionally blank — the S3 bucket is fully public.</p>
-<div id="query-cell" class="cell" data-execution_count="1">
+<div id="query-cell" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb, json</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
@@ -323,62 +323,55 @@ Credentials are intentionally blank — the S3 bucket is fully public.</p>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="st">    SET enable_object_cache  = true;</span></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 1: DESCRIBE — see exactly what columns exist ────────────────────────</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 1: DESCRIBE — see what columns exist ────────────────────────</span></span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co"># From the schema we can see:</span></span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   COMID, GNIS_ID, GNIS_NAME, REACHCODE, HUC2, HUC4, geometry</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co"># There is NO AreaSqKm column — that lives in the separate LakeCat tabular files.</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> con.execute(<span class="ss">f"""</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ss">    DESCRIBE SELECT * FROM read_parquet('</span><span class="sc">{</span>S3_PATH<span class="sc">}</span><span class="ss">') LIMIT 0</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span>).df()</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Available columns:"</span>)</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(schema[[<span class="st">"column_name"</span>, <span class="st">"column_type"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 2: Query — return WKB bytes for GeoPandas ───────────────────────────</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co"># We skip all DuckDB area functions: ST_Transform requires PROJ data files that</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co"># are frequently missing in conda on Windows; ST_Area_Spheroid also fails in</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co"># some builds. Instead, return raw WKB and let GeoPandas + PyProj handle area</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co"># — PyProj ships its own bundled PROJ data so it works regardless of the</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># system PROJ configuration.</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>sql <span class="op">=</span> <span class="ss">f"""</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="ss">    SELECT</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="ss">        COMID,</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="ss">        GNIS_NAME             AS lake_name,</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="ss">        REACHCODE,</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="ss">        ST_AsWKB(geometry)    AS geom_wkb</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="ss">    FROM   read_parquet('</span><span class="sc">{</span>S3_PATH<span class="sc">}</span><span class="ss">')</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="ss">    WHERE  CAST(COMID AS VARCHAR) IN (</span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(<span class="ss">f"'</span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">'"</span> <span class="cf">for</span> c <span class="kw">in</span> LAKES)<span class="sc">}</span><span class="ss">)</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> con.execute(sql).df()</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>con.close()</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rows from DuckDB : </span><span class="sc">{</span><span class="bu">len</span>(raw)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"geom_wkb dtype   : </span><span class="sc">{</span>raw[<span class="st">'geom_wkb'</span>]<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"geom_wkb type[0] : </span><span class="sc">{</span><span class="bu">type</span>(raw[<span class="st">'geom_wkb'</span>].iloc[<span class="dv">0</span>])<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 3: Build GeoDataFrame — convert bytearray → bytes for Shapely ───────</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co"># DuckDB returns WKB as Python bytearray; Shapely's from_wkb expects bytes.</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="co"># .apply(bytes) does the conversion element-wise in one line.</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> gpd.GeoDataFrame(</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>    raw.drop(columns<span class="op">=</span>[<span class="st">"geom_wkb"</span>]),</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    geometry<span class="op">=</span>gpd.GeoSeries.from_wkb(raw[<span class="st">"geom_wkb"</span>].<span class="bu">apply</span>(<span class="bu">bytes</span>)),</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    crs<span class="op">=</span><span class="st">"EPSG:4326"</span>,</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 4: Project to EPSG:5070 and calculate watershed area ────────────────</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="co"># EPSG:5070 — US Albers Equal Area, course-standard for continental US area.</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="co"># GeoPandas uses PyProj which ships its own PROJ data — reliable on all platforms.</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>gdf_albers <span class="op">=</span> gdf.to_crs(<span class="st">"EPSG:5070"</span>)</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>gdf[<span class="st">"ws_area_sqkm"</span>] <span class="op">=</span> (gdf_albers.geometry.area <span class="op">/</span> <span class="fl">1e6</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the friendly name from LAKES dict</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>gdf[<span class="st">"name"</span>] <span class="op">=</span> gdf[<span class="st">"COMID"</span>].astype(<span class="bu">int</span>).<span class="bu">map</span>({k: v[<span class="st">"name"</span>] <span class="cf">for</span> k, v <span class="kw">in</span> LAKES.items()})</span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gdf[[<span class="st">"COMID"</span>, <span class="st">"name"</span>, <span class="st">"lake_name"</span>, <span class="st">"ws_area_sqkm"</span>]])</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="co"># alias so downstream cells still work</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> gdf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> con.execute(<span class="ss">f"""</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    DESCRIBE SELECT * FROM read_parquet('</span><span class="sc">{</span>S3_PATH<span class="sc">}</span><span class="ss">') LIMIT 0</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span>).df()</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Available columns:"</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(schema[[<span class="st">"column_name"</span>, <span class="st">"column_type"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 2: Query — return WKB bytes for GeoPandas ───────────────────────────</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>sql <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="ss">    SELECT</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="ss">        COMID,</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="ss">        GNIS_NAME             AS lake_name,</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="ss">        REACHCODE,</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="ss">        ST_AsWKB(geometry)    AS geom_wkb</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="ss">    FROM   read_parquet('</span><span class="sc">{</span>S3_PATH<span class="sc">}</span><span class="ss">')</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="ss">    WHERE  CAST(COMID AS VARCHAR) IN (</span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(<span class="ss">f"'</span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">'"</span> <span class="cf">for</span> c <span class="kw">in</span> LAKES)<span class="sc">}</span><span class="ss">)</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> con.execute(sql).df()</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>con.close()</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rows from DuckDB : </span><span class="sc">{</span><span class="bu">len</span>(raw)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"geom_wkb dtype   : </span><span class="sc">{</span>raw[<span class="st">'geom_wkb'</span>]<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"geom_wkb type[0] : </span><span class="sc">{</span><span class="bu">type</span>(raw[<span class="st">'geom_wkb'</span>].iloc[<span class="dv">0</span>])<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 3: Build GeoDataFrame — convert bytearray → bytes for Shapely ───────</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co"># DuckDB returns WKB as Python bytearray; Shapely's from_wkb expects bytes.</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co"># .apply(bytes) does the conversion element-wise in one line.</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> gpd.GeoDataFrame(</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    raw.drop(columns<span class="op">=</span>[<span class="st">"geom_wkb"</span>]),</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    geometry<span class="op">=</span>gpd.GeoSeries.from_wkb(raw[<span class="st">"geom_wkb"</span>].<span class="bu">apply</span>(<span class="bu">bytes</span>)),</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    crs<span class="op">=</span><span class="st">"EPSG:4326"</span>,</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Step 4: Project to EPSG:5070 and calculate watershed area ────────────────</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co"># EPSG:5070 — US Albers Equal Area, course-standard for continental US area.</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>gdf_albers <span class="op">=</span> gdf.to_crs(<span class="st">"EPSG:5070"</span>)</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>gdf[<span class="st">"ws_area_sqkm"</span>] <span class="op">=</span> (gdf_albers.geometry.area <span class="op">/</span> <span class="fl">1e6</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the friendly name from LAKES dict</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>gdf[<span class="st">"name"</span>] <span class="op">=</span> gdf[<span class="st">"COMID"</span>].astype(<span class="bu">int</span>).<span class="bu">map</span>({k: v[<span class="st">"name"</span>] <span class="cf">for</span> k, v <span class="kw">in</span> LAKES.items()})</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gdf[[<span class="st">"COMID"</span>, <span class="st">"name"</span>, <span class="st">"lake_name"</span>, <span class="st">"ws_area_sqkm"</span>]])</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="co"># alias so downstream cells still work</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> gdf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Available columns:
       column_name                                                column_type
@@ -404,8 +397,7 @@ geom_wkb type[0] : bytearray
 </section>
 <section id="assemble-a-geojson-featurecollection-in-memory" class="level2">
 <h2 class="anchored" data-anchor-id="assemble-a-geojson-featurecollection-in-memory">Assemble a GeoJSON FeatureCollection in memory</h2>
-<p>GeoLibre’s <code>add_geojson()</code> accepts a raw GeoJSON string, a dict, or a GeoPandas GeoDataFrame.<br>
-We build the FeatureCollection directly from DuckDB’s <code>ST_AsGeoJSON()</code> output — no GeoPandas needed.</p>
+<p>GeoLibre’s <code>add_geojson()</code> accepts a raw GeoJSON string, a dict, or a GeoPandas GeoDataFrame.</p>
 <div id="geojson-cell" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json <span class="im">as</span> json_mod</span>
@@ -508,7 +500,7 @@ pctbl2019ws, pctconif2019ws, pctcrop2019ws, pctdecid2019ws, pctgrs2019ws, pcthay
 </section>
 <section id="build-the-comparison-chart" class="level2">
 <h2 class="anchored" data-anchor-id="build-the-comparison-chart">Build the comparison chart</h2>
-<p>The <code>nlcd_df</code> DataFrame has one row per COMID and one column per NLCD class (e.g.&nbsp;<code>PctConif2019Ws</code>). We pivot to a <code>{lake_name: {col: pct}}</code> dict and build a compact HTML bar chart for the GeoLibre panel.</p>
+<p>The <code>nlcd_df</code> DataFrame has one row per COMID and one column per NLCD class (e.g.&nbsp;<code>PctConif2019Ws</code>). We pivot to a <code>{lake_name: {col: pct}}</code> dict and build a compact HTML pie chart</p>
 <div id="6281b276" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -630,7 +622,7 @@ Chart built.</code></pre>
 </section>
 <section id="visualize-in-geolibre-with-pie-chart" class="level2">
 <h2 class="anchored" data-anchor-id="visualize-in-geolibre-with-pie-chart">Visualize in GeoLibre with Pie Chart</h2>
-<p>Two outputs: 1. <strong>GeoLibre map widget</strong> — watershed polygons with an NLCD land cover legend via <code>add_legend()</code> (only classes with &gt;1% coverage) 2. <strong>Matplotlib pie chart</strong> — one pie per lake, with the watershed area in the title and a threshold-grouped legend</p>
+<p>Two outputs: 1. <strong>GeoLibre map widget</strong> — watershed polygons with an NLCD land cover loaded as a cloud-optimized geotif 2. <strong>Matplotlib pie chart</strong> — one pie per lake, with the watershed area in the title and a threshold-grouped legend</p>
 <div id="68f628c1" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Python]</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> geolibre <span class="im">import</span> Map</span>
@@ -661,7 +653,7 @@ Chart built.</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"be1eb7c248f4487aa9de87acd91ffd69","version_major":2,"version_minor":1,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"04df623b53494e92a182d1cfdbb35fa6","version_major":2,"version_minor":1,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
