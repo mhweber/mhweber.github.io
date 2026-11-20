@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Pacific Northwest Modeled Streamflow Change — 30DayMapChallenge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <!-- Data is loaded with a script tag (not fetch) so the page also works from file:// -->
+  <script src="pnw_hex_data.js"></script>
+  <style>
+    body { margin: 0; padding: 0; overflow: hidden; background: #0b0f19; font-family: system-ui, sans-serif; color: #f8fafc; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    .panel {
+      background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(8px);
+      border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 10px;
+    }
+    .hud {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      padding: 12px 18px; border-radius: 12px;
+      display: flex; align-items: center; gap: 12px; z-index: 10; min-width: 460px;
+    }
+    button, select {
+      background: #0ea5e9; color: #0f172a; border: none; border-radius: 6px;
+      padding: 6px 12px; font-weight: 700; cursor: pointer; font-size: 0.85rem;
+    }
+    select { background: #1e293b; color: #e2e8f0; font-weight: 500; border: 1px solid #334155; padding: 4px 6px; }
+    input[type="range"] { flex: 1; accent-color: #38bdf8; cursor: pointer; }
+    #timestamp { font-variant-numeric: tabular-nums; font-size: 0.9rem; color: #cbd5e1; min-width: 140px; }
+
+    .title-card { position: absolute; top: 20px; left: 20px; padding: 12px 16px; max-width: min(350px, calc(100% - 40px)); z-index: 10; }
+    .title-card h1 { margin: 0 0 4px 0; font-size: 1rem; letter-spacing: 0.02em; }
+    .title-card p { margin: 0; font-size: 0.78rem; color: #94a3b8; line-height: 1.35; }
+    .title-card .note { color: #fbbf24; font-weight: 600; }
+    .title-card label { font-size: 0.75rem; color: #94a3b8; }
+    .legend { position: relative; margin-top: 8px; height: 10px; border-radius: 5px; }
+    .ticks { position: relative; height: 16px; font-size: 0.68rem; color: #94a3b8; }
+    .ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+    .ticks span.neutral { color: #e2e8f0; font-weight: 700; }
+    .legend-tick { position: absolute; top: -2px; width: 2px; height: 14px; background: #f8fafc; }
+
+    .maplibregl-popup { z-index: 30; }  /* above the title card (10) and controls bar (10) */
+    .height-help { margin-top: 4px; color: #cbd5e1; }
+    .maplibregl-popup-content { background: rgba(15, 23, 42, 0.96); color: #e2e8f0; border: 1px solid #334155; border-radius: 10px; padding: 10px 12px; font-size: 0.78rem; }
+    .maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: rgba(15, 23, 42, 0.96); }
+    .maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: rgba(15, 23, 42, 0.96); }
+    .maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: rgba(15, 23, 42, 0.96); }
+    .maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: rgba(15, 23, 42, 0.96); }
+    .maplibregl-popup-close-button { color: #94a3b8; }
+    .pop { min-width: 210px; }
+    .pop h2 { margin: 0 0 6px 0; font-size: 0.85rem; }
+    .pop table { border-collapse: collapse; width: 100%; }
+    .pop td { padding: 1px 0; }
+    .pop td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .pop .muted { color: #94a3b8; font-size: 0.7rem; margin-top: 6px; line-height: 1.3; }
+    .pop .warn { color: #fbbf24; font-size: 0.72rem; margin-top: 6px; }
+
+    /* Narrow embeds (e.g. a small iframe or phone) */
+    @media (max-width: 560px) {
+      .hud { left: 10px; right: 10px; bottom: 10px; transform: none; min-width: 0; padding: 8px 10px; gap: 8px; border-radius: 10px; }
+      button { padding: 5px 10px; }
+      input[type="range"] { min-width: 0; width: 0; }
+      #timestamp { min-width: 0; flex: none; font-size: 0.68rem; white-space: nowrap; }
+      #speed { display: none; }
+      .title-card { top: 10px; left: 10px; padding: 8px 10px; border-radius: 8px; max-width: calc(100% - 20px); }
+      .title-card h1 { font-size: 0.85rem; }
+      .title-card p { font-size: 0.66rem; }
+      .title-card .detail { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="title-card panel">
+    <h1>Pacific Northwest Modeled Streamflow Change</h1>
+    <p class="note">Modeled values, not observations. Not a measure of flood severity.</p>
+    <p class="detail" style="margin-top:6px">Each hexagon shows one modeled river reach (its largest). Color = flow divided by that reach's median flow on Nov 9 (first four frames; 1x = unchanged). Click a hexagon for details.</p>
+    <div id="legend" class="legend"></div>
+    <div id="ticks" class="ticks"></div>
+    <p style="margin-top:2px"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#64748b;vertical-align:-1px;margin-right:5px"></span>Gray = likely regulated (dam-influenced) reach</p>
+    <p class="detail" style="margin-top:2px">
+      <label for="heightMode">Height:</label>
+      <select id="heightMode">
+        <option value="rise" selected>Rise in flow (m³/s)</option>
+        <option value="ratio">Flow ratio</option>
+        <option value="flat">Flat (2D)</option>
+      </select>
+    </p>
+    <p id="heightHelp" class="detail height-help"></p>
+    <p style="margin-top:4px">Source: NOAA National Water Model v3.0 analysis</p>
+  </div>
+  <div class="hud panel">
+    <button id="playBtn">Pause</button>
+    <input id="slider" type="range" min="0" max="20" value="0" aria-label="Time step" />
+    <span id="timestamp">Loading...</span>
+    <select id="speed" aria-label="Playback speed">
+      <option value="1200">0.5x</option>
+      <option value="600" selected>1x</option>
+      <option value="300">2x</option>
+    </select>
+  </div>
+
+  <script>
+    // Color scale: linear between stops; the legend below is generated from the same stops.
+    const COLOR_STOPS = [
+      [0.5, '#1e293b'],  // well below start (slate)
+      [1.0, '#0284c7'],  // unchanged (blue)
+      [2.5, '#06b6d4'],  // rising (cyan)
+      [5.0, '#facc15'],  // large relative rise (amber)
+      [10.0, '#f43f5e']  // 10x or more (coral); display is capped here
+    ];
+    const REGULATED_COLOR = '#64748b';  // muted gray for likely regulated reaches
+    const RISE_HEIGHT_M = 1200;   // meters of extrusion per sqrt(m3/s) of rise
+    const RATIO_HEIGHT_M = 6500;  // meters of extrusion per 1x of ratio above 0.8
+
+    const lo = COLOR_STOPS[0][0], hi = COLOR_STOPS[COLOR_STOPS.length - 1][0];
+    const pos = (v) => ((v - lo) / (hi - lo)) * 100;
+    document.getElementById('legend').style.background =
+      'linear-gradient(90deg,' + COLOR_STOPS.map(([v, c]) => c + ' ' + pos(v).toFixed(1) + '%').join(',') + ')';
+    document.getElementById('legend').innerHTML = '<div class="legend-tick" style="left:' + pos(1).toFixed(1) + '%"></div>';
+    document.getElementById('ticks').innerHTML = [[1, '1x'], [2.5, '2.5x'], [5, '5x'], [10, '10x+']]
+      .map(([v, t]) => '<span class="' + (v === 1 ? 'neutral' : '') + '" style="left:' + pos(v).toFixed(1) + '%' +
+        (v === hi ? ';transform:translateX(-100%)' : '') + '">' + t + '</span>').join('');
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+      center: [-121.8, 45.8],
+      zoom: 6.2,
+      pitch: 50,
+      bearing: -15
+    });
+    map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+
+    let timestamps = [];
+    let byId = {};
+    let frame = 0;
+    let playing = true;
+    let timer = null;
+    let selectedId = null;
+    let popup = null;
+
+    const HEIGHT_HELP = {
+      rise: 'Rise in flow: column height = how many m³/s of water were added since the Nov 9 baseline (square-root scale). Favors large rivers; small streams stay short.',
+      ratio: 'Flow ratio: column height = how many times higher flow is than baseline, the same quantity as color. Small streams with big relative rises look tall.',
+      flat: 'Flat (2D): no extrusion. Only color shows the flow ratio, so nothing hides neighboring cells.'
+    };
+    function updateHeightHelp() {
+      document.getElementById('heightHelp').textContent = HEIGHT_HELP[document.getElementById('heightMode').value];
+    }
+
+    function paint(idx) {
+      const mode = document.getElementById('heightMode').value;
+      const ratio = ['get', 's' + idx];
+      let height;
+      if (mode === 'rise') height = ['*', ['get', 'h' + idx], RISE_HEIGHT_M];
+      else if (mode === 'ratio') height = ['*', ['max', 0, ['-', ratio, 0.8]], RATIO_HEIGHT_M];
+      else height = 0;
+      return {
+        // Likely regulated reaches are muted so dam-driven swings don't read as storm response.
+        color: ['case', ['==', ['get', 'regulated_flag'], true], REGULATED_COLOR,
+          ['interpolate', ['linear'], ratio].concat(COLOR_STOPS.flat())],
+        height
+      };
+    }
+
+    function fmt(v, d) { return Number(v).toLocaleString(undefined, { maximumFractionDigits: d, minimumFractionDigits: d }); }
+
+    function popupHtml(id) {
+      const p = byId[id];
+      if (!p) return '';
+      const flow = p.surge_raw.map((r) => r * p.base_est);
+      const cur = flow[frame];
+      const W = 220, H = 56, n = flow.length;
+      const max = Math.max.apply(null, flow) || 1;
+      const x = (i) => (i / (n - 1)) * W;
+      const y = (v) => H - 4 - (v / max) * (H - 8);
+      const line = flow.map((v, i) => x(i).toFixed(1) + ',' + y(v).toFixed(1)).join(' ');
+      const spark = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" style="display:block;margin-top:6px">' +
+        '<polyline points="' + line + '" fill="none" stroke="#38bdf8" stroke-width="1.5"/>' +
+        '<line x1="' + x(frame).toFixed(1) + '" x2="' + x(frame).toFixed(1) + '" y1="0" y2="' + H + '" stroke="#f8fafc" stroke-width="1" stroke-dasharray="2 2"/>' +
+        '<circle cx="' + x(frame).toFixed(1) + '" cy="' + y(cur).toFixed(1) + '" r="3" fill="#f8fafc"/></svg>';
+      return '<div class="pop"><h2>' + timestamps[frame] + '</h2><table>' +
+        '<tr><td>Modeled flow now</td><td>' + fmt(cur, 1) + ' m³/s</td></tr>' +
+        '<tr><td>Baseline (Nov 9 median)</td><td>' + fmt(p.base_est, 1) + ' m³/s</td></tr>' +
+        '<tr><td>Ratio now (uncapped)</td><td>' + fmt(p.surge_raw[frame], 2) + 'x</td></tr>' +
+        '<tr><td>Peak in window</td><td>' + fmt(p.peak_cms, 1) + ' m³/s (' + fmt(p.max_surge_raw, 1) + 'x)</td></tr>' +
+        '<tr><td>NWM reach ID</td><td>' + p.feature_id + '</td></tr>' +
+        '<tr><td>H3 cell</td><td>' + p.h3 + '</td></tr></table>' + spark +
+        (p.regulated_flag ? '<div class="warn" style="color:#94a3b8">Likely regulated: ' +
+          (p.regulated_reason === 'oscillation'
+            ? 'this reach swings up and down repeatedly, a pattern typical of dam operations'
+            : 'this is on the dam-controlled Columbia mainstem' + (p.regulated_reason.indexOf('oscillation') >= 0 ? ' and also swings up and down repeatedly' : '')) +
+          ', so its changes may not reflect storm response. This is a heuristic.</div>' : '') +
+        (p.jump_flag ? '<div class="warn">Flagged: this reach shows repeated large step changes (possible regulation or model behavior). Treat with caution.</div>' : '') +
+        '<div class="muted">Modeled NWM analysis for the largest reach in this hexagon, not an observation. Flow values are derived from the ratio and are approximate.</div></div>';
+    }
+
+    function setFrame(idx) {
+      frame = idx;
+      document.getElementById('slider').value = idx;
+      document.getElementById('timestamp').textContent = timestamps[idx] || '';
+      const expr = paint(idx);
+      map.setPaintProperty('hex-surge', 'fill-extrusion-color', expr.color);
+      map.setPaintProperty('hex-surge', 'fill-extrusion-height', expr.height);
+      if (popup && selectedId) popup.setHTML(popupHtml(selectedId));
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (playing) setFrame((frame + 1) % timestamps.length);
+        schedule();
+      }, Number(document.getElementById('speed').value));
+    }
+
+    function setPlaying(on) {
+      playing = on;
+      document.getElementById('playBtn').textContent = on ? 'Pause' : 'Play';
+    }
+
+    map.on('load', () => {
+      const data = window.HEX_DATA;
+      if (!data) {
+        document.getElementById('timestamp').textContent = 'Data file pnw_hex_data.js not found';
+        return;
+      }
+      timestamps = data.timestamps;
+
+      // MapLibre stringifies array properties, so flatten per-frame values (s = capped ratio,
+      // h = sqrt of rise in flow) and keep full records in byId for the popup.
+      data.features.forEach((f) => {
+        const p = f.properties;
+        p.base_est = p.max_surge_raw > 0 ? p.peak_cms / p.max_surge_raw : p.base_cms;
+        p.surge.forEach((v, i) => { p['s' + i] = v; });
+        p.surge_raw.forEach((r, i) => { p['h' + i] = Math.sqrt(Math.max(0, (r - 1) * p.base_est)); });
+        byId[p.h3] = p;
+      });
+
+      const slider = document.getElementById('slider');
+      slider.max = timestamps.length - 1;
+      map.addSource('pnw-hex', { type: 'geojson', data });
+
+      const init = paint(0);
+      map.addLayer({
+        id: 'hex-surge',
+        type: 'fill-extrusion',
+        source: 'pnw-hex',
+        paint: {
+          'fill-extrusion-color': init.color,
+          'fill-extrusion-height': init.height,
+          'fill-extrusion-opacity': 0.88,
+          'fill-extrusion-height-transition': { duration: 250, delay: 0 },
+          'fill-extrusion-color-transition': { duration: 250, delay: 0 }
+        }
+      });
+
+      setFrame(0);
+      schedule();
+
+      map.on('click', 'hex-surge', (e) => {
+        selectedId = e.features[0].properties.h3;
+        if (popup) popup.remove();
+        popup = new maplibregl.Popup({ maxWidth: '280px' }).setLngLat(e.lngLat).setHTML(popupHtml(selectedId)).addTo(map);
+        popup.on('close', () => { selectedId = null; });
+      });
+      map.on('mouseenter', 'hex-surge', () => { map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'hex-surge', () => { map.getCanvas().style.cursor = ''; });
+
+      slider.addEventListener('input', (e) => { setPlaying(false); setFrame(Number(e.target.value)); });
+      document.getElementById('playBtn').addEventListener('click', () => setPlaying(!playing));
+      document.getElementById('speed').addEventListener('change', schedule);
+      document.getElementById('heightMode').addEventListener('change', () => { updateHeightHelp(); setFrame(frame); });
+      updateHeightHelp();
+    });
+  </script>
+</body>
+</html>
